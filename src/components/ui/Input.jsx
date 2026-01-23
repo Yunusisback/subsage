@@ -1,0 +1,34 @@
+import { cn } from "../../utils/helpers";
+
+const Input = ({ label, error, className, ...props }) => {
+  return (
+    <div className="w-full space-y-1.5">
+      {label && (
+        <label className="text-xs font-semibold text-zinc-400 ml-1">
+          {label}
+        </label>
+      )}
+      <div className="relative group">
+        <input
+          className={cn(
+            "w-full bg-[#0C0C0E] text-sm text-white rounded-xl px-4 py-3 border border-white/10",
+            "focus:border-yellow-400/50 focus:outline-none focus:ring-1 focus:ring-yellow-400/20",
+            "placeholder:text-zinc-600 transition-all duration-300",
+            error ? "border-red-500/50 focus:border-red-500" : "hover:border-white/20",
+            className
+          )}
+          {...props}
+        />
+     
+        <div className="absolute inset-0 rounded-xl bg-yellow-400/5 opacity-0 group-focus-within:opacity-100 pointer-events-none transition-opacity duration-500" />
+      </div>
+      {error && (
+        <span className="text-xs text-red-400 ml-1 block animate-in slide-in-from-top-1">
+          {error}
+        </span>
+      )}
+    </div>
+  );
+};
+
+export default Input;

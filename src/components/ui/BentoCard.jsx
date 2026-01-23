@@ -12,6 +12,7 @@ const BentoCard = ({ children, className, glowColor = "zinc", ...props }) => {
     purple: "from-purple-500 to-purple-900/40 group-hover:border-purple-500/50",
     zinc:   "from-zinc-500 to-zinc-900/10 group-hover:border-zinc-500/30",
     fuchsia: "from-fuchsia-500 to-fuchsia-900/10 group-hover:border-fuchsia-500/50",
+    yellow: "from-yellow-500 to-yellow-900/10 group-hover:border-yellow-500/50",
   };
 
   // Seçilen rengi al yoksa varsayılan zinc olsun
