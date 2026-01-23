@@ -16,31 +16,31 @@ const Sidebar = ({ isCollapsed, toggleSidebar, activeTab, setActiveTab }) => {
   return (
     <aside 
       className={cn(
-        "h-screen fixed left-0 top-0 flex flex-col z-50 transition-all duration-500 ease-out border-r border-white/5",
+        "h-screen fixed  left-0 top-0 flex flex-col z-50 transition-all duration-500 ease-out border-r border-yellow-400/25",
         "bg-zinc-950/90 backdrop-blur-2xl", 
-        isCollapsed ? "w-20 py-8 items-center" : "w-72 p-6" 
+        isCollapsed ? "w-22 py-8 items-center" : "w-72 p-6" 
       )}
     >
       
       {/* logo alanı */}
       <div className={cn(
           "relative flex items-center gap-4 transition-all duration-500 mt-3", 
-          isCollapsed ? "justify-center w-10 mb-8" : "justify-start w-full px-2 mb-6" 
+          isCollapsed ? "justify-center w-10 mb-8 pr-3" : "justify-start w-full py-3 mb-6 " 
         )}>
         
         {/* Glow Efekti */}
-        <div className="absolute inset-0 w-10 h-10 bg-yellow-400/20 blur-2xl rounded-full -z-10 animate-pulse"></div>
+        <div className="absolute inset-0 w-10 h-10 bg-yellow-400/40 blur-2xl rounded-full -z-10 animate-pulse"></div>
 
         {/* Logo İkonu */}
         <div className="relative z-10 flex items-center justify-center pl-4">
-            <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className="text-yellow-400 drop-shadow-[0_0_10px_rgba(250,204,21,0.5)]">
+            <svg width="46" height="46" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className="text-yellow-400 drop-shadow-[0_0_10px_rgba(250,204,21,0.5)]">
              <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/>
             </svg>
         </div>
         
         {/* Yazı */}
        <h1 className={cn(
-            "text-2xl font-black tracking-tighter overflow-hidden transition-all duration-500 whitespace-nowrap relative z-10",
+            "text-3xl font-black tracking-tighter overflow-hidden transition-all duration-500 whitespace-nowrap relative z-10",
             "bg-linear-to-r from-yellow-200 via-yellow-400 to-amber-500 bg-clip-text text-transparent drop-shadow-md",
             isCollapsed ? "w-0 opacity-0 hidden" : "w-auto opacity-100 block"
         )}>
@@ -51,7 +51,7 @@ const Sidebar = ({ isCollapsed, toggleSidebar, activeTab, setActiveTab }) => {
       {/* Açma Kapama Butonu */}
       <button 
         onClick={toggleSidebar}
-        className="absolute -right-3 top-20 w-6 h-6 bg-zinc-900 border border-white/10 rounded-full flex items-center justify-center text-zinc-400 hover:text-white hover:bg-yellow-500 hover:border-yellow-500 transition-all duration-300 z-50 shadow-xl cursor-pointer group"
+        className="absolute -right-3 top-28 w-6 h-6 bg-zinc-900 border border-white/10 rounded-full flex items-center justify-center text-zinc-400 hover:text-white hover:bg-yellow-500 hover:border-yellow-500 transition-all duration-300 z-50 shadow-xl cursor-pointer group"
       >
         {isCollapsed ? <ChevronRight size={14} className="group-hover:translate-x-0.5 transition-transform" /> : <ChevronLeft size={14} className="group-hover:-translate-x-0.5 transition-transform" />}
       </button>
@@ -66,7 +66,7 @@ const Sidebar = ({ isCollapsed, toggleSidebar, activeTab, setActiveTab }) => {
                 key={item.id}
                 onClick={() => setActiveTab(item.id)}
                 className={cn(
-                "w-full flex items-center transition-all duration-300 group relative font-medium outline-none rounded-xl overflow-hidden",
+                "w-full flex items-center transition-all duration-300 group relative font-medium outline-none rounded-xl overflow-hidden cursor-pointer",
              
                 isCollapsed ? "justify-center h-11 w-11 mx-auto" : "justify-between px-4 py-3", 
                 isActive
@@ -129,20 +129,20 @@ const Sidebar = ({ isCollapsed, toggleSidebar, activeTab, setActiveTab }) => {
       </nav>
 
       {/* çıkış yap butonu*/}
-      <div className={cn("mt-auto pt-6 border-t border-white/5 w-full transition-all duration-300", isCollapsed && "pt-4 border-none")}>
+      <div className={cn("mt-auto pt-6 border-t border-red-500/25 w-full transition-all duration-300", isCollapsed && "pt-4 border-none")}>
         <button 
             className={cn(
-                "w-full flex items-center transition-all duration-300 group relative font-medium outline-none rounded-xl overflow-hidden",
+                "w-full flex items-center transition-all cursor-pointer duration-300 group relative font-medium outline-none rounded-xl overflow-hidden",
                 isCollapsed ? "justify-center h-11 w-11 mx-auto" : "justify-start gap-3.5 px-4 py-3 hover:bg-red-500/10 hover:border-red-500/20 border border-transparent"
             )}
             title="Çıkış Yap"
         >
             <LogOut 
-                size={20} 
+                size={25} 
                 strokeWidth={2}
                 className={cn(
                     "transition-all duration-300",
-                    "text-zinc-500 group-hover:text-red-400"
+                    "text-red-400 group-hover:text-red-400"
                 )} 
             />
             
