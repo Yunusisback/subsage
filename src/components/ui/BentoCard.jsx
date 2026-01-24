@@ -25,7 +25,7 @@ const BentoCard = ({ children, className, glowColor = "zinc", ...props }) => {
       whileHover={{ y: -4, scale: 1.02, transition: { duration: 0.2 } }}
       className={cn(
         "relative overflow-hidden group",
-        "bg-[#0C0C0E]", 
+        "bg-card-bg", 
         "rounded-4xl",  
         "border border-white/5", 
         "shadow-2xl shadow-black/80",

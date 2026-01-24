@@ -17,7 +17,7 @@ const Sidebar = ({ isCollapsed, toggleSidebar, activeTab, setActiveTab }) => {
     <aside 
       className={cn(
         "h-screen fixed  left-0 top-0 flex flex-col z-50 transition-all duration-500 ease-out border-r border-yellow-400/15",
-        "bg-zinc-950/90 backdrop-blur-2xl", 
+        "bg-card-bg/90 backdrop-blur-2xl", 
         isCollapsed ? "w-22 py-8 items-center " : "w-72 p-6" 
       )}
     >
@@ -51,7 +51,7 @@ const Sidebar = ({ isCollapsed, toggleSidebar, activeTab, setActiveTab }) => {
       {/* Açma Kapama Butonu */}
       <button 
         onClick={toggleSidebar}
-        className="absolute -right-3 top-28 w-6 h-6 bg-zinc-900 border border-white/10 rounded-full flex items-center justify-center text-zinc-400 hover:text-white hover:bg-yellow-500 hover:border-yellow-500 transition-all duration-300 z-50 shadow-xl cursor-pointer group"
+        className="absolute -right-3 top-28 w-6 h-6 bg-card-bg border border-white/10 rounded-full flex items-center justify-center text-zinc-400 hover:text-white hover:bg-yellow-500 hover:border-yellow-500 transition-all duration-300 z-50 shadow-xl cursor-pointer group"
       >
         {isCollapsed ? <ChevronRight size={14} className="group-hover:translate-x-0.5 transition-transform" /> : <ChevronLeft size={14} className="group-hover:-translate-x-0.5 transition-transform" />}
       </button>

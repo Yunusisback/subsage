@@ -43,12 +43,12 @@ const Header = ({ activeTab, setActiveTab, onOpenModal }) => {
                 className="p-3 rounded-xl bg-white/5 hover:bg-white/10 text-zinc-400 hover:text-white transition-colors relative border border-white/5"
             >
                 <Bell size={20} />
-                <span className="absolute top-2.5 right-2.5 w-2 h-2 rounded-full bg-red-500 border border-[#050505]"></span>
+                <span className="absolute top-2.5 right-2.5 w-2 h-2 rounded-full bg-red-500 border border-dark-bg"></span>
             </button>
 
             {/* Dropdown Menü */}
             {showNotifications && (
-                <div className="absolute right-0 top-full mt-3 w-80 bg-[#121214] border border-white/10 rounded-2xl shadow-[0_0_50px_rgba(0,0,0,0.5)] z-50 overflow-hidden animate-in fade-in slide-in-from-top-2 duration-200">
+                <div className="absolute right-0 top-full mt-3 w-80 bg-card-bg border border-white/10 rounded-2xl shadow-[0_0_50px_rgba(0,0,0,0.5)] z-50 overflow-hidden animate-in fade-in slide-in-from-top-2 duration-200">
                     <div className="p-4 border-b border-white/5 flex justify-between items-center bg-white/5">
                         <span className="text-sm font-bold text-white">Bildirimler</span>
                         <span className="text-[10px] bg-yellow-500 text-black px-1.5 py-0.5 rounded font-bold">3 Yeni</span>

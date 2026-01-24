@@ -11,7 +11,7 @@ const Input = ({ label, error, className, ...props }) => {
       <div className="relative group">
         <input
           className={cn(
-            "w-full bg-[#0C0C0E] text-sm text-white rounded-xl px-4 py-3 border border-white/10",
+            "w-full bg-dark-bg text-sm text-white rounded-xl px-4 py-3 border border-white/10",
             "focus:border-yellow-400/50 focus:outline-none focus:ring-1 focus:ring-yellow-400/20",
             "placeholder:text-zinc-600 transition-all duration-300",
             error ? "border-red-500/50 focus:border-red-500" : "hover:border-white/20",
