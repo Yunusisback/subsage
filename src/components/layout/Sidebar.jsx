@@ -16,9 +16,9 @@ const Sidebar = ({ isCollapsed, toggleSidebar, activeTab, setActiveTab }) => {
   return (
     <aside 
       className={cn(
-        "h-screen fixed  left-0 top-0 flex flex-col z-50 transition-all duration-500 ease-out border-r border-yellow-400/25",
+        "h-screen fixed  left-0 top-0 flex flex-col z-50 transition-all duration-500 ease-out border-r border-yellow-400/15",
         "bg-zinc-950/90 backdrop-blur-2xl", 
-        isCollapsed ? "w-22 py-8 items-center" : "w-72 p-6" 
+        isCollapsed ? "w-22 py-8 items-center " : "w-72 p-6" 
       )}
     >
       
