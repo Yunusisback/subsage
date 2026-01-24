@@ -120,10 +120,10 @@ const DashboardView = ({ setActiveTab }) => {
       </div>
 
       <div className="flex items-center justify-between mb-6">
-        <h2 className="text-xl font-bold text-white flex items-center gap-2">
+        <h2 className="text-xl font-bold text-yellow-500 flex items-center gap-2">
           Son Abonelikler
         </h2>
-        <div className="h-px bg-white/5 flex-1 ml-6"></div>
+        <div className="h-px bg-yellow-400/25 flex-1 ml-6"></div>
       </div>
 
       {/* Dashboard Listesi */}

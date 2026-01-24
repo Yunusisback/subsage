@@ -1,4 +1,4 @@
-import { Bell, CheckCircle, AlertTriangle, Info, Clock, } from "lucide-react";
+import { Bell, CheckCircle, AlertTriangle, Info, Clock, Check } from "lucide-react";
 import BentoCard from "../ui/BentoCard";
 import { cn } from "../../utils/helpers";
 
@@ -7,23 +7,23 @@ const NOTIFICATIONS_DATA = [
     id: 1,
     type: "success",
     title: "Ödeme Başarılı",
-    message: "Netflix abonelik ücretiniz (199.99₺) başarıyla ödendi.",
+    message: "Netflix abonelik ücretiniz (199.99₺) başarıyla ödendi. Faturanız e-posta adresinize gönderildi.",
     time: "2 saat önce",
     read: false,
   },
   {
     id: 2,
     type: "warning",
-    title: "Yaklaşan Ödeme",
-    message: "Spotify ödemeniz 2 gün içinde gerçekleşecek. Bakiyenizi kontrol edin.",
+    title: "Yaklaşan Ödeme Hatırlatması",
+    message: "Spotify ödemeniz 2 gün içinde gerçekleşecek. Lütfen bakiyenizi kontrol edin.",
     time: "5 saat önce",
     read: false,
   },
   {
     id: 3,
     type: "info",
-    title: "Yeni Özellik",
-    message: "Artık harcama raporlarınızı PDF olarak indirebilirsiniz.",
+    title: "Yeni Özellik: Raporlar",
+    message: "Artık harcama raporlarınızı detaylı PDF olarak indirebilirsiniz.",
     time: "1 gün önce",
     read: true,
   },
@@ -31,7 +31,7 @@ const NOTIFICATIONS_DATA = [
     id: 4,
     type: "alert",
     title: "Sistem Bakımı",
-    message: "Bu gece 03:00 - 05:00 arası planlı bakım çalışması yapılacaktır.",
+    message: "Bu gece 03:00 - 05:00 arası planlı bakım çalışması yapılacaktır. Kesintiler yaşanabilir.",
     time: "2 gün önce",
     read: true,
   },
@@ -39,65 +39,80 @@ const NOTIFICATIONS_DATA = [
 
 const Notifications = () => {
   return (
-    <div className="animate-in fade-in slide-in-from-bottom-4 duration-500 max-w-4xl mx-auto">
+    <div className="animate-in fade-in slide-in-from-bottom-4 duration-500 max-w-3xl mx-auto pb-15">
       
-      <BentoCard glowColor="zinc" className="p-0 flex flex-col min-h-150">
+      <BentoCard glowColor="yellow" className="p-0 flex flex-col min-h-137.5">
         
         {/* Header */}
-        <div className="p-6 border-b border-white/5 flex justify-between items-center bg-white/5">
+        <div className="p-8 border-b border-white/5 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 bg-white/2">
             <div>
                 <h2 className="text-2xl font-bold text-white flex items-center gap-3">
-                    <Bell className="text-yellow-500" />
+                    <div className="p-2.5 rounded-xl bg-yellow-500/10 border border-yellow-500/20 shadow-[0_0_15px_rgba(234,179,8,0.1)]">
+                        <Bell className="text-yellow-500" size={24} />
+                    </div>
                     Bildirim Merkezi
                 </h2>
-                <p className="text-zinc-400 text-sm mt-1">Tüm hesap hareketleriniz ve sistem uyarıları.</p>
+    
             </div>
-            <button className="text-xs text-zinc-500 hover:text-white transition-colors">
+            <button className="group flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium text-zinc-400 hover:text-white hover:bg-white/5 border border-transparent hover:border-white/10 transition-all cursor-pointer">
+                <Check size={16} className="group-hover:text-yellow-500 transition-colors" />
                 Tümünü okundu işaretle
             </button>
         </div>
 
         {/* Liste */}
-        <div className="p-6 space-y-4">
-            {NOTIFICATIONS_DATA.map((item) => (
+        <div className="p-8 space-y-4 bg-black/20 flex-1">
+            {NOTIFICATIONS_DATA.map((item) => {
+                const isUnread = !item.read;
+                return (
                 <div 
                     key={item.id} 
                     className={cn(
-                        "group flex items-start gap-4 p-5 rounded-2xl border transition-all duration-300",
-                        item.read 
-                            ? "bg-transparent border-white/5 hover:bg-white/5" 
-                            : "bg-[#0C0C0E] border-l-4 border-l-yellow-500 border-y-white/10 border-r-white/10 shadow-lg"
+                        "group relative flex items-start gap-5 p-5 rounded-2xl transition-all duration-300 border",
+                        isUnread 
+                            ? "bg-[#121214] border-l-4 border-l-yellow-500 border-y-white/5 border-r-white/5 shadow-[0_4px_20px_rgba(0,0,0,0.2)] hover:shadow-[0_4px_25px_rgba(234,179,8,0.1)] hover:border-y-yellow-500/10 hover:bg-[#161618]" 
+                            : "bg-transparent border-transparent hover:bg-white/3 hover:border-white/5 opacity-75 hover:opacity-100"
                     )}
                 >
+                    {/* İkon */}
                     <div className={cn(
-                        "p-3 rounded-full shrink-0",
-                        item.type === "success" ? "bg-green-500/20 text-green-400" :
-                        item.type === "warning" ? "bg-yellow-500/20 text-yellow-400" :
-                        item.type === "alert" ? "bg-red-500/20 text-red-400" :
-                        "bg-blue-500/20 text-blue-400"
+                        "p-3.5 rounded-2xl shrink-0 shadow-lg border backdrop-blur-md mt-1 transition-transform", 
+                        item.type === "success" ? "bg-green-500/10 border-green-500/20 shadow-green-500/10 text-green-400" :
+                        item.type === "warning" ? "bg-yellow-500/10 border-yellow-500/20 shadow-yellow-500/10 text-yellow-400" :
+                        item.type === "alert" ? "bg-red-500/10 border-red-500/20 shadow-red-500/10 text-red-400" :
+                        "bg-blue-500/10 border-blue-500/20 shadow-blue-500/10 text-blue-400"
                     )}>
-                        {item.type === "success" && <CheckCircle size={20} />}
-                        {item.type === "warning" && <Clock size={20} />}
-                        {item.type === "alert" && <AlertTriangle size={20} />}
-                        {item.type === "info" && <Info size={20} />}
+                        {item.type === "success" && <CheckCircle size={22} strokeWidth={2} />}
+                        {item.type === "warning" && <Clock size={22} strokeWidth={2} />}
+                        {item.type === "alert" && <AlertTriangle size={22} strokeWidth={2} />}
+                        {item.type === "info" && <Info size={22} strokeWidth={2} />}
                     </div>
 
-                    <div className="flex-1">
-                        <div className="flex justify-between items-start">
-                            <h3 className={cn("font-bold text-base mb-1", item.read ? "text-zinc-400" : "text-white")}>
+                    {/* İçerik */}
+                    <div className="flex-1 min-w-0 pt-0.5">
+                        <div className="flex justify-between items-start gap-4 mb-2">
+                            <h3 className={cn("text-base font-bold tracking-tight pr-2", isUnread ? "text-white" : "text-zinc-300")}>
                                 {item.title}
                             </h3>
-                            <span className="text-xs text-zinc-500 flex items-center gap-1">
-                                {item.time}
-                                {!item.read && <span className="w-2 h-2 rounded-full bg-yellow-500 animate-pulse"></span>}
-                            </span>
+                            <div className="flex items-center gap-2 shrink-0">
+                                <span className={cn("text-xs font-medium px-2.5 py-1 rounded-lg border", isUnread ? "bg-yellow-500/10 border-yellow-500/20 text-yellow-500" : "bg-white/5 border-white/5 text-zinc-500")}>
+                                    {item.time}
+                                </span>
+                                {isUnread && (
+                                    <span className="relative flex h-2.5 w-2.5">
+                                      <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-yellow-400 opacity-75"></span>
+                                      <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-yellow-500"></span>
+                                    </span>
+                                )}
+                            </div>
                         </div>
-                        <p className="text-sm text-zinc-400 leading-relaxed">
+                        <p className={cn("text-sm leading-relaxed font-medium", isUnread ? "text-zinc-300" : "text-zinc-500")}>
                             {item.message}
                         </p>
                     </div>
                 </div>
-            ))}
+                )
+            })}
         </div>
 
       </BentoCard>

@@ -19,11 +19,12 @@ const Header = ({ activeTab, setActiveTab, onOpenModal }) => {
   }, []);
 
   return (
-    <header className="mb-8 flex justify-between items-center h-16 animate-in fade-in slide-in-from-top-4 duration-500">
+    
+    <header className="relative z-50 mb-8 flex justify-between items-center h-16 animate-in fade-in slide-in-from-top-4 duration-500">
 
       {/* Başlık */}
       <div>
-        <h1 className="text-3xl pl-3 font-bold tracking-tight text-white">
+        <h1 className="text-3xl pl-3 font-bold tracking-tight text-yellow-500">
           {activeTab === TABS.DASHBOARD && "Yönetim Paneli"}
           {activeTab === TABS.SUBSCRIPTIONS && "Abonelikler"}
           {activeTab === TABS.REPORTS && "Raporlar"}
@@ -36,19 +37,19 @@ const Header = ({ activeTab, setActiveTab, onOpenModal }) => {
       {/* Bildirim ve Profil */}
       <div className="flex items-center gap-4 pr-2">
         
-        {/* Bildirim Dropdown */}
+        {/* Bildirim */}
         <div className="relative" ref={notificationRef}>
             <button 
                 onClick={() => setShowNotifications(!showNotifications)}
-                className="p-3 rounded-xl bg-white/5 hover:bg-white/10 text-zinc-400 hover:text-white transition-colors relative border border-white/5"
+                className="p-3 rounded-xl bg-white/5 hover:bg-white/10 text-zinc-400 hover:text-white transition-colors relative border border-white/5 cursor-pointer"
             >
                 <Bell size={20} />
                 <span className="absolute top-2.5 right-2.5 w-2 h-2 rounded-full bg-red-500 border border-dark-bg"></span>
             </button>
 
-            {/* Dropdown Menü */}
+            {/* Menü */}
             {showNotifications && (
-                <div className="absolute right-0 top-full mt-3 w-80 bg-card-bg border border-white/10 rounded-2xl shadow-[0_0_50px_rgba(0,0,0,0.5)] z-50 overflow-hidden animate-in fade-in slide-in-from-top-2 duration-200">
+                <div className="absolute right-0 top-full mt-3 w-80 bg-[#121214] border border-white/10 rounded-2xl shadow-[0_0_50px_rgba(0,0,0,0.5)] z-50 overflow-hidden animate-in fade-in slide-in-from-top-2 duration-200">
                     <div className="p-4 border-b border-white/5 flex justify-between items-center bg-white/5">
                         <span className="text-sm font-bold text-white">Bildirimler</span>
                         <span className="text-[10px] bg-yellow-500 text-black px-1.5 py-0.5 rounded font-bold">3 Yeni</span>
@@ -57,21 +58,21 @@ const Header = ({ activeTab, setActiveTab, onOpenModal }) => {
                     <div className="py-2">
 
                         {/* Örnek Bildirimler */}
-                        <button onClick={() => { setActiveTab(TABS.NOTIFICATIONS); setShowNotifications(false); }} className="w-full text-left px-4 py-3 hover:bg-white/5 transition-colors flex gap-3 group">
+                        <button onClick={() => { setActiveTab(TABS.NOTIFICATIONS); setShowNotifications(false); }} className="w-full text-left px-4 py-3 hover:bg-white/5 transition-colors flex gap-3 group cursor-pointer">
                             <div className="mt-1 w-2 h-2 rounded-full bg-green-500 shrink-0"></div>
                             <div>
                                 <p className="text-xs font-bold text-zinc-200 group-hover:text-white">Ödeme Başarılı</p>
                                 <p className="text-[10px] text-zinc-500 mt-0.5 line-clamp-1">Netflix ödemeniz başarıyla alındı.</p>
                             </div>
                         </button>
-                         <button onClick={() => { setActiveTab(TABS.NOTIFICATIONS); setShowNotifications(false); }} className="w-full text-left px-4 py-3 hover:bg-white/5 transition-colors flex gap-3 group">
+                         <button onClick={() => { setActiveTab(TABS.NOTIFICATIONS); setShowNotifications(false); }} className="w-full text-left px-4 py-3 hover:bg-white/5 transition-colors flex gap-3 group cursor-pointer">
                             <div className="mt-1 w-2 h-2 rounded-full bg-yellow-500 shrink-0"></div>
                             <div>
                                 <p className="text-xs font-bold text-zinc-200 group-hover:text-white">Yaklaşan Ödeme</p>
                                 <p className="text-[10px] text-zinc-500 mt-0.5 line-clamp-1">Spotify ödemesine 2 gün kaldı.</p>
                             </div>
                         </button>
-                         <button onClick={() => { setActiveTab(TABS.NOTIFICATIONS); setShowNotifications(false); }} className="w-full text-left px-4 py-3 hover:bg-white/5 transition-colors flex gap-3 group">
+                         <button onClick={() => { setActiveTab(TABS.NOTIFICATIONS); setShowNotifications(false); }} className="w-full text-left px-4 py-3 hover:bg-white/5 transition-colors flex gap-3 group cursor-pointer">
                             <div className="mt-1 w-2 h-2 rounded-full bg-blue-500 shrink-0"></div>
                             <div>
                                 <p className="text-xs font-bold text-zinc-200 group-hover:text-white">Sistem</p>
@@ -83,7 +84,7 @@ const Header = ({ activeTab, setActiveTab, onOpenModal }) => {
                     <div className="p-2 border-t border-white/5 bg-black/20">
                         <button 
                             onClick={() => { setActiveTab(TABS.NOTIFICATIONS); setShowNotifications(false); }}
-                            className="w-full py-2 text-xs text-center text-zinc-400 hover:text-white font-medium transition-colors"
+                            className="w-full py-2 text-xs text-center text-zinc-400 hover:text-white font-medium transition-colors cursor-pointer"
                         >
                             Tümünü Gör
                         </button>

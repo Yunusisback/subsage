@@ -15,7 +15,7 @@ const Settings = () => {
     paymentAlert: true
   });
 
-  const [theme, setTheme] = useState("dark"); // dark light system
+  const [theme, setTheme] = useState("dark"); 
 
   const handleSave = () => {
     setLoading(true);
@@ -29,7 +29,7 @@ const Settings = () => {
     <button 
         onClick={onClick}
         className={cn(
-            "w-11 h-6 rounded-full p-1 transition-colors duration-300 flex items-center",
+            "w-11 h-6 rounded-full p-1 transition-colors duration-300 flex items-center cursor-pointer",
             active ? "bg-yellow-500" : "bg-zinc-700"
         )}
     >
@@ -45,10 +45,7 @@ const Settings = () => {
         
         {/* başlık ve kaydet butonu */}
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-8">
-            <div>
-                <h2 className="text-2xl font-bold text-white">Ayarlar</h2>
-                <p className="text-zinc-400 text-sm">Hesap tercihlerinizi ve uygulama ayarlarınızı yönetin.</p>
-            </div>
+       
             <Button 
                 variant="primary" 
                 onClick={handleSave} 
@@ -81,6 +78,7 @@ const Settings = () => {
                 </div>
 
                 <div className="flex flex-col md:flex-row gap-8 items-start">
+                    
                     {/* avatar değiştirme */}
                     <div className="flex flex-col items-center gap-3">
                         <div className="w-24 h-24 rounded-full border-2 border-dashed border-zinc-700 p-1 cursor-pointer hover:border-yellow-500 transition-colors group relative overflow-hidden">
@@ -155,21 +153,21 @@ const Settings = () => {
                         <div className="grid grid-cols-3 gap-2 bg-black/20 p-1 rounded-xl border border-white/5">
                             <button 
                                 onClick={() => setTheme("light")}
-                                className={cn("flex flex-col items-center justify-center gap-1 py-2 rounded-lg text-xs font-medium transition-all", theme === "light" ? "bg-white text-black shadow-lg" : "text-zinc-500 hover:text-white")}
+                                className={cn("flex flex-col items-center justify-center gap-1 py-2 rounded-lg text-xs font-medium transition-all cursor-pointer", theme === "light" ? "bg-white text-black shadow-lg" : "text-zinc-500 hover:text-white")}
                             >
                                 <Sun size={16} />
                                 Açık
                             </button>
                             <button 
                                 onClick={() => setTheme("dark")}
-                                className={cn("flex flex-col items-center justify-center gap-1 py-2 rounded-lg text-xs font-medium transition-all", theme === "dark" ? "bg-zinc-800 text-white shadow-lg" : "text-zinc-500 hover:text-white")}
+                                className={cn("flex flex-col items-center justify-center gap-1 py-2 rounded-lg text-xs font-medium transition-all cursor-pointer", theme === "dark" ? "bg-zinc-800 text-white shadow-lg" : "text-zinc-500 hover:text-white")}
                             >
                                 <Moon size={16} />
                                 Koyu
                             </button>
                             <button 
                                 onClick={() => setTheme("system")}
-                                className={cn("flex flex-col items-center justify-center gap-1 py-2 rounded-lg text-xs font-medium transition-all", theme === "system" ? "bg-zinc-800 text-white shadow-lg" : "text-zinc-500 hover:text-white")}
+                                className={cn("flex flex-col items-center justify-center gap-1 py-2 rounded-lg text-xs font-medium transition-all cursor-pointer", theme === "system" ? "bg-zinc-800 text-white shadow-lg" : "text-zinc-500 hover:text-white")}
                             >
                                 <Monitor size={16} />
                                 Sistem
@@ -237,7 +235,7 @@ const Settings = () => {
                     <div>
                         <h4 className="text-sm font-bold text-white mb-2">Şifre Değiştir</h4>
                         <p className="text-xs text-zinc-400 mb-4">Hesabınızın güvenliği için güçlü bir şifre kullanın. Son değişiklik: 3 ay önce.</p>
-                        <Button variant="outline" size="sm" className="w-full md:w-auto">
+                        <Button variant="outline" size="sm" className="w-full md:w-auto cursor-pointer">
                             <Lock size={16} className="mr-2" />
                             Şifre Yenile
                         </Button>
@@ -249,7 +247,7 @@ const Settings = () => {
                              <span className="text-[10px] bg-green-500/20 text-green-400 px-2 py-0.5 rounded font-bold">AKTİF</span>
                         </div>
                         <p className="text-xs text-zinc-400 mb-4">Giriş yaparken telefonunuza gönderilen kodu girmeniz gerekir.</p>
-                        <Button variant="danger" size="sm" className="w-full md:w-auto opacity-80 hover:opacity-100">
+                        <Button variant="danger" size="sm" className="w-full md:w-auto opacity-80 hover:opacity-100 cursor-pointer">
                            Devre Dışı Bırak
                         </Button>
                     </div>
