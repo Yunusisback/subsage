@@ -18,7 +18,7 @@ const DashboardView = ({ setActiveTab }) => {
   }));
 
   const mostExpensive = subscriptions.reduce((prev, current) => {
-    return (prev.price > current.price) ? prev : current;
+    return (parseFloat(prev.price) > parseFloat(current.price)) ? prev : current;
   }, subscriptions[0] || { name: '-', price: 0 });
 
   return (
@@ -93,7 +93,7 @@ const DashboardView = ({ setActiveTab }) => {
               <span className="text-[15px] font-bold text-fuchsia-400 uppercase tracking-[0.2em]">En Yüksek</span>
             </div>
 
-            {/*  İsim ve Fiyat container */}
+            {/* İsim ve Fiyat container */}
             <div className="flex items-end justify-between w-full">
 
               {/* Netflix Yazısı */}
@@ -104,7 +104,7 @@ const DashboardView = ({ setActiveTab }) => {
                 </p>
               </div>
 
-              {/*  Fiyat */}
+              {/* Fiyat */}
 
               <p className="text-3xl font-black text-fuchsia-400 tracking-tighter leading-none mr-5">
                 {formatCurrency(mostExpensive.price)}
@@ -131,12 +131,13 @@ const DashboardView = ({ setActiveTab }) => {
         {enhancedSubscriptions.slice(0, 4).map((sub) => (
           <BentoCard key={sub.id} glowColor={sub.glowColor} className="aspect-4/3 group relative overflow-hidden p-5 flex flex-col justify-between">
 
-            {/*  Logo ve Kategori */}
+            {/* Logo ve Kategori */}
             <div className="relative z-20 flex justify-between items-start">
               <div className="w-12 h-12 rounded-2xl bg-linear-to-br from-white/10 to-transparent border border-white/10 p-2.5 flex items-center justify-center shadow-2xl group-hover:scale-110 group-hover:border-white/20 transition-all duration-300 backdrop-blur-sm">
                 <img
                   src={sub.image}
                   alt={sub.name}
+                  onError={(e) => { e.target.src = "https://upload.wikimedia.org/wikipedia/commons/e/e4/Infobox_info_icon.svg" }}
                   className="w-full h-full object-contain filter drop-shadow-md opacity-90 group-hover:opacity-100 transition-opacity"
                 />
               </div>
@@ -152,10 +153,10 @@ const DashboardView = ({ setActiveTab }) => {
            
             </div>
 
-            {/*  Fiyat ve İlerleme  */}
+            {/* Fiyat ve İlerleme  */}
             <div className="relative z-20 space-y-2">
 
-              {/*  ödeme döngüsü çizgisi */}
+              {/* ödeme döngüsü çizgisi */}
               <div className="h-1 w-full bg-white/5 rounded-full overflow-hidden">
                 <div
                   className="h-full bg-linear-to-r from-transparent to-white/20 w-2/3 rounded-full"
@@ -180,7 +181,7 @@ const DashboardView = ({ setActiveTab }) => {
 
             {/* Arka Plan */}
             <div className="absolute -right-2 -top-2 w-36 h-36 opacity-10 group-hover:opacity-20 group-hover:scale-110 transition-all duration-700 pointer-events-none rotate-12">
-              <img src={sub.image} alt="" className="w-full h-full object-contain grayscale invert" />
+              <img src={sub.image} alt="" className="w-full h-full object-contain grayscale invert" onError={(e) => e.target.style.display = 'none'} />
             </div>
 
             {/* Işık Süzmesi  */}

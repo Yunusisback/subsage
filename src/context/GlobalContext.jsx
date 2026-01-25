@@ -1,10 +1,10 @@
-import { createContext, useContext, useState } from "react";
+import { createContext, useContext, useState, useEffect } from "react";
 
 const GlobalContext = createContext();
 
 export const useGlobal = () => useContext(GlobalContext);
 
-// Başlangıç Verileri
+
 const INITIAL_SUBSCRIPTIONS = [
   {
     id: 1,
@@ -58,8 +58,57 @@ const INITIAL_SUBSCRIPTIONS = [
   }
 ];
 
+ 
+const INITIAL_NOTIFICATIONS = [
+  {
+    id: 1,
+    type: "success",
+    title: "Ödeme Başarılı",
+    message: "Netflix abonelik ücretiniz (199.99₺) başarıyla ödendi. Faturanız e-posta adresinize gönderildi.",
+    time: "2 saat önce",
+    read: false,
+  },
+  {
+    id: 2,
+    type: "warning",
+    title: "Yaklaşan Ödeme Hatırlatması",
+    message: "Spotify ödemeniz 2 gün içinde gerçekleşecek. Lütfen bakiyenizi kontrol edin.",
+    time: "5 saat önce",
+    read: false,
+  },
+  {
+    id: 3,
+    type: "info",
+    title: "Yeni Özellik: Raporlar",
+    message: "Artık harcama raporlarınızı detaylı PDF olarak indirebilirsiniz.",
+    time: "1 gün önce",
+    read: true,
+  },
+  {
+    id: 4,
+    type: "alert",
+    title: "Sistem Bakımı",
+    message: "Bu gece 03:00 - 05:00 arası planlı bakım çalışması yapılacaktır. Kesintiler yaşanabilir.",
+    time: "2 gün önce",
+    read: true,
+  },
+];
+
 export const GlobalProvider = ({ children }) => {
-  const [subscriptions, setSubscriptions] = useState(INITIAL_SUBSCRIPTIONS);
+
+
+  const [subscriptions, setSubscriptions] = useState(() => {
+    const savedSubs = localStorage.getItem("subscriptions");
+    return savedSubs ? JSON.parse(savedSubs) : INITIAL_SUBSCRIPTIONS;
+  });
+
+  // Bildirim State 
+  const [notifications, setNotifications] = useState(INITIAL_NOTIFICATIONS);
+
+  // Abonelikler her değiştiğinde localStorag a kaydet
+  useEffect(() => {
+    localStorage.setItem("subscriptions", JSON.stringify(subscriptions));
+  }, [subscriptions]);
 
   // Toplam Gideri Hesapla
   const totalExpenses = subscriptions.reduce((total, sub) => {
@@ -74,12 +123,19 @@ export const GlobalProvider = ({ children }) => {
     setSubscriptions(subscriptions.filter(sub => sub.id !== id));
   };
 
+  // Tüm bildirimleri okundu olarak işaretle
+  const markAllNotificationsAsRead = () => {
+    setNotifications(prev => prev.map(n => ({ ...n, read: true })));
+  };
+
   return (
     <GlobalContext.Provider value={{ 
         subscriptions, 
         addSubscription, 
         removeSubscription,
-        totalExpenses 
+        totalExpenses,
+        notifications,
+        markAllNotificationsAsRead
     }}>
       {children}
     </GlobalContext.Provider>

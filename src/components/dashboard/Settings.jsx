@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { User, Globe, Bell, Shield, Moon, Sun, Monitor, Save, CreditCard, Mail, Lock, Smartphone } from "lucide-react";
+import { User, Globe, Bell, Shield, Save, CreditCard, Mail, Lock, Smartphone } from "lucide-react";
 import BentoCard from "../ui/BentoCard";
 import Button from "../ui/Button";
 import { cn } from "../../utils/helpers";
@@ -15,7 +15,7 @@ const Settings = () => {
     paymentAlert: true
   });
 
-  const [theme, setTheme] = useState("dark"); 
+
 
   const handleSave = () => {
     setLoading(true);
@@ -147,33 +147,7 @@ const Settings = () => {
                             <option value="eur">Euro (€)</option>
                         </select>
                     </div>
-                    
-                    <div className="pt-2">
-                        <label className="text-xs font-bold text-zinc-400 ml-1 mb-2 block">Tema</label>
-                        <div className="grid grid-cols-3 gap-2 bg-black/20 p-1 rounded-xl border border-white/5">
-                            <button 
-                                onClick={() => setTheme("light")}
-                                className={cn("flex flex-col items-center justify-center gap-1 py-2 rounded-lg text-xs font-medium transition-all cursor-pointer", theme === "light" ? "bg-white text-black shadow-lg" : "text-zinc-500 hover:text-white")}
-                            >
-                                <Sun size={16} />
-                                Açık
-                            </button>
-                            <button 
-                                onClick={() => setTheme("dark")}
-                                className={cn("flex flex-col items-center justify-center gap-1 py-2 rounded-lg text-xs font-medium transition-all cursor-pointer", theme === "dark" ? "bg-zinc-800 text-white shadow-lg" : "text-zinc-500 hover:text-white")}
-                            >
-                                <Moon size={16} />
-                                Koyu
-                            </button>
-                            <button 
-                                onClick={() => setTheme("system")}
-                                className={cn("flex flex-col items-center justify-center gap-1 py-2 rounded-lg text-xs font-medium transition-all cursor-pointer", theme === "system" ? "bg-zinc-800 text-white shadow-lg" : "text-zinc-500 hover:text-white")}
-                            >
-                                <Monitor size={16} />
-                                Sistem
-                            </button>
-                        </div>
-                    </div>
+                
                 </div>
             </BentoCard>
 

@@ -2,11 +2,15 @@ import { useState, useEffect, useRef } from "react";
 import { Bell, Plus } from "lucide-react";
 import Button from "../ui/Button";
 import { TABS } from "../../utils/constants";
+import { useGlobal } from "../../context/GlobalContext";
 
 const Header = ({ activeTab, setActiveTab, onOpenModal }) => {
+  const { notifications } = useGlobal(); 
   const [showNotifications, setShowNotifications] = useState(false);
   const notificationRef = useRef(null);
 
+  // Okunmamış bildirim sayısı
+  const unreadCount = notifications.filter(n => !n.read).length;
 
   useEffect(() => {
     function handleClickOutside(event) {
@@ -44,7 +48,9 @@ const Header = ({ activeTab, setActiveTab, onOpenModal }) => {
                 className="p-3 rounded-xl bg-white/5 hover:bg-white/10 text-zinc-400 hover:text-white transition-colors relative border border-white/5 cursor-pointer"
             >
                 <Bell size={20} />
-                <span className="absolute top-2.5 right-2.5 w-2 h-2 rounded-full bg-red-500 border border-dark-bg"></span>
+                {unreadCount > 0 && (
+                  <span className="absolute top-2.5 right-2.5 w-2 h-2 rounded-full bg-red-500 border border-dark-bg"></span>
+                )}
             </button>
 
             {/* Menü */}
@@ -52,33 +58,30 @@ const Header = ({ activeTab, setActiveTab, onOpenModal }) => {
                 <div className="absolute right-0 top-full mt-3 w-80 bg-[#121214] border border-white/10 rounded-2xl shadow-[0_0_50px_rgba(0,0,0,0.5)] z-50 overflow-hidden animate-in fade-in slide-in-from-top-2 duration-200">
                     <div className="p-4 border-b border-white/5 flex justify-between items-center bg-white/5">
                         <span className="text-sm font-bold text-white">Bildirimler</span>
-                        <span className="text-[10px] bg-yellow-500 text-black px-1.5 py-0.5 rounded font-bold">3 Yeni</span>
+                        {unreadCount > 0 ? (
+                           <span className="text-[10px] bg-yellow-500 text-black px-1.5 py-0.5 rounded font-bold">{unreadCount} Yeni</span>
+                        ) : (
+                           <span className="text-[10px] bg-white/10 text-zinc-400 px-1.5 py-0.5 rounded font-bold">Hepsi Okundu</span>
+                        )}
                     </div>
                     
-                    <div className="py-2">
+                    <div className="py-2 max-h-64 overflow-y-auto custom-scrollbar">
 
-                        {/* Örnek Bildirimler */}
-                        <button onClick={() => { setActiveTab(TABS.NOTIFICATIONS); setShowNotifications(false); }} className="w-full text-left px-4 py-3 hover:bg-white/5 transition-colors flex gap-3 group cursor-pointer">
-                            <div className="mt-1 w-2 h-2 rounded-full bg-green-500 shrink-0"></div>
-                            <div>
-                                <p className="text-xs font-bold text-zinc-200 group-hover:text-white">Ödeme Başarılı</p>
-                                <p className="text-[10px] text-zinc-500 mt-0.5 line-clamp-1">Netflix ödemeniz başarıyla alındı.</p>
-                            </div>
-                        </button>
-                         <button onClick={() => { setActiveTab(TABS.NOTIFICATIONS); setShowNotifications(false); }} className="w-full text-left px-4 py-3 hover:bg-white/5 transition-colors flex gap-3 group cursor-pointer">
-                            <div className="mt-1 w-2 h-2 rounded-full bg-yellow-500 shrink-0"></div>
-                            <div>
-                                <p className="text-xs font-bold text-zinc-200 group-hover:text-white">Yaklaşan Ödeme</p>
-                                <p className="text-[10px] text-zinc-500 mt-0.5 line-clamp-1">Spotify ödemesine 2 gün kaldı.</p>
-                            </div>
-                        </button>
-                         <button onClick={() => { setActiveTab(TABS.NOTIFICATIONS); setShowNotifications(false); }} className="w-full text-left px-4 py-3 hover:bg-white/5 transition-colors flex gap-3 group cursor-pointer">
-                            <div className="mt-1 w-2 h-2 rounded-full bg-blue-500 shrink-0"></div>
-                            <div>
-                                <p className="text-xs font-bold text-zinc-200 group-hover:text-white">Sistem</p>
-                                <p className="text-[10px] text-zinc-500 mt-0.5 line-clamp-1">Raporlar modülü güncellendi.</p>
-                            </div>
-                        </button>
+                        {/* Dinamik Bildirimler */}
+                        {notifications.slice(0, 3).map((note) => (
+                           <button 
+                              key={note.id}
+                              onClick={() => { setActiveTab(TABS.NOTIFICATIONS); setShowNotifications(false); }} 
+                              className="w-full text-left px-4 py-3 hover:bg-white/5 transition-colors flex gap-3 group cursor-pointer"
+                           >
+                              <div className={`mt-1 w-2 h-2 rounded-full shrink-0 ${!note.read ? 'bg-green-500' : 'bg-zinc-600'}`}></div>
+                              <div>
+                                  <p className={`text-xs font-bold group-hover:text-white ${!note.read ? 'text-zinc-200' : 'text-zinc-500'}`}>{note.title}</p>
+                                  <p className="text-[10px] text-zinc-500 mt-0.5 line-clamp-1">{note.message}</p>
+                              </div>
+                          </button>
+                        ))}
+                        
                     </div>
 
                     <div className="p-2 border-t border-white/5 bg-black/20">
