@@ -2,18 +2,24 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
 
 @theme {
-  --color-background: #18181b; 
-  --color-surface: #27272a;    
+ 
+  --color-background: #fafafa;  
+  --color-sidebar: #f4f4f5;     
+  --color-card-bg: #ffffff;     
+  --color-text-main: #18181b;  
+  --color-text-muted: #71717a;  
+  
   --font-sans: 'Inter', sans-serif;
 }
 
 body {
   background-color: var(--color-background);
-  color: #ffffff;
+  color: var(--color-text-main);
   font-family: var(--font-sans);
 
-  background-image: radial-gradient(rgba(255, 255, 255, 0.05) 1px, transparent 1px);
-  background-size: 24px 24px;
+
+  background-image: radial-gradient(#e4e4e7 1px, transparent 1px);
+  background-size: 32px 32px;
 }
 
 
@@ -31,12 +37,12 @@ body {
   width: 8px;
 }
 ::-webkit-scrollbar-track {
-  background: #18181b; 
+  background: transparent; 
 }
 ::-webkit-scrollbar-thumb {
-  background: #3f3f46; 
-  border-radius: 4px;
+  background: #d4d4d8; 
+  border-radius: 99px;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: #52525b; 
+  background: #a1a1aa; 
 }

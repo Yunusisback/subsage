@@ -18,7 +18,7 @@ function App() {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   return (
-    <div className="min-h-screen flex text-slate-50 font-sans bg-[#050505] overflow-hidden">
+    <div className="min-h-screen flex text-zinc-900 font-sans bg-background overflow-hidden">
       
       {/* sidebar  */}
       <Sidebar 

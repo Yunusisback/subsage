@@ -4,8 +4,7 @@ const GlobalContext = createContext();
 
 export const useGlobal = () => useContext(GlobalContext);
 
-
-const INITIAL_SUBSCRIPTIONS = [
+export const INITIAL_SUBSCRIPTIONS = [
   {
     id: 1,
     name: "Netflix",
@@ -55,11 +54,51 @@ const INITIAL_SUBSCRIPTIONS = [
     category: "Cloud",
     image: "https://upload.wikimedia.org/wikipedia/commons/1/1c/ICloud_logo.svg",
     color: "bg-blue-400"
+  },
+ 
+  {
+    id: 6,
+    name: "Disney+",
+    price: 134.99,
+    currency: "TRY",
+    startDate: "2024-02-20",
+    category: "Entertainment",
+    image: "https://upload.wikimedia.org/wikipedia/commons/3/3e/Disney%2B_logo.svg",
+    color: "bg-blue-900"
+  },
+  {
+    id: 7,
+    name: "Xbox Game Pass",
+    price: 159.00,
+    currency: "TRY",
+    startDate: "2024-03-10",
+    category: "Gaming",
+    image: "https://upload.wikimedia.org/wikipedia/commons/f/f3/Xbox_Game_Pass_logo.svg",
+    color: "bg-green-600"
+  },
+  {
+    id: 8,
+    name: "Exxen",
+    price: 160.90,
+    currency: "TRY",
+    startDate: "2024-01-15",
+    category: "Entertainment",
+    image: "https://upload.wikimedia.org/wikipedia/commons/c/c7/Exxen_logo.svg",
+    color: "bg-yellow-400"
+  },
+  {
+    id: 9,
+    name: "BluTV",
+    price: 99.90,
+    currency: "TRY",
+    startDate: "2024-04-01",
+    category: "Entertainment",
+    image: "https://upload.wikimedia.org/wikipedia/commons/1/16/BluTV_Logo.png",
+    color: "bg-sky-500"
   }
 ];
 
- 
-const INITIAL_NOTIFICATIONS = [
+export const INITIAL_NOTIFICATIONS = [
   {
     id: 1,
     type: "success",
@@ -92,6 +131,31 @@ const INITIAL_NOTIFICATIONS = [
     time: "2 gün önce",
     read: true,
   },
+ 
+  {
+    id: 5,
+    type: "alert",
+    title: "Ödeme Başarısız",
+    message: "YouTube Premium ödemesi kart limitiniz yetersiz olduğu için alınamadı. Lütfen kontrol ediniz.",
+    time: "3 gün önce",
+    read: true,
+  },
+  {
+    id: 6,
+    type: "info",
+    title: "Fiyat Güncellemesi",
+    message: "Disney+ abonelik ücretlerinde %15 artış yapıldı. Yeni fiyatlar önümüzdeki aydan itibaren geçerli olacak.",
+    time: "4 gün önce",
+    read: true,
+  },
+  {
+    id: 7,
+    type: "success",
+    title: "Tasarruf İpucu",
+    message: "Tebrikler! Geçen aya göre abonelik giderlerinizi %10 azalttınız.",
+    time: "1 hafta önce",
+    read: true,
+  }
 ];
 
 export const GlobalProvider = ({ children }) => {

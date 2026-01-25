@@ -15,8 +15,6 @@ const Settings = () => {
     paymentAlert: true
   });
 
-
-
   const handleSave = () => {
     setLoading(true);
    
@@ -29,12 +27,12 @@ const Settings = () => {
     <button 
         onClick={onClick}
         className={cn(
-            "w-11 h-6 rounded-full p-1 transition-colors duration-300 flex items-center cursor-pointer",
-            active ? "bg-yellow-500" : "bg-zinc-700"
+            "w-11 h-6 rounded-full p-1 transition-colors duration-300 flex items-center cursor-pointer border",
+            active ? "bg-yellow-400 border-yellow-400" : "bg-zinc-200 border-zinc-200"
         )}
     >
         <div className={cn(
-            "w-4 h-4 rounded-full bg-white shadow-md transition-transform duration-300",
+            "w-4 h-4 rounded-full bg-white shadow-sm transition-transform duration-300",
             active ? "translate-x-5" : "translate-x-0"
         )} />
     </button>
@@ -49,7 +47,7 @@ const Settings = () => {
             <Button 
                 variant="primary" 
                 onClick={handleSave} 
-                className="bg-yellow-500 hover:bg-yellow-400 text-black font-bold px-6"
+                className="bg-yellow-400 hover:bg-yellow-500 text-black font-bold px-6 shadow-sm"
                 disabled={loading}
             >
                 {loading ? (
@@ -69,25 +67,25 @@ const Settings = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             
             {/* profil ayarları */}
-            <BentoCard glowColor="zinc" className="md:col-span-2 p-8">
+            <BentoCard glowColor="zinc" className="md:col-span-2 p-8 items-start text-left">
                 <div className="flex items-center gap-3 mb-6">
-                    <div className="p-2.5 rounded-xl bg-blue-500/20 text-blue-400">
+                    <div className="p-2.5 rounded-xl bg-blue-50 text-blue-600 border border-blue-100">
                         <User size={24} />
                     </div>
-                    <h3 className="text-lg font-bold text-white">Profil Bilgileri</h3>
+                    <h3 className="text-lg font-bold text-zinc-900">Profil Bilgileri</h3>
                 </div>
 
-                <div className="flex flex-col md:flex-row gap-8 items-start">
+                <div className="flex flex-col md:flex-row gap-8 items-start w-full">
                     
                     {/* avatar değiştirme */}
                     <div className="flex flex-col items-center gap-3">
-                        <div className="w-24 h-24 rounded-full border-2 border-dashed border-zinc-700 p-1 cursor-pointer hover:border-yellow-500 transition-colors group relative overflow-hidden">
+                        <div className="w-24 h-24 rounded-full border-2 border-dashed border-zinc-300 p-1 cursor-pointer hover:border-yellow-500 transition-colors group relative overflow-hidden">
                             <img 
                                 src="https://thispersonnotexist.org/downloadimage/Ac3RhdGljL21hbi9zZWVkNTM1NTYuanBlZw==" 
                                 alt="Profil" 
                                 className="w-full h-full object-cover rounded-full" 
                             />
-                            <div className="absolute inset-0 bg-black/60 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+                            <div className="absolute inset-0 bg-black/40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity rounded-full">
                                 <span className="text-[10px] text-white font-bold uppercase">Değiştir</span>
                             </div>
                         </div>
@@ -97,42 +95,42 @@ const Settings = () => {
                     {/* form alanları */}
                     <div className="flex-1 w-full grid grid-cols-1 md:grid-cols-2 gap-4">
                         <div className="space-y-1.5">
-                            <label className="text-xs font-bold text-zinc-400 ml-1">Ad Soyad</label>
+                            <label className="text-xs font-bold text-zinc-500 ml-1">Ad Soyad</label>
                             <div className="relative">
-                                <User size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-zinc-500" />
-                                <input type="text" defaultValue="Burak Y." className="w-full bg-black/20 border border-white/10 rounded-xl py-2.5 pl-10 pr-4 text-sm text-white focus:border-yellow-500/50 focus:outline-none transition-colors" />
+                                <User size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-zinc-400" />
+                                <input type="text" defaultValue="Burak Y." className="w-full bg-white border border-zinc-200 rounded-xl py-2.5 pl-10 pr-4 text-sm text-zinc-900 focus:border-yellow-500 focus:outline-none transition-colors" />
                             </div>
                         </div>
                         
                         <div className="space-y-1.5">
-                            <label className="text-xs font-bold text-zinc-400 ml-1">E-posta</label>
+                            <label className="text-xs font-bold text-zinc-500 ml-1">E-posta</label>
                             <div className="relative">
-                                <Mail size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-zinc-500" />
-                                <input type="email" defaultValue="burak@example.com" className="w-full bg-black/20 border border-white/10 rounded-xl py-2.5 pl-10 pr-4 text-sm text-white focus:border-yellow-500/50 focus:outline-none transition-colors" />
+                                <Mail size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-zinc-400" />
+                                <input type="email" defaultValue="burak@example.com" className="w-full bg-white border border-zinc-200 rounded-xl py-2.5 pl-10 pr-4 text-sm text-zinc-900 focus:border-yellow-500 focus:outline-none transition-colors" />
                             </div>
                         </div>
 
                         <div className="space-y-1.5 md:col-span-2">
-                             <label className="text-xs font-bold text-zinc-400 ml-1">Biyografi</label>
-                             <textarea rows="3" className="w-full bg-black/20 border border-white/10 rounded-xl py-2.5 px-4 text-sm text-white focus:border-yellow-500/50 focus:outline-none transition-colors resize-none" placeholder="Kendinizden kısaca bahsedin..."></textarea>
+                             <label className="text-xs font-bold text-zinc-500 ml-1">Biyografi</label>
+                             <textarea rows="3" className="w-full bg-white border border-zinc-200 rounded-xl py-2.5 px-4 text-sm text-zinc-900 focus:border-yellow-500 focus:outline-none transition-colors resize-none" placeholder="Kendinizden kısaca bahsedin..."></textarea>
                         </div>
                     </div>
                 </div>
             </BentoCard>
 
             {/* genel tercihler */}
-            <BentoCard glowColor="zinc" className="p-8 flex flex-col h-full">
+            <BentoCard glowColor="zinc" className="p-8 flex flex-col h-full items-start text-left">
                 <div className="flex items-center gap-3 mb-6">
-                    <div className="p-2.5 rounded-xl bg-purple-500/20 text-purple-400">
+                    <div className="p-2.5 rounded-xl bg-purple-50 text-purple-600 border border-purple-100">
                         <Globe size={24} />
                     </div>
-                    <h3 className="text-lg font-bold text-white">Bölge ve Dil</h3>
+                    <h3 className="text-lg font-bold text-zinc-900">Bölge ve Dil</h3>
                 </div>
 
-                <div className="space-y-5">
+                <div className="space-y-5 w-full">
                     <div className="space-y-1.5">
-                        <label className="text-xs font-bold text-zinc-400 ml-1">Uygulama Dili</label>
-                        <select className="w-full bg-black/20 border border-white/10 rounded-xl py-2.5 px-4 text-sm text-white focus:border-purple-500/50 focus:outline-none transition-colors appearance-none cursor-pointer">
+                        <label className="text-xs font-bold text-zinc-500 ml-1">Uygulama Dili</label>
+                        <select className="w-full bg-white border border-zinc-200 rounded-xl py-2.5 px-4 text-sm text-zinc-900 focus:border-purple-500 focus:outline-none transition-colors appearance-none cursor-pointer">
                             <option value="tr">Türkçe</option>
                             <option value="en">English</option>
                             <option value="de">Deutsch</option>
@@ -140,54 +138,53 @@ const Settings = () => {
                     </div>
 
                     <div className="space-y-1.5">
-                        <label className="text-xs font-bold text-zinc-400 ml-1">Para Birimi</label>
-                        <select className="w-full bg-black/20 border border-white/10 rounded-xl py-2.5 px-4 text-sm text-white focus:border-purple-500/50 focus:outline-none transition-colors appearance-none cursor-pointer">
+                        <label className="text-xs font-bold text-zinc-500 ml-1">Para Birimi</label>
+                        <select className="w-full bg-white border border-zinc-200 rounded-xl py-2.5 px-4 text-sm text-zinc-900 focus:border-purple-500 focus:outline-none transition-colors appearance-none cursor-pointer">
                             <option value="try">Türk Lirası (₺)</option>
                             <option value="usd">Amerikan Doları ($)</option>
                             <option value="eur">Euro (€)</option>
                         </select>
                     </div>
-                
                 </div>
             </BentoCard>
 
             {/* bildirimler */}
-            <BentoCard glowColor="zinc" className="p-8 flex flex-col h-full">
+            <BentoCard glowColor="zinc" className="p-8 flex flex-col h-full items-start text-left">
                 <div className="flex items-center gap-3 mb-6">
-                    <div className="p-2.5 rounded-xl bg-orange-500/20 text-orange-400">
+                    <div className="p-2.5 rounded-xl bg-orange-50 text-orange-600 border border-orange-100">
                         <Bell size={24} />
                     </div>
-                    <h3 className="text-lg font-bold text-white">Bildirimler</h3>
+                    <h3 className="text-lg font-bold text-zinc-900">Bildirimler</h3>
                 </div>
 
-                <div className="space-y-4">
-                    <div className="flex items-center justify-between p-3 rounded-xl bg-white/5 border border-white/5">
+                <div className="space-y-4 w-full">
+                    <div className="flex items-center justify-between p-3 rounded-xl bg-zinc-50 border border-zinc-100">
                         <div className="flex items-center gap-3">
-                            <Mail size={18} className="text-zinc-400" />
+                            <Mail size={18} className="text-zinc-500" />
                             <div>
-                                <p className="text-sm font-bold text-white">E-posta Bildirimleri</p>
+                                <p className="text-sm font-bold text-zinc-900">E-posta Bildirimleri</p>
                                 <p className="text-[10px] text-zinc-500">Kampanyalar ve güncellemeler.</p>
                             </div>
                         </div>
                         <Toggle active={notifications.email} onClick={() => setNotifications(prev => ({...prev, email: !prev.email}))} />
                     </div>
 
-                    <div className="flex items-center justify-between p-3 rounded-xl bg-white/5 border border-white/5">
+                    <div className="flex items-center justify-between p-3 rounded-xl bg-zinc-50 border border-zinc-100">
                         <div className="flex items-center gap-3">
-                            <Smartphone size={18} className="text-zinc-400" />
+                            <Smartphone size={18} className="text-zinc-500" />
                             <div>
-                                <p className="text-sm font-bold text-white">Anlık Bildirimler</p>
+                                <p className="text-sm font-bold text-zinc-900">Anlık Bildirimler</p>
                                 <p className="text-[10px] text-zinc-500">Uygulama içi uyarılar.</p>
                             </div>
                         </div>
                         <Toggle active={notifications.push} onClick={() => setNotifications(prev => ({...prev, push: !prev.push}))} />
                     </div>
 
-                    <div className="flex items-center justify-between p-3 rounded-xl bg-white/5 border border-white/5">
+                    <div className="flex items-center justify-between p-3 rounded-xl bg-zinc-50 border border-zinc-100">
                         <div className="flex items-center gap-3">
-                            <CreditCard size={18} className="text-zinc-400" />
+                            <CreditCard size={18} className="text-zinc-500" />
                             <div>
-                                <p className="text-sm font-bold text-white">Ödeme Uyarıları</p>
+                                <p className="text-sm font-bold text-zinc-900">Ödeme Uyarıları</p>
                                 <p className="text-[10px] text-zinc-500">Yaklaşan ödemeler hatırlatılır.</p>
                             </div>
                         </div>
@@ -197,31 +194,31 @@ const Settings = () => {
             </BentoCard>
 
             {/* güvenlik */}
-            <BentoCard glowColor="zinc" className="md:col-span-2 p-8">
+            <BentoCard glowColor="zinc" className="md:col-span-2 p-8 items-start text-left">
                  <div className="flex items-center gap-3 mb-6">
-                    <div className="p-2.5 rounded-xl bg-green-500/20 text-green-400">
+                    <div className="p-2.5 rounded-xl bg-green-50 text-green-600 border border-green-100">
                         <Shield size={24} />
                     </div>
-                    <h3 className="text-lg font-bold text-white">Güvenlik</h3>
+                    <h3 className="text-lg font-bold text-zinc-900">Güvenlik</h3>
                 </div>
                 
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6 items-center">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6 items-center w-full">
                     <div>
-                        <h4 className="text-sm font-bold text-white mb-2">Şifre Değiştir</h4>
-                        <p className="text-xs text-zinc-400 mb-4">Hesabınızın güvenliği için güçlü bir şifre kullanın. Son değişiklik: 3 ay önce.</p>
+                        <h4 className="text-sm font-bold text-zinc-900 mb-2">Şifre Değiştir</h4>
+                        <p className="text-xs text-zinc-500 mb-4">Hesabınızın güvenliği için güçlü bir şifre kullanın. Son değişiklik: 3 ay önce.</p>
                         <Button variant="outline" size="sm" className="w-full md:w-auto cursor-pointer">
                             <Lock size={16} className="mr-2" />
                             Şifre Yenile
                         </Button>
                     </div>
 
-                    <div className="border-t md:border-t-0 md:border-l border-white/10 pt-6 md:pt-0 md:pl-6">
+                    <div className="border-t md:border-t-0 md:border-l border-zinc-200 pt-6 md:pt-0 md:pl-6">
                         <div className="flex items-center justify-between mb-2">
-                             <h4 className="text-sm font-bold text-white">İki Faktörlü Doğrulama (2FA)</h4>
-                             <span className="text-[10px] bg-green-500/20 text-green-400 px-2 py-0.5 rounded font-bold">AKTİF</span>
+                             <h4 className="text-sm font-bold text-zinc-900">İki Faktörlü Doğrulama (2FA)</h4>
+                             <span className="text-[10px] bg-green-50 text-green-600 px-2 py-0.5 rounded font-bold border border-green-100">AKTİF</span>
                         </div>
-                        <p className="text-xs text-zinc-400 mb-4">Giriş yaparken telefonunuza gönderilen kodu girmeniz gerekir.</p>
-                        <Button variant="danger" size="sm" className="w-full md:w-auto opacity-80 hover:opacity-100 cursor-pointer">
+                        <p className="text-xs text-zinc-500 mb-4">Giriş yaparken telefonunuza gönderilen kodu girmeniz gerekir.</p>
+                        <Button variant="danger" size="sm" className="w-full md:w-auto opacity-100 cursor-pointer">
                            Devre Dışı Bırak
                         </Button>
                     </div>
