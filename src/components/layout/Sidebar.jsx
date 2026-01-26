@@ -1,4 +1,4 @@
-import { LayoutGrid, CreditCard, BarChart2, Settings, MessageSquare, Bell, LogOut, ChevronLeft, ChevronRight } from "lucide-react";
+import { LayoutGrid, CreditCard, BarChart2, Settings, MessageSquare, Bell, LogOut, ChevronLeft, ChevronRight, Wallet } from "lucide-react";
 import { cn } from "../../utils/helpers";
 import { TABS } from "../../utils/constants";
 
@@ -7,6 +7,7 @@ const Sidebar = ({ isCollapsed, toggleSidebar, activeTab, setActiveTab }) => {
   const menuItems = [
     { id: TABS.DASHBOARD, icon: LayoutGrid, label: "Genel Bakış" },
     { id: TABS.SUBSCRIPTIONS, icon: CreditCard, label: "Abonelikler", badge: 5 },
+    { id: TABS.WALLET, icon: Wallet, label: "Cüzdanım" }, 
     { id: TABS.REPORTS, icon: BarChart2, label: "Raporlar" },
     { id: TABS.MESSAGES, icon: MessageSquare, label: "Mesajlar", badge: 3 },
     { id: TABS.NOTIFICATIONS, icon: Bell, label: "Bildirimler" },

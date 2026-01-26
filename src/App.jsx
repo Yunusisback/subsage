@@ -3,6 +3,7 @@ import Sidebar from "./components/layout/Sidebar";
 import Header from "./components/layout/Header"; 
 import DashboardView from "./components/dashboard/DashboardView"; 
 import SubscriptionList from "./components/dashboard/SubscriptionList"; 
+import WalletView from "./components/dashboard/WalletView"; 
 import SummaryChart from "./components/dashboard/SummaryChart"; 
 import Messages from "./components/dashboard/Messages"; 
 import Notifications from "./components/dashboard/Notifications"; 
@@ -49,6 +50,9 @@ function App() {
 
         {/* abonelikler */}
         {activeTab === TABS.SUBSCRIPTIONS && <SubscriptionList />}
+
+        {/* cüzdan (Yeni) */}
+        {activeTab === TABS.WALLET && <WalletView />}
         
         {/* raporlar */}
         {activeTab === TABS.REPORTS && <SummaryChart />}

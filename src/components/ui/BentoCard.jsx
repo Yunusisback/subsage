@@ -55,8 +55,8 @@ const BentoCard = ({ children, className, glowColor = "zinc", ...props }) => {
           "pointer-events-none absolute -top-48 -right-48",
           "w-125 h-125 rounded-full",
           "blur-[120px]",
-          "opacity-60 group-hover:opacity-90",
-          "transition-opacity duration-600 ease-in-out",
+          "opacity-80 group-hover:opacity-100",
+          "transition-opacity duration-400 ease-in-out",
           "bg-linear-to-bl",
           activeColor.glow
         )}

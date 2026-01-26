@@ -1,6 +1,5 @@
 import { useState, useEffect, useRef } from "react";
-import { Bell, Plus } from "lucide-react";
-import Button from "../ui/Button";
+import { Bell } from "lucide-react"; 
 import { TABS } from "../../utils/constants";
 import { useGlobal } from "../../context/GlobalContext";
 
@@ -74,7 +73,7 @@ const Header = ({ activeTab, setActiveTab, onOpenModal }) => {
                               onClick={() => { setActiveTab(TABS.NOTIFICATIONS); setShowNotifications(false); }} 
                               className="w-full text-left px-4 py-3 hover:bg-zinc-50 transition-colors flex gap-3 group cursor-pointer border-b border-zinc-50 last:border-0"
                            >
-                              <div className={`mt-1 w-2 h-2 rounded-full shrink-0 ${!note.read ? 'bg-green-500' : 'bg-zinc-300'}`}></div>
+                              <div className={`mt-1 w-2 h-2 rounded-full shrink-0 ${!note.read ? 'bg-green-50' : 'bg-zinc-300'}`}></div>
                               <div>
                                   <p className={`text-xs font-bold group-hover:text-black ${!note.read ? 'text-zinc-900' : 'text-zinc-500'}`}>{note.title}</p>
                                   <p className="text-[10px] text-zinc-500 mt-0.5 line-clamp-1">{note.message}</p>
@@ -110,19 +109,6 @@ const Header = ({ activeTab, setActiveTab, onOpenModal }) => {
     
             </div>
         </button>
-
-         {/* Yeni Ekle Butonu */}
-         {activeTab === TABS.SUBSCRIPTIONS && (
-             <Button 
-                variant="primary" 
-                size="sm"
-                className="ml-2"
-                onClick={onOpenModal} 
-             >
-                <Plus size={16} className="mr-1.5" />
-                Yeni
-             </Button>
-         )}
 
       </div>
     </header>
