@@ -3,30 +3,14 @@ import { cn } from "../../utils/helpers";
 
 const BentoCard = ({ children, className, glowColor = "zinc", ...props }) => {
   const colors = {
-    red: {
-      glow: "from-red-500/50 to-transparent",
-    },
-    green: {
-      glow: "from-green-500/50 to-transparent",
-    },
-    blue: {
-      glow: "from-blue-500/50 to-transparent",
-    },
-    orange: {
-      glow: "from-orange-500/50 to-transparent",
-    },
-    purple: {
-      glow: "from-purple-500/50 to-transparent",
-    },
-    zinc: {
-      glow: "from-zinc-500/40 to-transparent",
-    },
-    fuchsia: {
-      glow: "from-fuchsia-500/50 to-transparent",
-    },
-    yellow: {
-      glow: "from-yellow-500/50 to-transparent",
-    },
+    red: { glow: "from-red-500/40 to-transparent" },
+    green: { glow: "from-green-500/40 to-transparent" },
+    blue: { glow: "from-blue-500/40 to-transparent" },
+    orange: { glow: "from-orange-500/40 to-transparent" },
+    purple: { glow: "from-purple-500/40 to-transparent" },
+    zinc: { glow: "from-zinc-500/30 to-transparent" },
+    fuchsia: { glow: "from-fuchsia-500/40 to-transparent" },
+    yellow: { glow: "from-yellow-500/40 to-transparent" },
   };
 
   const activeColor = colors[glowColor] || colors.zinc;
@@ -35,36 +19,31 @@ const BentoCard = ({ children, className, glowColor = "zinc", ...props }) => {
     <motion.div
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
-      whileHover={{ y: -8, scale: 1.02, transition: { duration: 0.25 } }}
+      whileHover={{ y: -4, transition: { duration: 0.2 } }}
       className={cn(
         "relative overflow-hidden group",
-        "rounded-3xl",
-        "flex flex-col items-center justify-center text-center p-8",
-        "cursor-pointer",
-        "bg-white",
-        "shadow-md",
-        "group-hover:shadow-2xl",
+        "rounded-4xl", 
+        "flex flex-col",
+        "cursor-default",
+        "bg-white/70 backdrop-blur-xl border border-white/60", 
+        "shadow-[0_8px_30px_rgb(0,0,0,0.04)]",
+        "hover:shadow-[0_8px_30px_rgb(0,0,0,0.08)]",
         "transition-all duration-300",
         className
       )}
       {...props}
     >
-      {/* glow */}
+      {/* glow effect */}
       <div
         className={cn(
-          "pointer-events-none absolute -top-48 -right-48",
-          "w-125 h-125 rounded-full",
-          "blur-[120px]",
-          "opacity-80 group-hover:opacity-100",
-          "transition-opacity duration-400 ease-in-out",
-          "bg-linear-to-bl",
+          "absolute -top-20 -right-20 w-64 h-64 bg-linear-to-br rounded-full blur-[80px] opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none",
           activeColor.glow
         )}
       />
-
+      
       {/* İçerik */}
-      <div className="relative z-10 w-full">
-        {children}
+      <div className="relative z-10 w-full h-full flex flex-col">
+          {children}
       </div>
     </motion.div>
   );

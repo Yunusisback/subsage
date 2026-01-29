@@ -1,9 +1,21 @@
-import { useState } from "react";
-import { Plus, Search, X, Trash2, Tag, Calendar } from "lucide-react";
+import { useState, useMemo } from "react";
+import { Plus, Calendar, ArrowLeft, CheckCircle2, X, Loader2, Sparkles, Search,  Filter, Trash2, XCircle } from "lucide-react";
 import Button from "../ui/Button";
 import { useGlobal } from "../../context/GlobalContext";
+import { cn } from "../../utils/helpers";
+import { AnimatePresence, motion } from "framer-motion";
+import toast from "react-hot-toast";
 
-// platform listesi
+// Para birimi formatlayıcı 
+const formatMoneyClean = (amount) => {
+    return new Intl.NumberFormat('tr-TR', {
+        style: 'decimal',
+        minimumFractionDigits: 0,
+        maximumFractionDigits: 0
+    }).format(amount);
+};
+
+// Platform Listesi
 const PLATFORMS = [
     { id: "p1", name: "Netflix", category: "Eğlence", price: "199.99", color: "red", image: "https://upload.wikimedia.org/wikipedia/commons/0/08/Netflix_2015_logo.svg" },
     { id: "p2", name: "Spotify", category: "Müzik", price: "59.99", color: "green", image: "https://upload.wikimedia.org/wikipedia/commons/1/19/Spotify_logo_without_text.svg" },
@@ -11,214 +23,390 @@ const PLATFORMS = [
     { id: "p4", name: "Amazon Prime", category: "Alışveriş", price: "39.00", color: "blue", image: "https://upload.wikimedia.org/wikipedia/commons/d/de/Amazon_icon.png" },
     { id: "p5", name: "Disney+", category: "Eğlence", price: "134.99", color: "blue", image: "https://upload.wikimedia.org/wikipedia/commons/3/3e/Disney%2B_logo.svg" },
     { id: "p6", name: "Apple One", category: "Paket", price: "194.00", color: "zinc", image: "https://upload.wikimedia.org/wikipedia/commons/f/fa/Apple_logo_black.svg" },
-    { id: "p7", name: "iCloud+", category: "Bulut", price: "12.99", color: "blue", image: "https://upload.wikimedia.org/wikipedia/commons/1/1c/ICloud_logo.svg" },
+    { id: "p7", name: "iCloud+", category: "Bulut", price: "12.99", color: "sky", image: "https://upload.wikimedia.org/wikipedia/commons/1/1c/ICloud_logo.svg" },
     { id: "p8", name: "Exxen", category: "Eğlence", price: "160.90", color: "yellow", image: "https://upload.wikimedia.org/wikipedia/commons/c/c7/Exxen_logo.svg" },
-    { id: "p9", name: "BluTV", category: "Eğlence", price: "99.90", color: "blue", image: "https://upload.wikimedia.org/wikipedia/commons/1/16/BluTV_Logo.png" },
+    { id: "p9", name: "BluTV", category: "Eğlence", price: "99.90", color: "sky", image: "https://upload.wikimedia.org/wikipedia/commons/1/16/BluTV_Logo.png" },
     { id: "p10", name: "Xbox Game Pass", category: "Oyun", price: "159.00", color: "green", image: "https://upload.wikimedia.org/wikipedia/commons/f/f3/Xbox_Game_Pass_logo.svg" },
     { id: "p11", name: "PlayStation Plus", category: "Oyun", price: "200.00", color: "blue", image: "https://upload.wikimedia.org/wikipedia/commons/4/4e/Playstation_plus_logo.png" },
     { id: "p12", name: "Discord Nitro", category: "Sosyal", price: "104.99", color: "purple", image: "https://assets-global.website-files.com/6257adef93867e56f84d3092/636e0a6a49cf127bf92de1e2_icon_clyde_blurple_RGB.png" },
     { id: "p13", name: "Mubi", category: "Film", price: "129.00", color: "blue", image: "https://upload.wikimedia.org/wikipedia/commons/2/29/MUBI_logo.svg" },
     { id: "p14", name: "Tod TV", category: "Spor", price: "249.00", color: "purple", image: "https://upload.wikimedia.org/wikipedia/commons/2/20/Tod_logo.svg" },
     { id: "p15", name: "Gain", category: "Eğlence", price: "99.00", color: "red", image: "https://upload.wikimedia.org/wikipedia/commons/6/66/Gain_Logo.png" },
-    { id: "p16", name: "Adobe Creative Cloud", category: "Yazılım", price: "582.00", color: "red", image: "https://upload.wikimedia.org/wikipedia/commons/a/ac/Creative_Cloud.svg" },
+    { id: "p16", name: "Adobe CC", category: "Yazılım", price: "582.00", color: "red", image: "https://upload.wikimedia.org/wikipedia/commons/a/ac/Creative_Cloud.svg" },
     { id: "p17", name: "Canva Pro", category: "Tasarım", price: "149.00", color: "blue", image: "https://upload.wikimedia.org/wikipedia/commons/0/08/Canva_icon_2021.svg" },
     { id: "p18", name: "ChatGPT Plus", category: "Yapay Zeka", price: "650.00", color: "green", image: "https://upload.wikimedia.org/wikipedia/commons/0/04/ChatGPT_logo.svg" },
-    { id: "p19", name: "Duolingo Plus", category: "Eğitim", price: "89.99", color: "green", image: "https://upload.wikimedia.org/wikipedia/commons/a/a4/Duolingo_icon.svg" },
+    { id: "p19", name: "Duolingo", category: "Eğitim", price: "89.99", color: "green", image: "https://upload.wikimedia.org/wikipedia/commons/a/a4/Duolingo_icon.svg" },
     { id: "p20", name: "Tinder Gold", category: "Yaşam Tarzı", price: "250.00", color: "red", image: "https://upload.wikimedia.org/wikipedia/commons/e/e1/TinderIcon-2017.svg" },
 ];
 
 const SubscriptionList = () => {
-    const { subscriptions, addSubscription, removeSubscription } = useGlobal(); 
+
+   
+    const { subscriptions, addSubscription, cancelSubscription, removeSubscription } = useGlobal();
     const [isAddingMode, setIsAddingMode] = useState(false);
     const [searchQuery, setSearchQuery] = useState("");
+    const [loadingStates, setLoadingStates] = useState({});
 
-    // arama filtresi
-    const filteredPlatforms = PLATFORMS.filter(p => 
-        p.name.toLowerCase().includes(searchQuery.toLowerCase())
-    );
+    // liste Filtresi
+    const [viewFilter, setViewFilter] = useState("active");
 
-    // abonelik ekleme
+    // Görüntülenecek abonelikleri filtrele
+    const displayedSubscriptions = subscriptions.filter(sub => {
+        const matchesSearch = sub.name.toLowerCase().includes(searchQuery.toLowerCase());
+        const matchesStatus = viewFilter === "active"
+            ? sub.status === "active"
+            : sub.status === "canceled";
+
+        return matchesStatus && matchesSearch;
+    });
+
+    const activeSubscriptionsCount = subscriptions.filter(sub => sub.status === 'active').length;
+
+    // Arama Filtresi 
+    const filteredPlatforms = useMemo(() => {
+        return PLATFORMS.filter(p =>
+            p.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+            p.category.toLowerCase().includes(searchQuery.toLowerCase())
+        );
+    }, [searchQuery]);
+
     const handleAddPlatform = (platform) => {
-        
-        // mükerrer kayıt kontrolü
-        const isAlreadySubscribed = subscriptions.some(sub => sub.name === platform.name);
+
+        // Zaten aktifse ekleme
+        const isAlreadySubscribed = subscriptions.some(sub => sub.name === platform.name && sub.status === 'active');
         if (isAlreadySubscribed) return;
 
-        const month = Math.floor(Math.random() * 12) + 1;
-        const day = Math.floor(Math.random() * 28) + 1; 
-        const randomDate2025 = `2025-${String(month).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
+        setLoadingStates(prev => ({ ...prev, [platform.id]: "loading" }));
 
         const newSubscription = {
             ...platform,
             id: Date.now(),
-            startDate: randomDate2025
+            startDate: new Date().toISOString().split("T")[0],
+            status: 'active'
         };
 
-        if (addSubscription) {
-             addSubscription(newSubscription);
-        } else {
-             console.log("Eklenecek Veri:", newSubscription);
-        }
-        
-        setIsAddingMode(false);
+        // Simüle edilmiş API isteği
+        setTimeout(() => {
+            if (addSubscription) addSubscription(newSubscription);
+            setLoadingStates(prev => ({ ...prev, [platform.id]: "success" }));
+            toast.success(`${platform.name} başarıyla eklendi!`);
+            setTimeout(() => {
+                setLoadingStates(prev => ({ ...prev, [platform.id]: null }));
+            }, 1000);
+        }, 800);
     };
 
+    const handleCancel = (e, subId) => {
+        e.stopPropagation();
+        setLoadingStates(prev => ({ ...prev, [subId]: "canceling" }));
+
+        setTimeout(() => {
+            cancelSubscription(subId);
+            setLoadingStates(prev => ({ ...prev, [subId]: null }));
+            toast.success("Abonelik iptal edildi.");
+        }, 1000);
+    };
+
+    //  Kalıcı Silme Fonksiyonu
+    const handleDelete = (e, subId) => {
+        e.stopPropagation();
+        if (window.confirm("Bu kaydı geçmişten tamamen silmek istediğine emin misin?")) {
+            removeSubscription(subId);
+            toast.success("Kayıt silindi.");
+        }
+    }
+
     return (
-        <div className="animate-in fade-in zoom-in-95 duration-300 pb-10">
-            
-            {/* başlık ve kontroller */}
-            <div className="flex items-center mb-8">
-                <div></div>
+        <div className="pb-20">
 
-                <div className="flex gap-3">
-                     {isAddingMode && (
-                        <div className="relative">
-                            <input 
-                                type="text" 
-                                placeholder="Platform ara..." 
-                                value={searchQuery}
-                                onChange={(e) => setSearchQuery(e.target.value)}
-                                className="pl-10 pr-4 py-2.5 rounded-xl border border-zinc-200 bg-white text-sm focus:outline-none focus:border-yellow-400 w-64 transition-all shadow-sm"
-                            />
-                            <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-zinc-400" size={16} />
-                        </div>
-                     )}
+            {/*  header ve kontroller */}
+            <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-8">
+                <div>
+                    <h2 className="text-2xl font-bold text-slate-900 tracking-tight">
+                        {isAddingMode ? "Servis Seçimi" : "Aboneliklerim"}
+                    </h2>
+                    <p className="text-slate-500 text-sm mt-1">
+                        {isAddingMode
+                            ? "Listeden aboneliğinizi seçin veya arama yapın."
+                            : `${activeSubscriptionsCount} adet aktif aboneliğiniz bulunuyor.`}
+                    </p>
+                </div>
 
-                    <Button 
+                <div className="flex items-center gap-3">
+
+                    {/* Arama Kutusu */}
+                    <div className="relative group">
+                        <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 group-focus-within:text-blue-500 transition-colors" size={18} />
+                        <input
+                            type="text"
+                            placeholder={isAddingMode ? "Servis ara..." : "Abonelik ara..."}
+                            value={searchQuery}
+                            onChange={(e) => setSearchQuery(e.target.value)}
+                            className="pl-10 pr-4 py-2.5 bg-white border border-slate-200 rounded-xl text-sm focus:outline-hidden focus:ring-2 focus:ring-blue-100 focus:border-blue-300 w-full md:w-64 transition-all"
+                        />
+                    </div>
+
+                    {/* Ekle -İptal Butonu */}
+                    <Button
                         onClick={() => {
                             setIsAddingMode(!isAddingMode);
-                            setSearchQuery("");
+                            setSearchQuery(""); 
                         }}
                         className={cn(
-                            "flex items-center gap-2 px-5 py-2.5 rounded-xl font-bold transition-all cursor-pointer border",
-                            isAddingMode 
-                            // geri dön stili
-                            ? "bg-white text-zinc-600 hover:bg-zinc-50 hover:text-zinc-900 border-zinc-200 shadow-sm" 
-                            
-                            // ekleme stili
-                            : "bg-yellow-400 text-yellow-950 hover:bg-yellow-500 shadow-md border-transparent hover:shadow-lg hover:shadow-yellow-200"
+                            "flex items-center gap-2 px-5 py-2.5 rounded-xl font-semibold transition-all cursor-pointer border shadow-sm shrink-0",
+                            isAddingMode
+                                ? "bg-white text-slate-700 hover:bg-slate-50 border-slate-200"
+                                : "bg-blue-600 text-white hover:bg-blue-700 border-transparent shadow-blue-200 hover:shadow-blue-300 shadow-md"
                         )}
                     >
-                        {isAddingMode ? <ArrowLeft size={18} /> : <Plus size={20} />}
-                        {isAddingMode ? "Geri Dön" : "Yeni Abonelik Ekle"}
+                        {isAddingMode ? <ArrowLeft size={18} /> : <Plus size={18} />}
+                        {isAddingMode ? "Listeye Dön" : "Yeni Ekle"}
                     </Button>
                 </div>
             </div>
 
+            {/*  tab menü */}
+            {!isAddingMode && (
+                <div className="flex gap-2 mb-6 border-b border-slate-200 pb-1">
+                    <button
+                        onClick={() => setViewFilter("active")}
+                        className={cn(
+                            "px-4 py-2 text-sm font-bold rounded-t-lg transition-all relative top-1",
+                            viewFilter === "active"
+                                ? "text-blue-600 border-b-2 border-blue-600 bg-blue-50/50"
+                                : "text-slate-500 hover:text-slate-700 hover:bg-slate-50"
+                        )}
+                    >
+                        Aktif Servisler
+                    </button>
+                    <button
+                        onClick={() => setViewFilter("canceled")}
+                        className={cn(
+                            "px-4 py-2 text-sm font-bold rounded-t-lg transition-all relative top-1",
+                            viewFilter === "canceled"
+                                ? "text-slate-800 border-b-2 border-slate-800 bg-slate-100"
+                                : "text-slate-500 hover:text-slate-700 hover:bg-slate-50"
+                        )}
+                    >
+                        İptal Edilenler
+                    </button>
+                </div>
+            )}
+
             {/* içerik */}
-            {isAddingMode ? (
+            <AnimatePresence mode="wait">
 
-                // seçim listesi
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 xl:grid-cols-5 gap-4">
-                    {filteredPlatforms.map((platform) => {
+                {isAddingMode ? (
+                  
+                    <motion.div
+                        key="add-mode"
+                        initial={{ opacity: 0, y: 10 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        exit={{ opacity: 0, y: -10 }}
+                        transition={{ duration: 0.3 }}
+                        className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4"
+                    >
+                        {filteredPlatforms.map((platform) => {
+                            const isSubscribed = subscriptions.some(sub => sub.name === platform.name && sub.status === 'active');
+                            const status = loadingStates[platform.id];
 
-                        // abonelik kontrolü
-                        const isSubscribed = subscriptions.some(sub => sub.name === platform.name);
-
-                        return (
-                            <div 
-                                key={platform.id}
-                                className={cn(
-                                    "group relative bg-white border border-zinc-200 rounded-3xl p-4 flex flex-col items-center text-center transition-all duration-300",
-                                    isSubscribed 
-                                        ? "opacity-75 cursor-default bg-zinc-50" 
-                                        : "hover:border-yellow-400 hover:shadow-lg hover:-translate-y-1 cursor-pointer"
-                                )}
-                                onClick={() => handleAddPlatform(platform)}
-                            >
-                                <div className="w-16 h-16 mb-4 rounded-2xl bg-zinc-50 p-3 flex items-center justify-center border border-zinc-100 group-hover:scale-110 transition-transform">
-                                    <img src={platform.image} alt={platform.name} className="w-full h-full object-contain" onError={(e) => e.target.style.display='none'} />
-                                </div>
-                                
-                                <h3 className="font-bold text-zinc-900 mb-1">{platform.name}</h3>
-                                <span className="text-xs font-medium text-zinc-400 uppercase tracking-wide mb-3">{platform.category}</span>
-                                
-                                <div className="mt-auto pt-3 border-t border-zinc-100 w-full flex flex-col items-center justify-center gap-1">
-                                    <div className="flex items-center gap-1">
-                                        <span className={cn("text-sm font-bold", isSubscribed ? "text-zinc-500" : "text-zinc-900")}>{platform.price}</span>
-                                        <span className="text-[13px] font-bold text-zinc-400">₺/ay</span>
+                            return (
+                                <div
+                                    key={platform.id}
+                                    className={cn(
+                                        "group relative bg-white border rounded-3xl p-5 flex flex-col items-center text-center transition-all duration-300",
+                                        isSubscribed && status !== "success"
+                                            ? "opacity-50 grayscale border-slate-100 bg-slate-50 cursor-default"
+                                            : "border-slate-200 hover:border-blue-300 hover:shadow-[0_8px_30px_-6px_rgba(0,0,0,0.1)] hover:-translate-y-1 cursor-pointer"
+                                    )}
+                                    onClick={() => !isSubscribed && handleAddPlatform(platform)}
+                                >
+                                    {/* Platform Logo */}
+                                    <div className="w-14 h-14 mb-4 rounded-xl bg-white border border-slate-100 p-2.5 flex items-center justify-center shadow-sm group-hover:scale-105 transition-transform duration-300">
+                                        <img src={platform.image} alt={platform.name} className="w-full h-full object-contain" />
                                     </div>
-                                    
-                                    {/* abone olundu etiketi */}
-                                    {isSubscribed && (
-                                        <div className="flex items-center gap-1 mt-1 text-green-600 bg-green-50 px-2 py-0.5 rounded-full border border-green-200">
-                                            <CheckCircle2 size={20} />
-                                            <span className="text-[13px] font-bold">Abone Olundu</span>
+
+                                    <h3 className="font-bold text-slate-900 text-sm mb-1">{platform.name}</h3>
+                                    <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider bg-slate-50 px-2 py-0.5 rounded border border-slate-100 mb-3">
+                                        {platform.category}
+                                    </span>
+
+                                    <div className="mt-auto w-full pt-3 border-t border-slate-50 flex flex-col items-center justify-center gap-1">
+                                        <div className="flex items-baseline gap-1">
+                                            <span className="text-lg font-black text-slate-800 tracking-tight">{formatMoneyClean(platform.price)}</span>
+                                            <span className="text-[10px] font-bold text-slate-400">₺/ay</span>
+                                        </div>
+
+                                        {/* State göstergesi */}
+                                        <div className="h-6 flex items-center justify-center">
+                                            {status === "loading" ? (
+                                                <Loader2 size={16} className="animate-spin text-blue-500" />
+                                            ) : status === "success" ? (
+                                                <div className="flex items-center gap-1 text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded-full border border-emerald-100 animate-in zoom-in">
+                                                    <CheckCircle2 size={12} /> <span className="text-[10px] font-bold">Eklendi</span>
+                                                </div>
+                                            ) : isSubscribed ? (
+                                                <span className="text-[10px] font-bold text-slate-400 flex items-center gap-1">
+                                                    <CheckCircle2 size={12} /> Mevcut
+                                                </span>
+                                            ) : (
+                                                <span className="text-[10px] font-bold text-blue-600 opacity-0 group-hover:opacity-100 transition-opacity">
+                                                    Seçmek için tıkla
+                                                </span>
+                                            )}
+                                        </div>
+                                    </div>
+
+                                   {/* seçili değilken hover ikonu */}
+                                    {!isSubscribed && (
+                                        <div className="absolute top-3 right-3 w-6 h-6 rounded-full bg-blue-50 text-blue-600 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all scale-75 group-hover:scale-100">
+                                            <Plus size={14} strokeWidth={3} />
                                         </div>
                                     )}
                                 </div>
+                            );
+                        })}
 
-                                {!isSubscribed && (
-                                    <div className="absolute top-3 right-3 opacity-0 group-hover:opacity-100 transition-opacity">
-                                        <div className="w-6 h-6 rounded-full bg-yellow-400 flex items-center justify-center text-yellow-900 shadow-sm">
-                                            <Plus size={14} strokeWidth={3} />
+                        {filteredPlatforms.length === 0 && (
+                            <div className="col-span-full py-20 text-center">
+                                <Filter className="mx-auto h-12 w-12 text-slate-200 mb-2" />
+                                <p className="text-slate-500">Aradığınız kriterlere uygun servis bulunamadı.</p>
+                            </div>
+                        )}
+                    </motion.div>
+                ) : (
+                    
+                    <motion.div
+                        key="list-mode"
+                        initial={{ opacity: 0, x: -10 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        exit={{ opacity: 0, x: 10 }}
+                        transition={{ duration: 0.3 }}
+                        className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5"
+                    >
+                        {displayedSubscriptions.map((sub) => {
+                            const isCanceling = loadingStates[sub.id] === "canceling";
+                            const isInactive = sub.status === 'canceled';
+
+                            // Dinamik renk border ı
+                            const hoverBorderColor =
+                                sub.color === 'red' ? 'group-hover:border-rose-200' :
+                                    sub.color === 'green' ? 'group-hover:border-emerald-200' :
+                                        sub.color === 'blue' ? 'group-hover:border-blue-200' :
+                                            sub.color === 'purple' ? 'group-hover:border-violet-200' :
+                                                'group-hover:border-slate-300';
+
+                            return (
+                                <div
+                                    key={sub.id}
+                                    className={cn(
+                                        "group relative bg-white p-6 rounded-[28px] border border-slate-200 shadow-[0_2px_10px_-4px_rgba(0,0,0,0.02)] transition-all duration-300 hover:shadow-xl hover:-translate-y-1 cursor-default overflow-hidden",
+                                        isInactive ? "opacity-75 grayscale hover:grayscale-0" : hoverBorderColor
+                                    )}
+                                >
+                                    {/* Logo ve Buton */}
+                                    <div className="flex justify-between items-start mb-6 relative z-10">
+                                        <div className={cn(
+                                            "w-14 h-14 rounded-2xl border p-2.5 flex items-center justify-center shadow-sm",
+                                            isInactive ? "bg-slate-50 border-slate-100" : "bg-white border-slate-100"
+                                        )}>
+                                            <img src={sub.image} alt={sub.name} className="w-full h-full object-contain" />
+                                        </div>
+
+                                        {isInactive ? (
+                                            // Silme Butonu
+                                            <button
+                                                className="w-8 h-8 flex items-center justify-center rounded-full transition-all border bg-slate-50 border-slate-200 text-slate-400 hover:bg-red-50 hover:text-red-600 hover:border-red-100"
+                                                onClick={(e) => handleDelete(e, sub.id)}
+                                                title="Geçmişten Sil"
+                                            >
+                                                <Trash2 size={16} />
+                                            </button>
+                                        ) : (
+                                            // İptal Butonu 
+                                            <button
+                                                className={cn(
+                                                    "w-8 h-8 flex items-center justify-center rounded-full transition-all border",
+                                                    "bg-white border-slate-200 text-slate-400",
+                                                    "hover:bg-red-50 hover:text-red-600 hover:border-red-100",
+                                                    isCanceling && "opacity-70 cursor-not-allowed"
+                                                )}
+                                                onClick={(e) => !isCanceling && handleCancel(e, sub.id)}
+                                                disabled={isCanceling}
+                                                title="Aboneliği İptal Et"
+                                            >
+                                                {isCanceling ? <Loader2 size={14} className="animate-spin" /> : <X size={16} />}
+                                            </button>
+                                        )}
+                                    </div>
+
+                                    {/* İçerik */}
+                                    <div className="relative z-10">
+                                        <div className="flex items-center gap-2 mb-1">
+                                            <h3 className={cn("text-lg font-bold tracking-tight", isInactive ? "text-slate-600 line-through decoration-slate-300 decoration-2" : "text-slate-900")}>
+                                                {sub.name}
+                                            </h3>
+                                            <span className={cn(
+                                                "text-[9px] font-bold px-1.5 py-0.5 rounded uppercase tracking-wider border",
+                                                isInactive ? "bg-slate-100 text-slate-500 border-slate-200" : "bg-slate-50 text-slate-500 border-slate-100"
+                                            )}>
+                                                {sub.category}
+                                            </span>
+                                        </div>
+
+                                        <div className="flex items-center gap-2 text-xs text-slate-400 font-medium mb-5">
+                                            <Calendar size={12} />
+                                            <span>
+                                                {isInactive ? `İptal: ${sub.canceledDate || 'Bilinmiyor'}` : `Başlangıç: ${sub.startDate}`}
+                                            </span>
+                                        </div>
+
+                                        <div className="pt-4 border-t border-slate-100 flex items-center justify-between">
+                                            <div className="flex items-center gap-1.5 text-xs font-semibold text-slate-400">
+                                                {isInactive ? (
+                                                    <span className="flex items-center gap-1 text-slate-400"><XCircle size={14} /> Pasif</span>
+                                                ) : (
+                                                    <span className="flex items-center gap-1 text-emerald-600"><CheckCircle2 size={14} /> Aktif</span>
+                                                )}
+                                            </div>
+                                            <div className="flex items-baseline gap-0.5">
+                                                <span className={cn("text-2xl font-black tracking-tighter tabular-nums", isInactive ? "text-slate-400" : "text-slate-900")}>
+                                                    {formatMoneyClean(sub.price)}
+                                                </span>
+                                                <span className="text-sm font-bold text-slate-400">₺</span>
+                                            </div>
                                         </div>
                                     </div>
+                                </div>
+                            );
+                        })}
+
+                        {/* empty state */}
+                        {displayedSubscriptions.length === 0 && (
+                            <div className="col-span-full py-24 text-center border-2 border-dashed border-slate-200 rounded-[2.5rem] bg-slate-50/50">
+                                <Sparkles className="mx-auto h-12 w-12 text-slate-300 mb-4 animate-pulse" />
+                                <h3 className="text-slate-900 font-bold text-lg">
+                                    {viewFilter === 'active' ? 'Aktif abonelik bulunamadı' : 'Geçmiş abonelik bulunamadı'}
+                                </h3>
+                                <p className="text-slate-500 text-sm mb-6 max-w-xs mx-auto">
+                                    {viewFilter === 'active'
+                                        ? "Giderlerinizi takip etmeye başlamak için ilk aboneliğinizi ekleyin."
+                                        : "İptal ettiğiniz abonelikler burada listelenir."}
+                                </p>
+                                {viewFilter === 'active' && (
+                                    <Button
+                                        className="bg-slate-900 text-white hover:bg-black px-6 py-3 rounded-xl shadow-lg shadow-slate-200"
+                                        onClick={() => setIsAddingMode(true)}
+                                    >
+                                        <Plus size={18} className="mr-2" />
+                                        Hemen Ekle
+                                    </Button>
                                 )}
                             </div>
-                        );
-                    })}
-                </div>
-            ) : (
-                // mevcut abonelikler
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-                    {subscriptions.map((sub) => (
-                        <div 
-                            key={sub.id} 
-                            className="group relative bg-white p-6 rounded-[2rem] border border-zinc-100 shadow-sm hover:shadow-md transition-all duration-300 hover:-translate-y-1 cursor-pointer"
-                        >
-                            {/* kart başlığı */}
-                            <div className="flex justify-between items-start mb-6">
-                                <div className="w-14 h-14 rounded-2xl bg-white border border-zinc-100 p-2.5 flex items-center justify-center shadow-sm">
-                                    <img src={sub.image} alt={sub.name} className="w-full h-full object-contain" />
-                                </div>
-                                <button 
-                                    className="p-2 rounded-xl bg-red-50 text-red-400 opacity-0 group-hover:opacity-100 hover:bg-red-100 hover:text-red-600 transition-all cursor-pointer"
-                                    title="Aboneliği Sil"
-                                    onClick={(e) => {
-                                        e.stopPropagation();
-                                        if(removeSubscription) removeSubscription(sub.id);
-                                    }}
-                                >
-                                    <Trash2 size={18} />
-                                </button>
-                            </div>
-
-                            {/* kart detayları */}
-                            <div className="mb-6">
-                                <h3 className="text-lg font-bold text-zinc-900 mb-2">{sub.name}</h3>
-                                <div className="flex flex-col gap-1.5">
-                                    <div className="flex items-center gap-2 text-xs text-zinc-500 font-medium">
-                                        <Tag size={12} className="text-zinc-400" />
-                                        {sub.category}
-                                    </div>
-                                    <div className="flex items-center gap-2 text-xs text-zinc-500 font-medium">
-                                        <Calendar size={12} className="text-zinc-400" />
-                                        {sub.startDate}
-                                    </div>
-                                </div>
-                            </div>
-
-                            {/* fiyat bilgisi */}
-                            <div className="pt-4 border-t border-zinc-50 flex items-center justify-between">
-                                <span className="text-sm font-medium text-zinc-500">Aylık Ödeme</span>
-                                <div className="flex items-baseline gap-1">
-                                    <span className="text-xl font-black text-zinc-900">{sub.price}</span>
-                                    <span className="text-sm font-bold text-zinc-400">₺</span>
-                                </div>
-                            </div>
-                        </div>
-                    ))}
-                    
-                    {/* boş liste durumu */}
-                    {subscriptions.length === 0 && (
-                        <div className="col-span-full py-20 text-center border-2 border-dashed border-zinc-200 rounded-3xl bg-zinc-50/50">
-                            <p className="text-zinc-400 font-medium">Henüz hiç aboneliğiniz yok.</p>
-                            <Button variant="outline" className="mt-4" onClick={() => setIsAddingMode(true)}>İlk Aboneliğini Ekle</Button>
-                        </div>
-                    )}
-                </div>
-            )}
+                        )}
+                    </motion.div>
+                )}
+            </AnimatePresence>
         </div>
     );
 };

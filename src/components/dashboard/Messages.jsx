@@ -1,200 +1,156 @@
 import { useState, useEffect, useRef } from "react";
-import { Phone, Video, MoreVertical, Send, Paperclip, CheckCheck, ShieldCheck, Headset, Clock } from "lucide-react";
+import { Phone, Video, MoreVertical, Send, Paperclip, CheckCheck, ShieldCheck, Headset } from "lucide-react";
 import Button from "../ui/Button";
 import { cn } from "../../utils/helpers";
 import { motion } from "framer-motion";
-
-const INITIAL_CONTACTS = [
-  { 
-    id: 1, 
-    name: "Teknik Destek", 
-    role: "7/24 Canlı Yardım",
-    avatar: "https://ui-avatars.com/api/?name=TD&background=2563eb&color=fff&bold=true", 
-    lastMsg: "Talebiniz alınmıştır, inceliyoruz.", 
-    time: "Şimdi", 
-    unread: 1, 
-    status: "online" 
-  },
-];
-
-const INITIAL_MESSAGES = {
-  1: [
-    { id: 1, sender: "them", text: "Merhaba Burak Bey, SubSage Destek Ekibi'ne hoş geldiniz. 👋", time: "09:00" },
-    { id: 2, sender: "them", text: "Abonelikleriniz veya sistemle ilgili yaşadığınız herhangi bir sorunda size yardımcı olmak için buradayız.", time: "09:00" },
-  ]
-};
+import { useGlobal } from "../../context/GlobalContext";
 
 const Messages = () => {
-  const [activeContactId, setActiveContactId] = useState(1);
-  const [messages, setMessages] = useState(INITIAL_MESSAGES);
+  const { messages, sendMessage } = useGlobal(); 
   const [inputText, setInputText] = useState("");
   const messagesEndRef = useRef(null);
 
-  const activeContact = INITIAL_CONTACTS.find(c => c.id === activeContactId);
+  // Sadece teknik destek ıd 1 aktif
+  const activeContactId = 1;
   const activeMessages = messages[activeContactId] || [];
 
-  const scrollToBottom = () => {
-    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+  const contactInfo = {
+    name: "Teknik Destek",
+    role: "7/24 Canlı Yardım",
+    status: "online"
   };
 
+  // Mesaj gelince aşağı kaydır
   useEffect(() => {
-    scrollToBottom();
-  }, [activeMessages, activeContactId]);
+    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+  }, [activeMessages]);
 
-  const handleSendMessage = (e) => {
+  const handleSend = (e) => {
     e.preventDefault();
     if (!inputText.trim()) return;
 
-    const newMessage = {
-      id: Date.now(),
-      sender: "me",
-      text: inputText,
-      time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
-    };
-
-    setMessages(prev => ({
-      ...prev,
-      [activeContactId]: [...(prev[activeContactId] || []), newMessage]
-    }));
+    // 1. Bizim mesajımız
+    
+    sendMessage(activeContactId, inputText, "me");
     setInputText("");
-
-    // otomatik cevap simülasyonu
+    
+    // 2.  oto cevap simülasyonu
     setTimeout(() => {
-        const reply = {
-            id: Date.now() + 1,
-            sender: "them",
-            text: "Mesajınız yetkili birime iletildi. En kısa sürede dönüş yapacağız. 🛠️",
-            time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
-        };
-        setMessages(prev => ({
-            ...prev,
-            [activeContactId]: [...(prev[activeContactId] || []), reply]
-        }));
+        const replies = [
+            "Talebiniz alınmıştır, ekiplerimiz kontrol ediyor.",
+            "Şu an sistemde yoğunluk var, lütfen bekleyiniz.",
+            "Bu konu hakkında kayıt oluşturuldu.",
+            "Size nasıl daha fazla yardımcı olabilirim?"
+        ];
+        const randomReply = replies[Math.floor(Math.random() * replies.length)];
+        sendMessage(activeContactId, randomReply, "them");
     }, 1500);
   };
 
   return (
-    <div className="flex flex-col gap-6 h-[calc(100vh-140px)] animate-in fade-in slide-in-from-bottom-4 duration-500">
+    <div className="h-[calc(100vh-140px)] animate-in fade-in slide-in-from-bottom-4 duration-500 pb-4">
       
-      {/* Çalışma Saatleri */}
-      <div className="flex items-center justify-between p-4 rounded-3xl bg-yellow-50 border border-yellow-100 shadow-sm">
-          <div className="flex items-center gap-4">
-               <div className="p-2.5 rounded-full bg-yellow-100 border border-yellow-200 text-yellow-600">
-                  <Headset size={20} />
-               </div>
-               <div>
-                  <h4 className="text-sm font-bold text-zinc-900 flex items-center gap-2">
-                      Destek Ekibi Çalışma Saatleri
-                      <span className="flex h-2 w-2 relative">
-                        <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
-                        <span className="relative inline-flex rounded-full h-2 w-2 bg-green-500"></span>
-                      </span>
-                  </h4>
-                  <p className="text-xs text-zinc-500 font-medium mt-0.5">
-                      Müşteri temsilcilerimiz hafta içi <span className="text-yellow-600 font-bold">09:00 - 18:00</span> saatleri arasında hizmet vermektedir.
-                  </p>
-               </div>
-          </div>
-          <div className="hidden sm:flex items-center gap-2 px-3 py-1.5 rounded-full bg-yellow-100 border border-yellow-200 text-xs font-bold text-yellow-700">
-              <Clock size={14} />
-              <span>Canlı Destek Aktif</span>
-          </div>
-      </div>
-
-      {/* Sohbet Alanı  */}
-      <div className="flex-1 p-0 flex flex-col overflow-hidden relative border border-zinc-200 bg-white rounded-3xl shadow-md">
+      {/* Tek Sohbet Ekranı */}
+      <div className="h-full flex flex-col bg-white rounded-4xl border border-zinc-200 shadow-sm overflow-hidden relative">
             
-            {/* sohbet başlığı */}
-            <div className="p-5 border-b border-zinc-200 flex items-center justify-between bg-white/80 backdrop-blur-md z-20">
+            {/* Sohbet Başlığı */}
+            <div className="p-4 md:p-6 border-b border-zinc-100 flex justify-between items-center bg-white/80 backdrop-blur-md z-10 sticky top-0">
                 <div className="flex items-center gap-4">
-
-                    {/* Profil İkonu */}
-                    <div className="w-11 h-11 rounded-full bg-blue-50 flex items-center justify-center border border-blue-100">
                     
-                         <Headset size={22} className="text-blue-600" />
+                    {/* profil logo */}
+                    <div className="w-12 h-12 bg-white border border-zinc-100 rounded-xl flex items-center justify-center shadow-sm shrink-0">
+                        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#eab308" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                            <path d="M12 2L2 7l10 5 10-5-10-5z" />
+                            <path d="M2 12l10 5 10-5" />
+                            <path d="M2 17l10 5 10-5" />
+                        </svg>
                     </div>
+
                     <div>
-                        <h3 className="text-base font-bold text-zinc-900 flex items-center gap-2">
-                            {activeContact?.name}
-                            <span className="px-2 py-0.5 rounded-md text-[10px] bg-blue-50 border border-blue-100 text-blue-600 font-bold tracking-wide uppercase">Resmi Hesap</span>
-                        </h3>
-                        <div className="flex items-center gap-2 mt-0.5">
-                            <span className="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse"></span>
-                            <span className="text-xs text-zinc-500 font-medium">
-                                Ortalama yanıt: <span className="text-zinc-700">~2 Dakika</span>
-                            </span>
+                        <h3 className="font-bold text-zinc-900 text-lg">{contactInfo.name}</h3>
+                        <div className="flex items-center gap-1.5">
+                            <span className="w-2.5 h-2.5 rounded-full bg-green-500 animate-pulse border-2 border-white shadow-sm"></span>
+                            <span className="text-xs text-zinc-500 font-medium">{contactInfo.role}</span>
                         </div>
                     </div>
                 </div>
-                
-                <div className="flex items-center gap-2">
-                    
-                    {/*  Telefon İkonu */}
-                    <button className="p-2.5 rounded-xl hover:bg-red-50 text-zinc-400 hover:text-red-500 transition-all border border-transparent hover:border-red-100 cursor-pointer" title="Sesli Arama">
-                        <Phone size={18} />
-                    </button>
 
-                    {/* Video İkonu */}
-                    <button className="p-2.5 rounded-xl hover:bg-blue-50 text-zinc-400 hover:text-blue-500 transition-all border border-transparent hover:border-blue-100 cursor-pointer" title="Görüntülü Destek">
-                        <Video size={18} />
-                    </button>
-                    <button className="p-2.5 rounded-xl hover:bg-zinc-100 text-zinc-400 hover:text-zinc-900 transition-all border border-transparent hover:border-zinc-200 cursor-pointer">
-                        <MoreVertical size={18} />
-                    </button>
+                <div className="flex gap-2">
+                    <Button variant="ghost" size="icon" className="hidden sm:flex rounded-full hover:bg-zinc-100 text-zinc-400 cursor-pointer">
+                        <Phone size={20} />
+                    </Button>
+                    <Button variant="ghost" size="icon" className="hidden sm:flex rounded-full hover:bg-zinc-100 text-zinc-400 cursor-pointer">
+                        <Video size={20} />
+                    </Button>
+                    <Button variant="ghost" size="icon" className="rounded-full hover:bg-zinc-100 text-zinc-400 cursor-pointer">
+                        <MoreVertical size={20} />
+                    </Button>
                 </div>
             </div>
 
-            {/* mesajlaşma alanı */}
-            <div className="flex-1 overflow-y-auto p-6 space-y-6 custom-scrollbar bg-zinc-50/50">
+            {/* Mesaj Alanı */}
+            <div className="flex-1 overflow-y-auto p-6 space-y-6 bg-zinc-50/50 custom-scrollbar">
                 
-                {/* şifreleme uyarısı */}
-                <div className="flex justify-center mb-8">
-                    <span className="text-[10px] font-medium text-zinc-500 bg-zinc-100 px-4 py-1.5 rounded-full border border-zinc-200 shadow-sm flex items-center gap-1.5">
-                        <ShieldCheck size={12} className="text-yellow-500" /> 
+                {/* Güvenlik Uyarısı */}
+                <div className="flex justify-center my-4">
+                    <div className="bg-yellow-50 text-yellow-700 px-4 py-2 rounded-full text-[10px] font-bold border border-yellow-100 flex items-center gap-2 shadow-sm">
+                        <ShieldCheck size={12} />
                         Bu sohbet uçtan uca şifrelenmektedir.
-                    </span>
+                    </div>
                 </div>
 
-                {activeMessages.map((msg) => (
-                    <motion.div 
-                        initial={{ opacity: 0, y: 10, scale: 0.98 }}
-                        animate={{ opacity: 1, y: 0, scale: 1 }}
-                        key={msg.id} 
-                        className={cn("flex w-full", msg.sender === "me" ? "justify-end" : "justify-start")}
-                    >
-                        <div className={cn(
-                            "max-w-[75%] px-5 py-3.5 text-sm relative shadow-sm",
-                            msg.sender === "me" 
-                                ? "bg-blue-600 text-white rounded-2xl rounded-tr-sm shadow-blue-200" 
-                                : "bg-white text-zinc-800 rounded-2xl rounded-tl-sm border border-zinc-200 shadow-zinc-200"
-                        )}>
-                            <p className="leading-relaxed tracking-wide">{msg.text}</p>
+                {activeMessages.length === 0 && (
+                    <div className="flex flex-col items-center justify-center h-40 text-zinc-400">
+                         <div className="p-4 bg-zinc-100 rounded-full mb-2">
+                            <Headset size={32} className="opacity-50" />
+                         </div>
+                         <p className="text-sm font-medium">Nasıl yardımcı olabiliriz?</p>
+                    </div>
+                )}
+
+                {activeMessages.map((msg) => {
+                    const isMe = msg.sender === "me";
+                    return (
+                        <motion.div 
+                            key={msg.id}
+                            initial={{ opacity: 0, y: 10, scale: 0.95 }}
+                            animate={{ opacity: 1, y: 0, scale: 1 }}
+                            className={cn("flex w-full", isMe ? "justify-end" : "justify-start")}
+                        >
                             <div className={cn(
-                                "text-[10px] mt-1.5 flex items-center justify-end gap-1 font-medium",
-                                msg.sender === "me" ? "text-blue-100/80" : "text-zinc-400"
+                                "max-w-[85%] md:max-w-[70%] p-4 rounded-2xl relative shadow-sm group transition-all hover:shadow-md",
+                                isMe 
+                                    ? "bg-blue-600 text-white rounded-tr-sm" 
+                                    : "bg-white text-zinc-700 border border-zinc-100 rounded-tl-sm"
                             )}>
-                                {msg.time}
-                                {msg.sender === "me" && <CheckCheck size={14} className="text-blue-200" />}
+                                <p className="text-sm leading-relaxed">{msg.text}</p>
+                                <div className={cn(
+                                    "flex items-center gap-1 justify-end mt-1 text-[10px] font-medium opacity-70",
+                                    isMe ? "text-blue-100" : "text-zinc-400"
+                                )}>
+                                    <span>{msg.time}</span>
+                                    {isMe && <CheckCheck size={12} />}
+                                </div>
                             </div>
-                        </div>
-                    </motion.div>
-                ))}
+                        </motion.div>
+                    );
+                })}
                 <div ref={messagesEndRef} />
             </div>
 
-            {/* mesaj yazma alanı */}
-            <div className="p-5 bg-white border-t border-zinc-200 z-20">
-                <form onSubmit={handleSendMessage} className="flex items-center gap-3">
-                    <button type="button" className="p-3.5 rounded-xl bg-zinc-50 hover:bg-zinc-100 text-zinc-400 hover:text-zinc-900 transition-colors border border-zinc-200 group cursor-pointer">
-                        <Paperclip size={20} className="group-hover:rotate-45 transition-transform duration-300" />
-                    </button>
+            {/* İnput Alanı */}
+            <div className="p-4 md:p-5 bg-white border-t border-zinc-100">
+                <form onSubmit={handleSend} className="flex items-center gap-3">
+                    <Button type="button" variant="ghost" size="icon" className="text-zinc-400 hover:text-zinc-600 hover:bg-zinc-100 rounded-xl shrink-0 cursor-pointer">
+                        <Paperclip size={20} />
+                    </Button>
                     
                     <div className="flex-1 relative">
                         <input 
                             type="text" 
                             value={inputText}
                             onChange={(e) => setInputText(e.target.value)}
-                            placeholder="Sorununuzu buraya yazın..." 
+                            placeholder="Mesajınızı buraya yazın..." 
                             className="w-full bg-zinc-50 text-sm text-zinc-900 rounded-xl pl-5 pr-12 py-3.5 border border-zinc-200 focus:border-blue-500 focus:bg-white focus:outline-none transition-all placeholder:text-zinc-400"
                         />
                         <div className="absolute right-2 top-1/2 -translate-y-1/2 p-1.5 rounded-lg bg-zinc-100 text-xs text-zinc-400 border border-zinc-200 hidden sm:block pointer-events-none">
@@ -218,7 +174,6 @@ const Messages = () => {
             </div>
 
       </div>
-
     </div>
   );
 };

@@ -1,26 +1,54 @@
-import { useState } from "react";
-import { User, Globe, Bell, Shield, Save, CreditCard, Mail, Lock, Smartphone } from "lucide-react";
+import { useState, useEffect } from "react";
+import { User, Globe, Bell, Shield, Save, CreditCard, Mail, Lock, Smartphone, Wallet } from "lucide-react";
 import BentoCard from "../ui/BentoCard";
 import Button from "../ui/Button";
 import { cn } from "../../utils/helpers";
+import { useGlobal } from "../../context/GlobalContext";
+import toast from "react-hot-toast";
 
 const Settings = () => {
+  const { userSettings, updateUserSettings } = useGlobal();
   const [loading, setLoading] = useState(false);
   
-  // örnek stateler
-  const [notifications, setNotifications] = useState({
-    email: true,
-    push: true,
-    weeklyReport: false,
-    paymentAlert: true
-  });
+  // Form verilerini Contextten gelen verilerle başlatıyoruz
+  const [formData, setFormData] = useState(userSettings);
+
+  useEffect(() => {
+    setFormData(prev => ({
+        ...userSettings,
+
+        // Eğer budgetLimit yoksa varsayılan 5000 ekle
+        budgetLimit: userSettings.budgetLimit || 5000 
+    }));
+  }, [userSettings]);
+
+  // input değişimlerini yakala
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData(prev => ({ ...prev, [name]: value }));
+  };
+
+  // Bildirim toggle değişimlerini yakala
+  const handleToggle = (key) => {
+      setFormData(prev => ({
+          ...prev,
+          notificationPreferences: {
+              ...prev.notificationPreferences,
+              [key]: !prev.notificationPreferences[key]
+          }
+      }));
+  };
 
   const handleSave = () => {
     setLoading(true);
    
     setTimeout(() => {
+
+        // Global Context i güncelle
+        updateUserSettings(formData);
         setLoading(false);
-    }, 1500);
+        toast.success("Ayarlar başarıyla kaydedildi!");
+    }, 1000);
   };
 
   const Toggle = ({ active, onClick }) => (
@@ -81,7 +109,7 @@ const Settings = () => {
                     <div className="flex flex-col items-center gap-3">
                         <div className="w-24 h-24 rounded-full border-2 border-dashed border-zinc-300 p-1 cursor-pointer hover:border-yellow-500 transition-colors group relative overflow-hidden">
                             <img 
-                                src="https://thispersonnotexist.org/downloadimage/Ac3RhdGljL21hbi9zZWVkNTM1NTYuanBlZw==" 
+                                src={formData.avatar} 
                                 alt="Profil" 
                                 className="w-full h-full object-cover rounded-full" 
                             />
@@ -98,7 +126,13 @@ const Settings = () => {
                             <label className="text-xs font-bold text-zinc-500 ml-1">Ad Soyad</label>
                             <div className="relative">
                                 <User size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-zinc-400" />
-                                <input type="text" defaultValue="Burak Y." className="w-full bg-white border border-zinc-200 rounded-xl py-2.5 pl-10 pr-4 text-sm text-zinc-900 focus:border-yellow-500 focus:outline-none transition-colors" />
+                                <input 
+                                    type="text" 
+                                    name="name"
+                                    value={formData.name}
+                                    onChange={handleChange}
+                                    className="w-full bg-white border border-zinc-200 rounded-xl py-2.5 pl-10 pr-4 text-sm text-zinc-900 focus:border-yellow-500 focus:outline-none transition-colors" 
+                                />
                             </div>
                         </div>
                         
@@ -106,13 +140,14 @@ const Settings = () => {
                             <label className="text-xs font-bold text-zinc-500 ml-1">E-posta</label>
                             <div className="relative">
                                 <Mail size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-zinc-400" />
-                                <input type="email" defaultValue="burak@example.com" className="w-full bg-white border border-zinc-200 rounded-xl py-2.5 pl-10 pr-4 text-sm text-zinc-900 focus:border-yellow-500 focus:outline-none transition-colors" />
+                                <input 
+                                    type="email" 
+                                    name="email"
+                                    value={formData.email}
+                                    onChange={handleChange}
+                                    className="w-full bg-white border border-zinc-200 rounded-xl py-2.5 pl-10 pr-4 text-sm text-zinc-900 focus:border-yellow-500 focus:outline-none transition-colors" 
+                                />
                             </div>
-                        </div>
-
-                        <div className="space-y-1.5 md:col-span-2">
-                             <label className="text-xs font-bold text-zinc-500 ml-1">Biyografi</label>
-                             <textarea rows="3" className="w-full bg-white border border-zinc-200 rounded-xl py-2.5 px-4 text-sm text-zinc-900 focus:border-yellow-500 focus:outline-none transition-colors resize-none" placeholder="Kendinizden kısaca bahsedin..."></textarea>
                         </div>
                     </div>
                 </div>
@@ -124,26 +159,56 @@ const Settings = () => {
                     <div className="p-2.5 rounded-xl bg-purple-50 text-purple-600 border border-purple-100">
                         <Globe size={24} />
                     </div>
-                    <h3 className="text-lg font-bold text-zinc-900">Bölge ve Dil</h3>
+                    <h3 className="text-lg font-bold text-zinc-900">Bölge ve Bütçe</h3>
                 </div>
 
                 <div className="space-y-5 w-full">
-                    <div className="space-y-1.5">
-                        <label className="text-xs font-bold text-zinc-500 ml-1">Uygulama Dili</label>
-                        <select className="w-full bg-white border border-zinc-200 rounded-xl py-2.5 px-4 text-sm text-zinc-900 focus:border-purple-500 focus:outline-none transition-colors appearance-none cursor-pointer">
-                            <option value="tr">Türkçe</option>
-                            <option value="en">English</option>
-                            <option value="de">Deutsch</option>
-                        </select>
+                    <div className="grid grid-cols-2 gap-4">
+                        <div className="space-y-1.5">
+                            <label className="text-xs font-bold text-zinc-500 ml-1">Uygulama Dili</label>
+                            <select 
+                                name="language"
+                                value={formData.language}
+                                onChange={handleChange}
+                                className="w-full bg-white border border-zinc-200 rounded-xl py-2.5 px-4 text-sm text-zinc-900 focus:border-purple-500 focus:outline-none transition-colors appearance-none cursor-pointer"
+                            >
+                                <option value="tr">Türkçe</option>
+                                <option value="en">English</option>
+                                <option value="de">Deutsch</option>
+                            </select>
+                        </div>
+
+                        <div className="space-y-1.5">
+                            <label className="text-xs font-bold text-zinc-500 ml-1">Para Birimi</label>
+                            <select 
+                                name="currency"
+                                value={formData.currency}
+                                onChange={handleChange}
+                                className="w-full bg-white border border-zinc-200 rounded-xl py-2.5 px-4 text-sm text-zinc-900 focus:border-purple-500 focus:outline-none transition-colors appearance-none cursor-pointer"
+                            >
+                                <option value="TRY">TRY (₺)</option>
+                                <option value="USD">USD ($)</option>
+                                <option value="EUR">EUR (€)</option>
+                            </select>
+                        </div>
                     </div>
 
+                    {/* Bütçe Limiti */}
                     <div className="space-y-1.5">
-                        <label className="text-xs font-bold text-zinc-500 ml-1">Para Birimi</label>
-                        <select className="w-full bg-white border border-zinc-200 rounded-xl py-2.5 px-4 text-sm text-zinc-900 focus:border-purple-500 focus:outline-none transition-colors appearance-none cursor-pointer">
-                            <option value="try">Türk Lirası (₺)</option>
-                            <option value="usd">Amerikan Doları ($)</option>
-                            <option value="eur">Euro (€)</option>
-                        </select>
+                        <label className="text-xs font-bold text-zinc-500 ml-1">Aylık Bütçe Hedefi</label>
+                        <div className="relative">
+                            <Wallet size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-zinc-400" />
+                            <input 
+                                type="number" 
+                                name="budgetLimit"
+                                value={formData.budgetLimit || 5000}
+                                onChange={handleChange}
+                                placeholder="5000"
+                                className="w-full bg-white border border-zinc-200 rounded-xl py-2.5 pl-10 pr-4 text-sm text-zinc-900 focus:border-purple-500 focus:outline-none transition-colors" 
+                            />
+                            <span className="absolute right-4 top-1/2 -translate-y-1/2 text-xs font-bold text-zinc-400">₺</span>
+                        </div>
+                        <p className="text-[10px] text-zinc-400 ml-1">Raporlar sayfasındaki harcama limiti grafiği için kullanılır.</p>
                     </div>
                 </div>
             </BentoCard>
@@ -166,7 +231,10 @@ const Settings = () => {
                                 <p className="text-[10px] text-zinc-500">Kampanyalar ve güncellemeler.</p>
                             </div>
                         </div>
-                        <Toggle active={notifications.email} onClick={() => setNotifications(prev => ({...prev, email: !prev.email}))} />
+                        <Toggle 
+                            active={formData.notificationPreferences.email} 
+                            onClick={() => handleToggle('email')} 
+                        />
                     </div>
 
                     <div className="flex items-center justify-between p-3 rounded-xl bg-zinc-50 border border-zinc-100">
@@ -177,7 +245,10 @@ const Settings = () => {
                                 <p className="text-[10px] text-zinc-500">Uygulama içi uyarılar.</p>
                             </div>
                         </div>
-                        <Toggle active={notifications.push} onClick={() => setNotifications(prev => ({...prev, push: !prev.push}))} />
+                        <Toggle 
+                            active={formData.notificationPreferences.push} 
+                            onClick={() => handleToggle('push')} 
+                        />
                     </div>
 
                     <div className="flex items-center justify-between p-3 rounded-xl bg-zinc-50 border border-zinc-100">
@@ -188,7 +259,10 @@ const Settings = () => {
                                 <p className="text-[10px] text-zinc-500">Yaklaşan ödemeler hatırlatılır.</p>
                             </div>
                         </div>
-                        <Toggle active={notifications.paymentAlert} onClick={() => setNotifications(prev => ({...prev, paymentAlert: !prev.paymentAlert}))} />
+                        <Toggle 
+                            active={formData.notificationPreferences.paymentAlert} 
+                            onClick={() => handleToggle('paymentAlert')} 
+                        />
                     </div>
                 </div>
             </BentoCard>

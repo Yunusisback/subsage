@@ -1,177 +1,226 @@
-import { CreditCard, Wallet, MoreHorizontal, Copy, Wifi, CheckCircle2, Plus } from "lucide-react";
+import { useState } from "react";
+import { 
+    Plus, Wifi, 
+    Lock, FileText, Shield, Settings, 
+    ChevronDown, ChevronUp, Download, Search
+} from "lucide-react";
 import BentoCard from "../ui/BentoCard";
 import Button from "../ui/Button";
 import { formatCurrency, cn } from "../../utils/helpers";
 import { useGlobal } from "../../context/GlobalContext";
-
-// abonelik verileri
-const MOCK_TRANSACTIONS = [
-  { id: 1, name: "Netflix", date: "Bugün, 14:30", amount: -199.99, type: "subscription", icon: "https://upload.wikimedia.org/wikipedia/commons/0/08/Netflix_2015_logo.svg" },
-  { id: 2, name: "Spotify", date: "24 Ocak 2025", amount: -59.99, type: "subscription", icon: "https://upload.wikimedia.org/wikipedia/commons/1/19/Spotify_logo_without_text.svg" },
-  { id: 3, name: "Amazon Prime", date: "22 Ocak 2025", amount: -39.00, type: "subscription", icon: "https://upload.wikimedia.org/wikipedia/commons/d/de/Amazon_icon.png" },
-  { id: 4, name: "YouTube Premium", date: "15 Ocak 2025", amount: -57.99, type: "subscription", icon: "https://upload.wikimedia.org/wikipedia/commons/0/09/YouTube_full-color_icon_%282017%29.svg" },
-  { id: 5, name: "iCloud+", date: "05 Ocak 2025", amount: -12.99, type: "subscription", icon: "https://upload.wikimedia.org/wikipedia/commons/1/1c/ICloud_logo.svg" },
-];
+import { motion, AnimatePresence } from "framer-motion";
 
 const WalletView = () => {
-  const { totalExpenses } = useGlobal();
+  
+  const { transactions, userSettings } = useGlobal(); 
+  const [isExpanded, setIsExpanded] = useState(false);
+
+  // Kartın altındaki hızlı butonlar
+  const QUICK_ACTIONS = [
+      { icon: Lock, label: "Kartı Dondur", color: "text-red-500", bg: "bg-red-50 hover:bg-red-100" },
+      { icon: FileText, label: "Hesap Özeti", color: "text-blue-500", bg: "bg-blue-50 hover:bg-blue-100" },
+      { icon: Shield, label: "Limit Ayarları", color: "text-green-500", bg: "bg-green-50 hover:bg-green-100" },
+      { icon: Settings, label: "Kart Ayarları", color: "text-zinc-500", bg: "bg-zinc-100 hover:bg-zinc-200" },
+  ];
+
+  // Gösterilecek işlem sayısı
+  const visibleTransactions = isExpanded ? transactions : transactions.slice(0, 5);
 
   return (
     <div className="animate-in fade-in zoom-in-95 duration-300 pb-10">
       
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
         
-        {/* sol bölüm kart ve bakiye */}
+        {/* Kart ve İşlemler */}
         <div className="lg:col-span-1 space-y-6">
             
-            {/* başlık ve kart ekle butonu */}
+            {/* Başlık ve Ekle Butonu */}
             <div className="flex items-center justify-between">
                 <h2 className="text-xl font-bold text-zinc-900">Kartlarım</h2>
-                <Button size="sm" className="flex items-center gap-1 pl-2 pr-3 rounded-full font-bold bg-zinc-900 hover:bg-zinc-800 text-white shadow-sm hover:shadow-md border-transparent">
+                <Button size="sm" className="flex items-center gap-1 pl-2 pr-3 rounded-full font-bold bg-zinc-900 hover:bg-zinc-800 text-white shadow-sm hover:shadow-md border-transparent cursor-pointer">
                     <Plus size={16} strokeWidth={3} />
                     Kart Ekle
                 </Button>
             </div>
 
-            {/* kredi kartı tasarımı */}
-            <div className="relative w-full aspect-[1.586/1] rounded-3xl overflow-hidden shadow-2xl group perspective-1000 bg-gradient-to-br from-[#4f46e5] via-[#7c3aed] to-[#db2777]">
-                
-                {/* arka plan efektleri */}
-                <div className="absolute top-[-30%] left-[-20%] w-72 h-72 bg-[#a78bfa] rounded-full blur-[80px] opacity-60"></div>
-                <div className="absolute bottom-[-30%] right-[-20%] w-72 h-72 bg-[#60a5fa] rounded-full blur-[80px] opacity-60"></div>
+            {/*  kredi kartı */}
+            <div className="relative w-full aspect-[1.586/1] rounded-3xl overflow-hidden shadow-2xl group perspective-1000 transition-transform duration-500 hover:scale-[1.02]">
+                <div className="absolute inset-0 bg-linear-to-br from-slate-900 via-purple-900 to-slate-900">
+                    <div className="absolute inset-0 opacity-30 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] mix-blend-overlay"></div>
+                    <div className="absolute top-[-50%] left-[-50%] w-[200%] h-[200%] bg-linear-to-b from-white/10 via-transparent to-transparent transform rotate-45 pointer-events-none"></div>
+                </div>
 
-                {/* kart katmanı */}
-                <div className="absolute inset-0 bg-white/10 backdrop-blur-xl border border-white/20 p-7 flex flex-col justify-between text-white shadow-inner">
-                    
-                    {/* üst kısım çip ve logo */}
+                <div className="relative h-full w-full p-6 flex flex-col justify-between text-white/90 z-10">
                     <div className="flex justify-between items-start">
-                        {/* çip */}
-                        <div className="w-11 h-8 rounded-md bg-white/20 border border-white/30 flex items-center justify-center relative overflow-hidden backdrop-blur-md">
-                             <div className="w-full h-[1px] bg-white/40 absolute top-1/3"></div>
-                             <div className="w-full h-[1px] bg-white/40 absolute bottom-1/3"></div>
-                             <div className="h-full w-[1px] bg-white/40 absolute left-1/3"></div>
-                             <div className="h-full w-[1px] bg-white/40 absolute right-1/3"></div>
+                        <div className="flex flex-col gap-4">
+                            <h3 className="font-bold text-lg tracking-[0.2em] drop-shadow-md text-white">VAULT</h3>
+                            <div className="flex items-center gap-4 pl-1">
+                                <svg className="w-11 h-8 rounded-md drop-shadow-sm" viewBox="0 0 48 36" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <rect width="48" height="36" rx="6" fill="#D4AF37" />
+                                    <path d="M48 18H0" stroke="#B39024" strokeWidth="1" />
+                                    <path d="M16 0V36" stroke="#B39024" strokeWidth="1" />
+                                    <path d="M32 0V36" stroke="#B39024" strokeWidth="1" />
+                                    <rect x="6" y="6" width="36" height="24" rx="4" stroke="#B39024" strokeWidth="1" />
+                                    <rect x="10" y="10" width="28" height="16" rx="2" stroke="#B39024" strokeWidth="1" />
+                                </svg>
+                                <Wifi size={22} className="rotate-90 text-white/80 drop-shadow-md" strokeWidth={2} />
+                            </div>
                         </div>
-
-                        {/* visa logosu */}
-                        <span className="italic font-black text-2xl tracking-tighter text-white opacity-90 drop-shadow-md leading-none">VISA</span>
                     </div>
-
-                    {/* kart numarası */}
-                    <div className="mt-4 mb-2">
-                        <div className="font-mono text-xl sm:text-2xl tracking-[0.15em] text-white drop-shadow-sm flex justify-between">
+                    <div className="mt-2 flex justify-center">
+                        <div className="font-mono text-2xl sm:text-[26px] tracking-[0.15em] text-white drop-shadow-[0_2px_2px_rgba(0,0,0,0.3)] flex gap-4 font-medium">
                             <span>4556</span>
                             <span>3325</span>
                             <span>8590</span>
                             <span>3732</span>
                         </div>
                     </div>
+                    <div className="flex justify-between items-end mb-1">
+                        <div className="flex gap-10">
+                            <div className="flex flex-col">
+                                <span className="text-[8px] uppercase text-white/70 mb-0.5 tracking-wider">VALID THRU</span>
+                                <span className="text-sm font-bold text-white drop-shadow-sm font-mono tracking-wide">09/28</span>
+                            </div>
+                            <div className="flex flex-col">
+                                 <span className="text-[8px] uppercase text-white/70 mb-0.5 tracking-wider">CARD HOLDER</span>
 
-                    {/* alt bilgiler */}
-                    <div className="flex justify-between items-end text-xs font-medium tracking-wider uppercase text-white/90">
-                         {/* kart sahibi */}
-                         <div className="flex flex-col gap-1">
-                             <span className="text-[9px] opacity-70">Kart Sahibi</span>
-                             <span className="text-sm font-bold text-white drop-shadow-sm tracking-wide">BURAK YILMAZ</span>
-                         </div>
-
-                         {/* tarih */}
-                         <div className="flex flex-col items-end gap-1">
-                             <span className="text-[9px] opacity-70">SKT</span>
-                             <span className="text-sm font-bold text-white drop-shadow-sm font-mono">09/28</span>
-                         </div>
+                               
+                                 <span className="text-sm font-bold text-white drop-shadow-sm tracking-wide uppercase">
+                                    {userSettings.name}
+                                 </span>
+                            </div>
+                        </div>
+                        <div className="w-14">
+                            <img src="https://upload.wikimedia.org/wikipedia/commons/5/5e/Visa_Inc._logo.svg" alt="Visa" className="w-full h-auto brightness-0 invert drop-shadow-md opacity-90" />
+                        </div>
                     </div>
                 </div>
             </div>
 
-            {/* toplam bakiye kartı */}
-            <BentoCard glowColor="blue" className="p-6 relative overflow-hidden bg-gradient-to-br from-blue-50/50 to-white border-blue-100">
-                <div className="flex flex-col items-center text-center mb-4">
-                     <h4 className="text-xs font-bold text-zinc-400 uppercase tracking-[0.15em] mb-2">TOPLAM BAKİYE</h4>
-                     <span className="text-4xl font-black text-zinc-900 tracking-tighter">
-                        124.500 <span className="text-xl text-zinc-400 font-bold">₺</span>
-                     </span>
+            {/*  hızlı işlemler*/}
+            <BentoCard glowColor="zinc" className="p-6">
+                <h3 className="text-sm font-bold text-zinc-900 mb-4">Hızlı İşlemler</h3>
+                <div className="grid grid-cols-2 gap-3">
+                    {QUICK_ACTIONS.map((action, index) => (
+                        <button 
+                            key={index} 
+                            className={cn(
+                                "flex flex-col items-center justify-center gap-2 p-3 rounded-2xl transition-all duration-300 border border-transparent hover:scale-[1.02] cursor-pointer",
+                                action.bg
+                            )}
+                        >
+                            <action.icon size={20} className={action.color} />
+                            <span className="text-xs font-bold text-zinc-700">{action.label}</span>
+                        </button>
+                    ))}
                 </div>
-                
-                {/* sol alt ikon */}
-                <div className="absolute bottom-6 left-6">
-                    <div className="w-12 h-12 rounded-2xl bg-white border border-blue-100 flex items-center justify-center text-blue-600 shadow-sm hover:scale-105 transition-transform">
-                        <Wallet size={24} strokeWidth={2} />
-                    </div>
-                </div>
-            </BentoCard>
-
-            {/* limit durumu kartı */}
-            <BentoCard glowColor="zinc" className="p-5">
-                 <div className="flex justify-between items-end mb-2">
-                     <h4 className="text-sm font-bold text-zinc-900">Aylık Harcama Limiti</h4>
-                     <span className="text-xs font-bold text-zinc-500">%65 Kullanıldı</span>
-                 </div>
-                 <div className="h-2 w-full bg-zinc-100 rounded-full overflow-hidden">
-                     <div className="h-full bg-yellow-500 w-[65%] rounded-full shadow-sm"></div>
-                 </div>
-                 <div className="mt-2 text-xs text-zinc-400 font-medium">
-                     Kalan Limit: <span className="text-zinc-900 font-bold">12.450₺</span>
-                 </div>
             </BentoCard>
 
         </div>
 
-        {/* sağ bölüm işlem geçmişi */}
+        {/* işlem geçmişi */}
         <div className="lg:col-span-2">
-            <BentoCard glowColor="zinc" className="h-full p-0 overflow-hidden flex flex-col">
-                <div className="p-6 border-b border-zinc-100 flex justify-between items-center bg-white/50 backdrop-blur-sm sticky top-0 z-10">
+            <BentoCard 
+                glowColor="zinc" 
+                className="h-full p-0 overflow-hidden flex flex-col min-h-125"
+                whileHover={{}} 
+            >
+                
+                {/* header */}
+                <div className="p-6 border-b border-zinc-100 flex justify-between items-center bg-white/80 backdrop-blur-md sticky top-0 z-20">
                     <div>
-                        <h3 className="text-lg font-bold text-zinc-900">Son İşlemler</h3>
-                        <p className="text-xs text-zinc-500 font-medium">Bu kart ile yapılan abonelik ödemeleri.</p>
+                        <h3 className="text-2xl mr-50 font-bold text-red-900">Son İşlemler</h3>
+                       
                     </div>
-                    <button className="p-2 rounded-xl hover:bg-zinc-100 text-zinc-400 hover:text-zinc-900 transition-colors cursor-pointer">
-                        <MoreHorizontal size={20} />
-                    </button>
+                    <div className="flex gap-2">
+                        <button className="p-2 rounded-xl hover:bg-zinc-100 text-zinc-400 hover:text-zinc-900 transition-colors cursor-pointer">
+                            <Search size={20} />
+                        </button>
+                        <button className="p-2 rounded-xl hover:bg-zinc-100 text-zinc-400 hover:text-zinc-900 transition-colors cursor-pointer">
+                            <Download size={20} />
+                        </button>
+                    </div>
                 </div>
 
-                <div className="overflow-y-auto custom-scrollbar flex-1 p-2">
+                {/* Tablo */}
+                <div className="flex-1 p-2">
                     <table className="w-full text-left border-collapse">
-                        <thead className="bg-zinc-50/50 text-zinc-400 text-[10px] uppercase tracking-wider font-bold sticky top-0">
+                        <thead className="bg-zinc-50/50 text-zinc-400 text-[10px] uppercase tracking-wider font-bold">
                             <tr>
-                                <th className="px-4 py-3 rounded-l-xl">Platform</th>
+                                <th className="px-4 py-3 rounded-l-xl pl-6">Platform</th>
                                 <th className="px-4 py-3 hidden sm:table-cell">Kategori</th>
                                 <th className="px-4 py-3 hidden sm:table-cell">Tarih</th>
-                                <th className="px-4 py-3 text-right rounded-r-xl">Tutar</th>
+                                <th className="px-4 py-3 text-right rounded-r-xl pr-6">Tutar</th>
                             </tr>
                         </thead>
                         <tbody className="divide-y divide-zinc-50">
-                            {MOCK_TRANSACTIONS.map((tx) => (
-                                <tr key={tx.id} className="group hover:bg-zinc-50 transition-colors">
-                                    <td className="px-4 py-4">
-                                        <div className="flex items-center gap-4">
-                                            <div className="w-10 h-10 rounded-xl flex items-center justify-center shadow-sm border bg-white border-zinc-100 p-2">
-                                                <img src={tx.icon} alt={tx.name} className="w-full h-full object-contain" />
+                            <AnimatePresence>
+                                {visibleTransactions.map((tx) => (
+                                    <motion.tr 
+                                        key={tx.id}
+                                        initial={{ opacity: 0, y: 10 }}
+                                        animate={{ opacity: 1, y: 0 }}
+                                        exit={{ opacity: 0, height: 0 }}
+                                        className="group hover:bg-zinc-50 hover:scale-[1.01] hover:shadow-sm transition-all duration-200 origin-center"
+                                    >
+                                        <td className="px-4 py-4 pl-6">
+                                            <div className="flex items-center gap-4">
+                                                <div className="w-10 h-10 rounded-xl flex items-center justify-center shadow-sm border bg-white border-zinc-100 p-2 group-hover:scale-110 transition-transform">
+                                                    <img src={tx.icon} alt={tx.name} className="w-full h-full object-contain" onError={(e) => e.target.style.display = 'none'} />
+                                                </div>
+                                                <div>
+                                                    <p className="text-sm font-bold text-zinc-900 group-hover:text-yellow-700 transition-colors">{tx.name}</p>
+                                                </div>
                                             </div>
-                                            <div>
-                                                <p className="text-sm font-bold text-zinc-900 group-hover:text-yellow-700 transition-colors">{tx.name}</p>
-                                                <p className="text-[10px] text-zinc-500 sm:hidden">{tx.date}</p>
-                                            </div>
-                                        </div>
-                                    </td>
-                                    <td className="px-4 py-4 hidden sm:table-cell">
-                                        <span className="text-[10px] font-bold px-2.5 py-1 rounded-full border bg-purple-50 text-purple-600 border-purple-100">
-                                            Abonelik
-                                        </span>
-                                    </td>
-                                    <td className="px-4 py-4 text-xs font-medium text-zinc-500 hidden sm:table-cell">
-                                        {tx.date}
-                                    </td>
-                                    <td className="px-4 py-4 text-right">
-                                        <span className="text-sm font-black tracking-tight text-zinc-900">
-                                            {formatCurrency(tx.amount)}
-                                        </span>
-                                    </td>
-                                </tr>
-                            ))}
+                                        </td>
+                                        
+                                        <td className="px-4 py-4 hidden sm:table-cell">
+                                            <span className="text-[10px] font-bold px-2.5 py-1 rounded-full border bg-white border-zinc-200 text-zinc-500 shadow-sm">
+                                                {tx.category || "Genel"}
+                                            </span>
+                                        </td>
+
+                                        <td className="px-4 py-4 text-xs font-medium text-zinc-500 hidden sm:table-cell">
+                                            {tx.date}
+                                        </td>
+                                        <td className="px-4 py-4 text-right pr-6">
+                                            <span className="text-sm font-black tracking-tight text-red-600">
+                                                {formatCurrency(tx.amount)}
+                                            </span>
+                                        </td>
+                                    </motion.tr>
+                                ))}
+                            </AnimatePresence>
                         </tbody>
                     </table>
+                    
+                    {/* Boş Durum */}
+                    {transactions.length === 0 && (
+                        <div className="p-10 text-center text-zinc-400 text-sm">
+                            Henüz işlem geçmişi yok.
+                        </div>
+                    )}
                 </div>
+
+                {/* genişletme butonu footer*/}
+                {transactions.length > 5 && (
+                    <div className="p-4 border-t border-zinc-100 bg-zinc-50/30 flex justify-center">
+                        <button 
+                            onClick={() => setIsExpanded(!isExpanded)}
+                            className="flex items-center gap-2 px-4 py-2 rounded-full text-xs font-bold text-zinc-500 hover:text-zinc-900 hover:bg-white hover:shadow-md transition-all duration-300 border border-transparent hover:border-zinc-200 cursor-pointer"
+                        >
+                            {isExpanded ? (
+                                <>
+                                    Daha Az Göster <ChevronUp size={14} />
+                                </>
+                            ) : (
+                                <>
+                                    Tümünü Göster ({transactions.length}) <ChevronDown size={14} />
+                                </>
+                            )}
+                        </button>
+                    </div>
+                )}
             </BentoCard>
         </div>
 

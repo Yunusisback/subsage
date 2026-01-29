@@ -1,48 +1,66 @@
 @import "tailwindcss";
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&display=swap'); 
 
 @theme {
- 
   --color-background: #fafafa;  
   --color-sidebar: #f4f4f5;     
-  --color-card-bg: #ffffff;     
-  --color-text-main: #18181b;  
+  --color-card-bg: rgba(255, 255, 255, 0.8);   
+  --color-text-main: #09090b;  
   --color-text-muted: #71717a;  
   
   --font-sans: 'Inter', sans-serif;
+  --font-mono: 'JetBrains Mono', monospace;
 }
 
 body {
   background-color: var(--color-background);
   color: var(--color-text-main);
   font-family: var(--font-sans);
-
-
-  background-image: radial-gradient(#e4e4e7 1px, transparent 1px);
-  background-size: 32px 32px;
-}
-
-
-.recharts-wrapper,
-.recharts-wrapper *,
-.recharts-wrapper *:focus,
-.recharts-wrapper *:focus-visible {
-    outline: none !important;
-    box-shadow: none !important;
-    border: none !important;
+  
+  
+  background-image: 
+    linear-gradient(to right, rgba(0,0,0,0.04) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(0,0,0,0.04) 1px, transparent 1px);
+  background-size: 40px 40px;
+  
+  
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 
 ::-webkit-scrollbar {
-  width: 8px;
+  width: 6px;
+  height: 6px;
 }
 ::-webkit-scrollbar-track {
   background: transparent; 
 }
 ::-webkit-scrollbar-thumb {
-  background: #d4d4d8; 
+  background: #e4e4e7; 
   border-radius: 99px;
 }
 ::-webkit-scrollbar-thumb:hover {
   background: #a1a1aa; 
+}
+
+.recharts-wrapper,
+.recharts-wrapper * {
+    outline: none !important;
+}
+
+.glass {
+  background: rgba(255, 255, 255, 0.7);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.5);
+}
+
+
+input:-webkit-autofill,
+input:-webkit-autofill:hover, 
+input:-webkit-autofill:focus, 
+input:-webkit-autofill:active{
+    -webkit-box-shadow: 0 0 0 30px white inset !important;
 }

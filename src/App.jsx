@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { Toaster } from "react-hot-toast";
 import Sidebar from "./components/layout/Sidebar";
 import Header from "./components/layout/Header"; 
 import DashboardView from "./components/dashboard/DashboardView"; 
@@ -21,6 +22,30 @@ function App() {
   return (
     <div className="min-h-screen flex text-zinc-900 font-sans bg-background overflow-hidden">
       
+      {/* Toast Bildirim Alanı*/}
+      <Toaster 
+        position="top-right" 
+        toastOptions={{
+          duration: 3000,
+          style: {
+            background: '#333',
+            color: '#fff',
+          },
+          success: {
+            style: {
+              background: '#ecfccb', 
+              color: '#166534', 
+              border: '1px solid #bef264', 
+              fontWeight: 'bold',
+            },
+            iconTheme: {
+              primary: '#166534',
+              secondary: '#ecfccb',
+            },
+          },
+        }}
+      />
+
       {/* sidebar  */}
       <Sidebar 
         isCollapsed={isCollapsed} 

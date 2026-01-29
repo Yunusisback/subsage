@@ -21,7 +21,7 @@ export const INITIAL_SUBSCRIPTIONS = [
     price: 199.99,
     currency: "TRY",
     startDate: "2025-01-10", 
-    category: "Entertainment",
+    category: "Eğlence",
     image: "https://upload.wikimedia.org/wikipedia/commons/0/08/Netflix_2015_logo.svg",
     color: "bg-red-600"
   },
@@ -31,7 +31,7 @@ export const INITIAL_SUBSCRIPTIONS = [
     price: 59.99,
     currency: "TRY",
     startDate: "2025-01-20", 
-    category: "Music",
+    category: "Müzik",
     image: "https://upload.wikimedia.org/wikipedia/commons/1/19/Spotify_logo_without_text.svg",
     color: "bg-green-500"
   },
@@ -41,7 +41,7 @@ export const INITIAL_SUBSCRIPTIONS = [
     price: 39.00,
     currency: "TRY",
     startDate: "2025-02-15", 
-    category: "Shopping",
+    category: "Alışveriş",
     image: "https://upload.wikimedia.org/wikipedia/commons/d/de/Amazon_icon.png",
     color: "bg-blue-500"
   },
@@ -61,7 +61,7 @@ export const INITIAL_SUBSCRIPTIONS = [
     price: 12.99,
     currency: "TRY",
     startDate: "2025-01-05", 
-    category: "Cloud",
+    category: "Bulut Servisi",
     image: "https://upload.wikimedia.org/wikipedia/commons/1/1c/ICloud_logo.svg",
     color: "bg-blue-400"
   },
@@ -71,7 +71,7 @@ export const INITIAL_SUBSCRIPTIONS = [
     price: 134.99,
     currency: "TRY",
     startDate: "2025-02-20", 
-    category: "Entertainment",
+    category: "Eğlence",
     image: "https://upload.wikimedia.org/wikipedia/commons/3/3e/Disney%2B_logo.svg",
     color: "bg-blue-900"
   },
@@ -81,7 +81,7 @@ export const INITIAL_SUBSCRIPTIONS = [
     price: 159.00,
     currency: "TRY",
     startDate: "2025-03-10", 
-    category: "Gaming",
+    category: "Oyun",
     image: "https://upload.wikimedia.org/wikipedia/commons/f/f3/Xbox_Game_Pass_logo.svg",
     color: "bg-green-600"
   },
@@ -91,7 +91,7 @@ export const INITIAL_SUBSCRIPTIONS = [
     price: 160.90,
     currency: "TRY",
     startDate: "2025-01-15", 
-    category: "Entertainment",
+    category: "Eğlence",
     image: "https://upload.wikimedia.org/wikipedia/commons/c/c7/Exxen_logo.svg",
     color: "bg-yellow-400"
   },
@@ -101,7 +101,7 @@ export const INITIAL_SUBSCRIPTIONS = [
     price: 99.90,
     currency: "TRY",
     startDate: "2025-04-01", 
-    category: "Entertainment",
+    category: "Eğlence",
     image: "https://upload.wikimedia.org/wikipedia/commons/1/16/BluTV_Logo.png",
     color: "bg-sky-500"
   }
