@@ -82,17 +82,17 @@ const SummaryChart = () => {
     <div className="space-y-6 pb-20 animate-in fade-in slide-in-from-bottom-4 duration-500">
       
       {/* Üst Kısım Bütçe Özeti */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-4 lg:gap-6">
         
         {/* Sol Toplam Harcama */}
-        <BentoCard glowColor="blue" className="p-6 flex flex-col justify-between">
+        <BentoCard glowColor="blue" className="p-5 lg:p-6 flex flex-col justify-between">
             <div className="flex items-start justify-between">
                 <div>
                     <p className="text-sm font-bold text-zinc-500 mb-1">Toplam Aylık Gider</p>
-                    <h3 className="text-3xl font-black text-zinc-900 tracking-tight">{formatCurrency(totalExpenses)}</h3>
+                    <h3 className="text-2xl lg:text-3xl font-black text-zinc-900 tracking-tight">{formatCurrency(totalExpenses)}</h3>
                 </div>
                 <div className="p-3 bg-blue-50 text-blue-600 rounded-xl">
-                    <TrendingUp size={24} />
+                    <TrendingUp size={20} className="lg:w-6 lg:h-6" />
                 </div>
             </div>
             <div className="mt-4">
@@ -101,9 +101,9 @@ const SummaryChart = () => {
         </BentoCard>
 
         {/* Orta Bütçe Durumu */}
-        <BentoCard glowColor="zinc" className="p-6 flex flex-col justify-center">
+        <BentoCard glowColor="zinc" className="p-5 lg:p-6 flex flex-col justify-center">
              <div className="flex items-center justify-between mb-2">
-                <span className="text-sm font-bold text-zinc-700 flex items-center gap-2">
+                <span className="text-xs lg:text-sm font-bold text-zinc-700 flex items-center gap-2">
                     <Target size={16} /> Bütçe Hedefi
                 </span>
                 <span className={cn("text-[10px] font-bold px-2 py-0.5 rounded border", statusBg)}>
@@ -112,7 +112,7 @@ const SummaryChart = () => {
              </div>
              
              <div className="flex items-end gap-1 mb-3">
-                 <span className="text-2xl font-bold text-zinc-900">{Math.round(limitPercentage)}%</span>
+                 <span className="text-xl lg:text-2xl font-bold text-zinc-900">{Math.round(limitPercentage)}%</span>
                  <span className="text-xs font-semibold text-zinc-400 mb-1.5">kullanıldı</span>
              </div>
 
@@ -130,16 +130,16 @@ const SummaryChart = () => {
         </BentoCard>
 
         {/* Sağ Kalan Bütçe */}
-        <BentoCard glowColor="green" className="p-6 flex flex-col justify-between">
+        <BentoCard glowColor="green" className="p-5 lg:p-6 flex flex-col justify-between">
              <div className="flex items-start justify-between">
                 <div>
                     <p className="text-sm font-bold text-zinc-500 mb-1">Kalan Bütçe</p>
-                    <h3 className={cn("text-3xl font-black tracking-tight", remainingBudget === 0 ? "text-red-500" : "text-emerald-600")}>
+                    <h3 className={cn("text-2xl lg:text-3xl font-black tracking-tight", remainingBudget === 0 ? "text-red-500" : "text-emerald-600")}>
                         {formatCurrency(remainingBudget)}
                     </h3>
                 </div>
                 <div className="p-3 bg-emerald-50 text-emerald-600 rounded-xl">
-                    <PiggyBank size={24} />
+                    <PiggyBank size={20} className="lg:w-6 lg:h-6" />
                 </div>
             </div>
             <div className="mt-4">
@@ -153,23 +153,23 @@ const SummaryChart = () => {
       </div>
 
       {/* Alt Kısım Grafikler */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 lg:gap-6">
           
-          {/*  Kategoriler Pasta Grafik  */}
-          <BentoCard glowColor="zinc" className="p-6 min-h-100">
+          {/* Kategoriler Pasta Grafik  */}
+          <BentoCard glowColor="zinc" className="p-5 lg:p-6 min-h-100">
             <h3 className="text-lg font-bold text-zinc-900 mb-6 flex items-center gap-2">
                 <Activity size={20} className="text-zinc-400" />
                 Kategori Dağılımı
             </h3>
-            <div className="h-64 w-full">
+            <div className="h-56 lg:h-64 w-full">
                 <ResponsiveContainer width="100%" height="100%">
                     <PieChart>
                         <Pie
                             data={categoryData}
                             cx="50%"
                             cy="50%"
-                            innerRadius={60}
-                            outerRadius={80}
+                            innerRadius={50}
+                            outerRadius={70}
                             paddingAngle={5}
                             dataKey="value"
                         >
@@ -193,13 +193,13 @@ const SummaryChart = () => {
             </div>
           </BentoCard>
 
-          {/*  Servis Bazlı Maliyet */}
-          <BentoCard glowColor="zinc" className="p-6 min-h-100">
+          {/* Servis Bazlı Maliyet */}
+          <BentoCard glowColor="zinc" className="p-5 lg:p-6 min-h-100">
             <h3 className="text-lg font-bold text-zinc-900 mb-6 flex items-center gap-2">
                 <Wallet size={20} className="text-zinc-400" />
                 Servis Bazlı Maliyetler
             </h3>
-            <div className="h-80 w-full">
+            <div className="h-64 lg:h-80 w-full">
             <ResponsiveContainer width="100%" height="100%">
               <BarChart
                 data={subscriptionData}
@@ -219,8 +219,8 @@ const SummaryChart = () => {
                 <YAxis 
                     dataKey="name" 
                     type="category" 
-                    width={100} 
-                    tick={{fill: '#71717a', fontSize: 11, fontWeight: 600 }}
+                    width={80} 
+                    tick={{fill: '#71717a', fontSize: 10, fontWeight: 600 }}
                     axisLine={false} 
                     tickLine={false} 
                 />

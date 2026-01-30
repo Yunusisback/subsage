@@ -18,9 +18,12 @@ function App() {
   const [isCollapsed, setIsCollapsed] = useState(false);
   const [activeTab, setActiveTab] = useState(TABS.DASHBOARD);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  
+  
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   return (
-    <div className="min-h-screen flex text-zinc-900 font-sans bg-background overflow-hidden">
+    <div className="min-h-screen flex text-zinc-900 font-sans bg-background overflow-hidden relative">
       
       {/* Toast Bildirim Alanı*/}
       <Toaster 
@@ -46,18 +49,32 @@ function App() {
         }}
       />
 
+      {/* mobil overlay */}
+      {isMobileMenuOpen && (
+        <div 
+          className="fixed inset-0 bg-black/50 z-40 lg:hidden backdrop-blur-sm transition-opacity"
+          onClick={() => setIsMobileMenuOpen(false)}
+        />
+      )}
+
       {/* sidebar  */}
       <Sidebar 
         isCollapsed={isCollapsed} 
         toggleSidebar={() => setIsCollapsed(!isCollapsed)} 
         activeTab={activeTab}
-        setActiveTab={setActiveTab}
+        setActiveTab={(tab) => {
+          setActiveTab(tab);
+          setIsMobileMenuOpen(false); 
+        }}
+        isMobileMenuOpen={isMobileMenuOpen}
+        closeMobileMenu={() => setIsMobileMenuOpen(false)}
       />
       
       <main 
         className={cn(
-          "flex-1 h-screen overflow-y-auto p-8 transition-all duration-300 ease-in-out scroll-smooth",
-          isCollapsed ? "ml-20" : "ml-72"
+          "flex-1 h-screen overflow-y-auto p-4 md:p-8 transition-all duration-300 ease-in-out scroll-smooth",
+    
+          isCollapsed ? "ml-0 lg:ml-20" : "ml-0 lg:ml-72"
         )}
       >
         
@@ -66,6 +83,7 @@ function App() {
             activeTab={activeTab} 
             setActiveTab={setActiveTab} 
             onOpenModal={() => setIsModalOpen(true)}
+            onOpenMobileMenu={() => setIsMobileMenuOpen(true)}
         />
 
         {/* dashboard  */}

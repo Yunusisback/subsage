@@ -1,11 +1,11 @@
 import { useState, useEffect, useRef } from "react";
-import { Bell, CheckCircle, Info, Clock, XCircle } from "lucide-react"; 
+import { Bell, CheckCircle, Info, Clock, XCircle, Menu } from "lucide-react"; 
 import { TABS } from "../../utils/constants";
 import { useGlobal } from "../../context/GlobalContext";
 import { motion, AnimatePresence } from "framer-motion";
 import { cn } from "../../utils/helpers";
 
-const Header = ({ activeTab, setActiveTab,  }) => {
+const Header = ({ activeTab, setActiveTab, onOpenMobileMenu }) => {
  
   const { notifications, userSettings } = useGlobal(); 
   const [showNotifications, setShowNotifications] = useState(false);
@@ -37,11 +37,20 @@ const Header = ({ activeTab, setActiveTab,  }) => {
 
   return (
     
-    <header className="relative z-50 mb-8 flex justify-between items-center h-16 animate-in fade-in slide-in-from-top-4 duration-500">
+    <header className="relative z-30 mb-6 md:mb-8 flex justify-between items-center h-16 animate-in fade-in slide-in-from-top-4 duration-500">
 
-      {/* Başlık */}
-      <div>
-        <h1 className="text-3xl pl-3 font-bold tracking-tight text-yellow-800">
+      {/* Başlık ve Mobil Menü */}
+      <div className="flex items-center gap-3">
+        
+        {/* mobil menü butonu */}
+        <button 
+            onClick={onOpenMobileMenu}
+            className="p-2 -ml-2 rounded-xl text-zinc-500 hover:bg-zinc-100 lg:hidden"
+        >
+            <Menu size={24} />
+        </button>
+
+        <h1 className="text-2xl md:text-3xl pl-1 md:pl-3 font-bold tracking-tight text-yellow-800 truncate">
           {activeTab === TABS.DASHBOARD && "Yönetim Paneli"}
           {activeTab === TABS.SUBSCRIPTIONS && "Abonelikler"}
           {activeTab === TABS.WALLET && "Cüzdanım"}
@@ -53,15 +62,15 @@ const Header = ({ activeTab, setActiveTab,  }) => {
       </div>
 
       {/* Bildirim ve Profil */}
-      <div className="flex items-center gap-4 pr-2">
+      <div className="flex items-center gap-2 md:gap-4 pr-0 md:pr-2">
         
         {/* Bildirim */}
         <div className="relative" ref={notificationRef}>
             <button 
                 onClick={() => setShowNotifications(!showNotifications)}
-                className="p-3 rounded-3xl bg-white border border-zinc-200 hover:bg-zinc-50 text-zinc-500 hover:text-zinc-900 transition-colors relative cursor-pointer shadow-sm"
+                className="p-2.5 md:p-3 rounded-3xl bg-white border border-zinc-200 hover:bg-zinc-50 text-zinc-500 hover:text-zinc-900 transition-colors relative cursor-pointer shadow-sm"
             >
-                <Bell size={25} />
+                <Bell size={22} className="md:w-6 md:h-6" />
                 {unreadCount > 0 && (
                   <span className="absolute top-1.5 right-2.5 w-3 h-3 rounded-full bg-red-500 border-2 border-white animate-ping"></span>
                 )}
@@ -75,7 +84,7 @@ const Header = ({ activeTab, setActiveTab,  }) => {
                         animate={{ opacity: 1, y: 0, scale: 1 }}
                         exit={{ opacity: 0, y: 10, scale: 0.95 }}
                         transition={{ duration: 0.2, ease: "easeOut" }}
-                        className="absolute right-0 top-full mt-3 w-96 bg-white border border-zinc-200 rounded-2xl shadow-xl z-50 overflow-hidden origin-top-right"
+                        className="absolute right-0 top-full mt-3 w-80 md:w-96 bg-white border border-zinc-200 rounded-2xl shadow-xl z-50 overflow-hidden origin-top-right"
                     >
                         <div className="p-4 border-b border-zinc-100 flex justify-between items-center bg-zinc-50/30 backdrop-blur-md">
                             <span className="text-sm font-bold text-zinc-900">Bildirimler</span>
@@ -165,16 +174,16 @@ const Header = ({ activeTab, setActiveTab,  }) => {
         {/* Profil Bölümü */}
         <button 
             onClick={() => setActiveTab(TABS.SETTINGS)}
-            className="flex items-center gap-2 pl-2.5 pr-4 py-2 rounded-full bg-white border border-yellow-500 hover:bg-zinc-50 hover:border-zinc-300 transition-all group cursor-pointer shadow-sm"
+            className="flex items-center gap-2 pl-1.5 md:pl-2.5 pr-1.5 md:pr-4 py-1.5 md:py-2 rounded-full bg-white border border-yellow-500 hover:bg-zinc-50 hover:border-zinc-300 transition-all group cursor-pointer shadow-sm"
         >
-            <div className="w-10 h-10 min-w-9 rounded-full bg-zinc-100 ring-2 ring-white flex items-center justify-center overflow-hidden">
+            <div className="w-8 h-8 md:w-10 md:h-10 min-w-8 md:min-w-9 rounded-full bg-zinc-100 ring-2 ring-white flex items-center justify-center overflow-hidden">
                 <img 
                     src={userSettings.avatar} 
                     alt="User" 
                     className="w-full h-full object-cover opacity-100 group-hover:opacity-100 transition-opacity" 
                 />
             </div>
-            <div className="text-left">
+            <div className="text-left hidden md:block">
                 <h4 className="text-m font-bold text-zinc-900 group-hover:text-black transition-colors">
                     {userSettings.name}
                 </h4>

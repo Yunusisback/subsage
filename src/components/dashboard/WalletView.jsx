@@ -35,18 +35,19 @@ const WalletView = () => {
         <div className="lg:col-span-1 space-y-6">
             
             {/* Başlık ve Ekle Butonu */}
-            <div className="flex items-center justify-between">
-                <h2 className="text-xl font-bold text-zinc-900">Kartlarım</h2>
-                <Button size="sm" className="flex items-center gap-1 pl-2 pr-3 rounded-full font-bold bg-zinc-900 hover:bg-zinc-800 text-white shadow-sm hover:shadow-md border-transparent cursor-pointer">
+            <div className="flex items-center justify-between ">
+           
+                <Button size="sm" className="flex items-center gap-1 pl-2 pr-4 rounded-full font-bold bg-white hover:bg-zinc-300 text-black shadow-sm hover:shadow-md border-transparent cursor-pointer">
                     <Plus size={16} strokeWidth={3} />
                     Kart Ekle
                 </Button>
             </div>
 
-            {/*  kredi kartı */}
-            <div className="relative w-full aspect-[1.586/1] rounded-3xl overflow-hidden shadow-2xl group perspective-1000 transition-transform duration-500 hover:scale-[1.02]">
+            {/* kredi kartı */}
+         
+            <div className="relative w-full max-w-sm aspect-[1.586/1] rounded-3xl overflow-hidden shadow-2xl group perspective-1000 transition-transform duration-500 hover:scale-[1.02]">
                 <div className="absolute inset-0 bg-linear-to-br from-slate-900 via-purple-900 to-slate-900">
-                    <div className="absolute inset-0 opacity-30 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] mix-blend-overlay"></div>
+        
                     <div className="absolute top-[-50%] left-[-50%] w-[200%] h-[200%] bg-linear-to-b from-white/10 via-transparent to-transparent transform rotate-45 pointer-events-none"></div>
                 </div>
 
@@ -56,12 +57,12 @@ const WalletView = () => {
                             <h3 className="font-bold text-lg tracking-[0.2em] drop-shadow-md text-white">VAULT</h3>
                             <div className="flex items-center gap-4 pl-1">
                                 <svg className="w-11 h-8 rounded-md drop-shadow-sm" viewBox="0 0 48 36" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                    <rect width="48" height="36" rx="6" fill="#D4AF37" />
-                                    <path d="M48 18H0" stroke="#B39024" strokeWidth="1" />
-                                    <path d="M16 0V36" stroke="#B39024" strokeWidth="1" />
-                                    <path d="M32 0V36" stroke="#B39024" strokeWidth="1" />
-                                    <rect x="6" y="6" width="36" height="24" rx="4" stroke="#B39024" strokeWidth="1" />
-                                    <rect x="10" y="10" width="28" height="16" rx="2" stroke="#B39024" strokeWidth="1" />
+                                    <rect width="48" height="36" rx="6" fill="#e3d10e" />
+                                    <path d="M48 18H0" stroke="#ffea05" strokeWidth="1" />
+                                    <path d="M16 0V36" stroke="#ffea05" strokeWidth="1" />
+                                    <path d="M32 0V36" stroke="#ffea05" strokeWidth="1" />
+                                    <rect x="6" y="6" width="36" height="24" rx="4" stroke="#ffea05" strokeWidth="1" />
+                                    <rect x="10" y="10" width="28" height="16" rx="2" stroke="#ffea05" strokeWidth="1" />
                                 </svg>
                                 <Wifi size={22} className="rotate-90 text-white/80 drop-shadow-md" strokeWidth={2} />
                             </div>
@@ -97,9 +98,9 @@ const WalletView = () => {
                 </div>
             </div>
 
-            {/*  hızlı işlemler*/}
+            {/* hızlı işlemler*/}
             <BentoCard glowColor="zinc" className="p-6">
-                <h3 className="text-sm font-bold text-zinc-900 mb-4">Hızlı İşlemler</h3>
+                <h3 className="text-sm font-bold text-yellow-900 mb-4">Hızlı İşlemler</h3>
                 <div className="grid grid-cols-2 gap-3">
                     {QUICK_ACTIONS.map((action, index) => (
                         <button 
@@ -207,7 +208,7 @@ const WalletView = () => {
                     <div className="p-4 border-t border-zinc-100 bg-zinc-50/30 flex justify-center">
                         <button 
                             onClick={() => setIsExpanded(!isExpanded)}
-                            className="flex items-center gap-2 px-4 py-2 rounded-full text-xs font-bold text-zinc-500 hover:text-zinc-900 hover:bg-white hover:shadow-md transition-all duration-300 border border-transparent hover:border-zinc-200 cursor-pointer"
+                            className="flex items-center gap-2 px-4 py-2 rounded-full text-xs font-bold text-zinc-800 hover:text-zinc-900 hover:bg-white hover:shadow-md transition-all duration-300 border border-transparent hover:border-zinc-200 cursor-pointer"
                         >
                             {isExpanded ? (
                                 <>

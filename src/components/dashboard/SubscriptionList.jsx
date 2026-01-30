@@ -119,23 +119,13 @@ const SubscriptionList = () => {
     return (
         <div className="pb-20">
 
-            {/*  header ve kontroller */}
-            <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-8">
-                <div>
-                    <h2 className="text-2xl font-bold text-slate-900 tracking-tight">
-                        {isAddingMode ? "Servis Seçimi" : "Aboneliklerim"}
-                    </h2>
-                    <p className="text-slate-500 text-sm mt-1">
-                        {isAddingMode
-                            ? "Listeden aboneliğinizi seçin veya arama yapın."
-                            : `${activeSubscriptionsCount} adet aktif aboneliğiniz bulunuyor.`}
-                    </p>
-                </div>
-
-                <div className="flex items-center gap-3">
+            {/* header ve kontroller */}
+            <div className="flex flex-col md:flex-row md:items-center justify-start gap-4 mb-8">
+                
+                <div className="flex items-center gap-3 w-full md:w-auto">
 
                     {/* Arama Kutusu */}
-                    <div className="relative group">
+                    <div className="relative group w-full md:w-auto">
                         <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 group-focus-within:text-blue-500 transition-colors" size={18} />
                         <input
                             type="text"
@@ -153,39 +143,39 @@ const SubscriptionList = () => {
                             setSearchQuery(""); 
                         }}
                         className={cn(
-                            "flex items-center gap-2 px-5 py-2.5 rounded-xl font-semibold transition-all cursor-pointer border shadow-sm shrink-0",
+                            "flex items-center gap-2 px-4 py-2.5 rounded-xl font-semibold transition-all cursor-pointer border shadow-sm shrink-0",
                             isAddingMode
                                 ? "bg-white text-slate-700 hover:bg-slate-50 border-slate-200"
-                                : "bg-blue-600 text-white hover:bg-blue-700 border-transparent shadow-blue-200 hover:shadow-blue-300 shadow-md"
+                                : "bg-yellow-600 text-white hover:bg-yellow-700 border-transparent shadow-blue-200 -shadow-md"
                         )}
                     >
                         {isAddingMode ? <ArrowLeft size={18} /> : <Plus size={18} />}
-                        {isAddingMode ? "Listeye Dön" : "Yeni Ekle"}
+                        {isAddingMode ? "Listeye Dön" : " Abonelik Ekle"}
                     </Button>
                 </div>
             </div>
 
-            {/*  tab menü */}
+            {/* tab menü */}
             {!isAddingMode && (
                 <div className="flex gap-2 mb-6 border-b border-slate-200 pb-1">
                     <button
                         onClick={() => setViewFilter("active")}
                         className={cn(
-                            "px-4 py-2 text-sm font-bold rounded-t-lg transition-all relative top-1",
+                            "px-4 py-2 text-sm font-bold cursor-pointer rounded-t-lg transition-all relative top-1",
                             viewFilter === "active"
-                                ? "text-blue-600 border-b-2 border-blue-600 bg-blue-50/50"
+                                ? "text-yellow-600 border-b-2 border-byellow-600 bg-yellow-50/50"
                                 : "text-slate-500 hover:text-slate-700 hover:bg-slate-50"
                         )}
                     >
-                        Aktif Servisler
+                        Aktif Abonelikler
                     </button>
                     <button
                         onClick={() => setViewFilter("canceled")}
                         className={cn(
-                            "px-4 py-2 text-sm font-bold rounded-t-lg transition-all relative top-1",
+                            "px-4 py-2 text-sm font-bold rounded-t-lg cursor-pointer transition-all relative top-1",
                             viewFilter === "canceled"
-                                ? "text-slate-800 border-b-2 border-slate-800 bg-slate-100"
-                                : "text-slate-500 hover:text-slate-700 hover:bg-slate-50"
+                                ? "text-red-800 border-b-2 border-red-800 bg-red-100"
+                                : "text-red-800 hover:text-red-700 hover:bg-red-50"
                         )}
                     >
                         İptal Edilenler

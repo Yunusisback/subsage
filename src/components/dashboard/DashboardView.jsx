@@ -129,14 +129,14 @@ const DashboardView = ({ setActiveTab }) => {
         <div className="animate-in fade-in zoom-in-95 duration-500 pb-20 space-y-8 p-1">
 
             {/* üst kısım dinamik grafikler  */}
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 lg:gap-6">
 
                 {/* toplam gider kartı*/}
-                <div className="bg-white rounded-3xl p-6 shadow-sm border border-slate-100 relative overflow-hidden flex flex-col justify-between h-45">
+                <div className="bg-white rounded-3xl p-5 lg:p-6 shadow-sm border border-slate-100 relative overflow-hidden flex flex-col justify-between h-40 lg:h-45">
                     <div className="flex justify-between items-start z-10">
                         <div>
                             <div className="flex items-center gap-2 mb-1">
-                                <span className="text-red-800 text-2xl font-semibold">Toplam Gider</span>
+                                <span className="text-red-800 text-xl lg:text-2xl font-semibold">Toplam Gider</span>
                                 {growthPercentage !== 0 && (
                                     <span className={cn(
                                         "text-[10px] font-bold px-1.5 py-0.5 rounded-md",
@@ -147,19 +147,19 @@ const DashboardView = ({ setActiveTab }) => {
                                 )}
                             </div>
                             <div className="flex items-baseline">
-                                <span className="text-4xl font-black text-red-900 tracking-tighter pt-3">
+                                <span className="text-3xl lg:text-4xl font-black text-red-900 tracking-tighter pt-2 lg:pt-3">
                                     {formatMoneyClean(totalExpenses)}
                                 </span>
-                                <span className="text-2xl font-bold text-red-800 ml-1">₺</span>
+                                <span className="text-xl lg:text-2xl font-bold text-red-800 ml-1">₺</span>
                             </div>
                         </div>
-                        <div className="w-15 h-10 rounded-full bg-red-50 flex items-center justify-center text-red-800">
-                            <Wallet size={26} />
+                        <div className="w-12 h-8 lg:w-15 lg:h-10 rounded-full bg-red-50 flex items-center justify-center text-red-800">
+                            <Wallet size={20} className="lg:w-6.5 lg:h-6.5" />
                         </div>
                     </div>
 
                     {/* Alt grafik */}
-                    <div className="absolute bottom-0 left-0 right-0 h-24 pointer-events-none">
+                    <div className="absolute bottom-0 left-0 right-0 h-20 lg:h-24 pointer-events-none">
                         <ResponsiveContainer width="100%" height="100%">
                             <AreaChart data={chartData} margin={{ top: 0, right: 0, left: 0, bottom: 0 }}>
                                 <defs>
@@ -182,24 +182,24 @@ const DashboardView = ({ setActiveTab }) => {
                 </div>
 
                 {/* aktif abonelik */}
-                <div className="bg-white rounded-3xl p-6 shadow-sm border border-slate-100 relative overflow-hidden flex flex-col justify-between h-45">
+                <div className="bg-white rounded-3xl p-5 lg:p-6 shadow-sm border border-slate-100 relative overflow-hidden flex flex-col justify-between h-40 lg:h-45">
                     <div className="flex justify-between items-start z-10">
                         <div>
-                            <span className="text-yellow-600 text-2xl font-semibold block mb-1">Aktif Abonelik</span>
+                            <span className="text-yellow-600 text-xl lg:text-2xl font-semibold block mb-1">Aktif Abonelik</span>
                             <div className="flex items-baseline gap-2">
-                                <span className="text-4xl font-black text-yellow-600 tracking-tighter pt-3">
+                                <span className="text-3xl lg:text-4xl font-black text-yellow-600 tracking-tighter pt-2 lg:pt-3">
                                     {activeSubs.length}
                                 </span>
-                                <span className="text-m font-semibold text-yellow-900">Servis</span>
+                                <span className="text-sm lg:text-m font-semibold text-yellow-900">Servis</span>
                             </div>
                         </div>
-                        <div className="w-10 h-10 rounded-full bg-yellow-50 flex items-center justify-center text-yellow-600">
-                            <Activity size={20} />
+                        <div className="w-8 h-8 lg:w-10 lg:h-10 rounded-full bg-yellow-50 flex items-center justify-center text-yellow-600">
+                            <Activity size={18} className="lg:w-5 lg:h-5" />
                         </div>
                     </div>
 
                     {/* alt grafik */}
-                    <div className="absolute bottom-0 left-0 right-0 h-15 flex items-end justify-between gap-3 px-4 pb-0">
+                    <div className="absolute bottom-0 left-0 right-0 h-12 lg:h-15 flex items-end justify-between gap-3 px-4 pb-0">
                         {chartData.map((item, i) => {
 
                             // Maksimum değere göre yükseklik hesapla 
@@ -221,32 +221,42 @@ const DashboardView = ({ setActiveTab }) => {
                     </div>
                 </div>
 
-                {/* En Yüksek Abonelik */}
-                <div className="bg-[#EB3933] rounded-3xl p-6 shadow-2xl relative overflow-hidden flex flex-col justify-between h-45 text-white border border-white/10">
-
-                    {/* Arka Plan Efekti  */}
-                    <div className="absolute top-0 right-0 w-full h-full bg-linear-to-br from-[#1a1a1a]/40 to-transparent pointer-events-none"></div>
-
-                    <div className="relative z-10">
-                        <div className="flex items-center gap-2 mb-1">
-                            <Zap size={20} className="text-yellow-400 fill-yellow-400" />
-                            <span className="text-[20px] font-black text-white uppercase tracking-[0.2em] ">En Yüksek</span>
-                        </div>
-                        <h3 className="text-2xl font-bold truncate pr-4 text-white drop-shadow-sm p-2">{mostExpensive.name}</h3>
+                {/* En Yüksek Abonelik  */}
+                <div className="group relative rounded-3xl p-5 lg:p-6 shadow-xl shadow-red-500/10 overflow-hidden flex flex-col justify-between h-40 lg:h-45 text-white transition-transform hover:-translate-y-1 duration-300">
+                    
+                    {/* Arka Plan */}
+                    <div className="absolute inset-0 bg-linear-to-br from-rose-600 to-red-500 z-0"></div>
+                    
+                    {/* Watermark */}
+                    <div className="absolute -right-6 -bottom-6 opacity-40 transform rotate-12 transition-transform duration-500 group-hover:scale-110 group-hover:rotate-6">
+                        <Zap size={140} fill="currentColor" />
                     </div>
 
-                    <div className="relative z-10 flex items-end justify-between">
-                        <div>
-                            <div className="flex items-baseline">
-                                <span className="text-4xl font-black tracking-tighter text-rose-50 drop-shadow-md pt-3">
-                                    {formatMoneyClean(mostExpensive.price)}
-                                </span>
-                                <span className="text-3xl text-white font-bold ml-1.5 ">₺</span>
+                    {/* İçerik */}
+                    <div className="relative z-10 flex justify-between items-start">
+                         <div>
+                            <div className="flex items-center gap-2 bg-white/10 w-fit px-2.5 py-1 rounded-full backdrop-blur-md border border-white/10 mb-2 shadow-sm">
+                                 <Zap size={15} className="text-white fill-current" />
+                                 <span className="text-[14px] font-bold uppercase tracking-wider">En Yüksek</span>
                             </div>
-                        </div>
-                        <div className="group w-11 h-11 rounded-2xl bg-white flex items-center justify-center border border-white/20 hover:bg-red-800 transition-all duration-300 cursor-pointer backdrop-blur-sm">
-                            <ArrowUpRight size={20} className="text-red-500  group-hover:text-white transition-colors" />
-                        </div>
+                            <h3 className="text-xl lg:text-2xl font-bold truncate text-white tracking-tight mb-2">{mostExpensive.name}</h3>
+                         </div>
+                         
+                         <div className="bg-white/20 p-2 lg:p-2.5 rounded-xl backdrop-blur-md border border-white/10 shadow-sm">
+                            <ArrowUpRight size={20} className="text-white lg:w-5.5 lg:h-5.5" />
+                         </div>
+                    </div>
+
+                    <div className="relative z-10 mt-auto">
+                         <div className="flex items-baseline gap-1">
+                            <span className="text-3xl lg:text-4xl font-black tracking-tighter text-white drop-shadow-sm">
+                                {formatMoneyClean(mostExpensive.price)}
+                            </span>
+                            <span className="text-xl lg:text-2xl font-bold text-white/90">₺</span>
+                         </div>
+                         <p className="text-[10px] lg:text-xs text-red-50 font-medium mt-2 opacity-90">
+                            Aylık toplam giderin <span className="font-bold opacity-100">%{(totalExpenses > 0 ? Math.round((mostExpensive.price / totalExpenses) * 100) : 0)}</span>'si
+                         </p>
                     </div>
                 </div>
 
@@ -254,22 +264,22 @@ const DashboardView = ({ setActiveTab }) => {
 
             {/* abonelikler listesi*/}
             <div>
-                <div className="flex items-center justify-between mb-6 px-1">
+                <div className="flex items-center justify-between mb-4 lg:mb-6 px-1">
                     <div>
-                        <h2 className="text-2xl font-bold text-yellow-800 flex items-center gap-2">
+                        <h2 className="text-xl lg:text-2xl font-bold text-yellow-800 flex items-center gap-2">
                             Aboneliklerim
                         </h2>
 
                     </div>
                     <button
                         onClick={() => setActiveTab('subscriptions')}
-                        className="text-sm font-semibold text-yellow-900 border border-yellow-900/30 bg-transparent hover:bg-yellow-900/5 hover:border-yellow-900/50 px-4 py-2 rounded-lg shadow-sm transition-all cursor-pointer"
+                        className="text-xs lg:text-sm font-semibold text-yellow-900 border border-yellow-900/30 bg-transparent hover:bg-yellow-900/5 hover:border-yellow-900/50 px-3 py-1.5 lg:px-4 lg:py-2 rounded-lg shadow-sm transition-all cursor-pointer"
                     >
                         Tümünü Gör
                     </button>
                 </div>
 
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5">
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 lg:gap-5">
                     {enhancedSubscriptions.map((sub) => (
                         <BentoCard
                             key={sub.id}
@@ -285,7 +295,7 @@ const DashboardView = ({ setActiveTab }) => {
                                         <img src={sub.image} alt={sub.name} className="w-full h-full object-contain" />
                                     </div>
                                     <div>
-                                        <h4 className="text-lg font-bold text-slate-900 leading-tight">{sub.name}</h4>
+                                        <h4 className="text-base lg:text-lg font-bold text-slate-900 leading-tight">{sub.name}</h4>
                                         <span className={cn("text-[10px] font-bold uppercase tracking-wider", sub.theme.subtext)}>AYLIK PLAN</span>
                                     </div>
                                 </div>
@@ -315,7 +325,7 @@ const DashboardView = ({ setActiveTab }) => {
                                     <CreditCard size={14} />
                                     <span>Otomatik</span>
                                 </div>
-                                <div className="text-xl font-black text-slate-900 tabular-nums tracking-tight">
+                                <div className="text-lg lg:text-xl font-black text-slate-900 tabular-nums tracking-tight">
                                     {formatMoneyClean(sub.price)} <span className="text-xs font-bold text-slate-500">₺</span>
                                 </div>
                             </div>
@@ -329,7 +339,7 @@ const DashboardView = ({ setActiveTab }) => {
 
             {/* İptal Edilenler */}
             {canceledSubs.length > 0 && (
-                <div className="mt-12 bg-slate-50/50 border border-slate-200 rounded-3xl p-6">
+                <div className="mt-8 lg:mt-12 bg-slate-50/50 border border-slate-200 rounded-3xl p-4 lg:p-6">
                     <div className="flex items-center gap-3 mb-6 opacity-70">
                         <div className="p-2 bg-slate-200 rounded-lg">
                             <ArchiveX size={18} className="text-slate-600" />
@@ -339,7 +349,7 @@ const DashboardView = ({ setActiveTab }) => {
                         </h2>
                     </div>
 
-                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 lg:gap-4">
                         {canceledSubs.map((sub) => (
                             <div key={sub.id} className="group flex items-center gap-4 bg-white p-3 pr-5 rounded-2xl border border-slate-100 shadow-sm opacity-60 hover:opacity-100 hover:shadow-md transition-all duration-300">
                                 <div className="w-10 h-10 rounded-lg bg-slate-50 border border-slate-100 p-1.5 shrink-0 grayscale group-hover:grayscale-0 transition-all">
