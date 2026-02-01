@@ -1,5 +1,5 @@
 import { useState, useMemo } from "react";
-import { Plus, Calendar, ArrowLeft, CheckCircle2, X, Loader2, Sparkles, Search,  Filter, Trash2, XCircle } from "lucide-react";
+import { Plus, Calendar, ArrowLeft, CheckCircle2, X, Loader2, Sparkles, Search, Filter, Trash2, XCircle } from "lucide-react";
 import Button from "../ui/Button";
 import { useGlobal } from "../../context/GlobalContext";
 import { cn } from "../../utils/helpers";
@@ -15,33 +15,173 @@ const formatMoneyClean = (amount) => {
     }).format(amount);
 };
 
-// Platform Listesi
+
 const PLATFORMS = [
-    { id: "p1", name: "Netflix", category: "Eğlence", price: "199.99", color: "red", image: "https://upload.wikimedia.org/wikipedia/commons/0/08/Netflix_2015_logo.svg" },
-    { id: "p2", name: "Spotify", category: "Müzik", price: "59.99", color: "green", image: "https://upload.wikimedia.org/wikipedia/commons/1/19/Spotify_logo_without_text.svg" },
-    { id: "p3", name: "YouTube Premium", category: "Video", price: "57.99", color: "red", image: "https://upload.wikimedia.org/wikipedia/commons/0/09/YouTube_full-color_icon_%282017%29.svg" },
-    { id: "p4", name: "Amazon Prime", category: "Alışveriş", price: "39.00", color: "blue", image: "https://upload.wikimedia.org/wikipedia/commons/d/de/Amazon_icon.png" },
-    { id: "p5", name: "Disney+", category: "Eğlence", price: "134.99", color: "blue", image: "https://upload.wikimedia.org/wikipedia/commons/3/3e/Disney%2B_logo.svg" },
-    { id: "p6", name: "Apple One", category: "Paket", price: "194.00", color: "zinc", image: "https://upload.wikimedia.org/wikipedia/commons/f/fa/Apple_logo_black.svg" },
-    { id: "p7", name: "iCloud+", category: "Bulut", price: "12.99", color: "sky", image: "https://upload.wikimedia.org/wikipedia/commons/1/1c/ICloud_logo.svg" },
-    { id: "p8", name: "Exxen", category: "Eğlence", price: "160.90", color: "yellow", image: "https://upload.wikimedia.org/wikipedia/commons/c/c7/Exxen_logo.svg" },
-    { id: "p9", name: "BluTV", category: "Eğlence", price: "99.90", color: "sky", image: "https://upload.wikimedia.org/wikipedia/commons/1/16/BluTV_Logo.png" },
-    { id: "p10", name: "Xbox Game Pass", category: "Oyun", price: "159.00", color: "green", image: "https://upload.wikimedia.org/wikipedia/commons/f/f3/Xbox_Game_Pass_logo.svg" },
-    { id: "p11", name: "PlayStation Plus", category: "Oyun", price: "200.00", color: "blue", image: "https://upload.wikimedia.org/wikipedia/commons/4/4e/Playstation_plus_logo.png" },
-    { id: "p12", name: "Discord Nitro", category: "Sosyal", price: "104.99", color: "purple", image: "https://assets-global.website-files.com/6257adef93867e56f84d3092/636e0a6a49cf127bf92de1e2_icon_clyde_blurple_RGB.png" },
-    { id: "p13", name: "Mubi", category: "Film", price: "129.00", color: "blue", image: "https://upload.wikimedia.org/wikipedia/commons/2/29/MUBI_logo.svg" },
-    { id: "p14", name: "Tod TV", category: "Spor", price: "249.00", color: "purple", image: "https://upload.wikimedia.org/wikipedia/commons/2/20/Tod_logo.svg" },
-    { id: "p15", name: "Gain", category: "Eğlence", price: "99.00", color: "red", image: "https://upload.wikimedia.org/wikipedia/commons/6/66/Gain_Logo.png" },
-    { id: "p16", name: "Adobe CC", category: "Yazılım", price: "582.00", color: "red", image: "https://upload.wikimedia.org/wikipedia/commons/a/ac/Creative_Cloud.svg" },
-    { id: "p17", name: "Canva Pro", category: "Tasarım", price: "149.00", color: "blue", image: "https://upload.wikimedia.org/wikipedia/commons/0/08/Canva_icon_2021.svg" },
-    { id: "p18", name: "ChatGPT Plus", category: "Yapay Zeka", price: "650.00", color: "green", image: "https://upload.wikimedia.org/wikipedia/commons/0/04/ChatGPT_logo.svg" },
-    { id: "p19", name: "Duolingo", category: "Eğitim", price: "89.99", color: "green", image: "https://upload.wikimedia.org/wikipedia/commons/a/a4/Duolingo_icon.svg" },
-    { id: "p20", name: "Tinder Gold", category: "Yaşam Tarzı", price: "250.00", color: "red", image: "https://upload.wikimedia.org/wikipedia/commons/e/e1/TinderIcon-2017.svg" },
+    { 
+        id: "p1", 
+        name: "Netflix", 
+        category: "Eğlence", 
+        price: "199.99", 
+        color: "red", 
+        image: "https://upload.wikimedia.org/wikipedia/commons/7/75/Netflix_icon.svg" 
+    },
+    { 
+        id: "p2", 
+        name: "Spotify", 
+        category: "Müzik", 
+        price: "59.99", 
+        color: "green", 
+        image: "https://upload.wikimedia.org/wikipedia/commons/1/19/Spotify_logo_without_text.svg" 
+    },
+    { 
+        id: "p3", 
+        name: "YouTube Premium", 
+        category: "Video", 
+        price: "57.99", 
+        color: "red", 
+        image: "https://upload.wikimedia.org/wikipedia/commons/0/09/YouTube_full-color_icon_%282017%29.svg" 
+    },
+    { 
+        id: "p4", 
+        name: "Amazon Prime", 
+        category: "Alışveriş", 
+        price: "39.00", 
+        color: "blue", 
+        image: "https://upload.wikimedia.org/wikipedia/commons/4/41/Prime_Video.png" 
+    },
+    { 
+        id: "p5", 
+        name: "Disney+", 
+        category: "Eğlence", 
+        price: "134.99", 
+        color: "blue", 
+        image: "https://upload.wikimedia.org/wikipedia/commons/3/3e/Disney%2B_logo.svg" 
+    },
+    { 
+        id: "p6", 
+        name: "Apple One", 
+        category: "Paket", 
+        price: "194.00", 
+        color: "zinc", 
+        image: "https://upload.wikimedia.org/wikipedia/commons/f/fa/Apple_logo_black.svg" 
+    },
+    { 
+        id: "p7", 
+        name: "iCloud+", 
+        category: "Bulut", 
+        price: "12.99", 
+        color: "sky", 
+        image: "https://upload.wikimedia.org/wikipedia/commons/4/4e/ICloud_logo.svg" 
+    },
+    { 
+        id: "p8", 
+        name: "Exxen", 
+        category: "Eğlence", 
+        price: "160.90", 
+        color: "yellow", 
+        image: "https://upload.wikimedia.org/wikipedia/commons/c/c8/Exxen_logo.svg" 
+    },
+    { 
+        id: "p9", 
+        name: "BluTV", 
+        category: "Eğlence", 
+        price: "99.90", 
+        color: "sky", 
+        image: "https://upload.wikimedia.org/wikipedia/commons/3/3d/BluTV_logo.svg" 
+    },
+    { 
+        id: "p10", 
+        name: "Xbox Game Pass", 
+        category: "Oyun", 
+        price: "159.00", 
+        color: "green", 
+        image: "https://upload.wikimedia.org/wikipedia/commons/f/f9/Xbox_one_logo.svg" 
+    },
+    { 
+        id: "p11", 
+        name: "PlayStation Plus", 
+        category: "Oyun", 
+        price: "200.00", 
+        color: "blue", 
+        image: "https://upload.wikimedia.org/wikipedia/commons/4/4e/Playstation_logo_colour.svg" 
+    },
+    { 
+        id: "p12", 
+        name: "Discord Nitro", 
+        category: "Sosyal", 
+        price: "104.99", 
+        color: "purple", 
+        image: "https://upload.wikimedia.org/wikipedia/commons/7/72/Discord_App_Icon_Violet.svg" 
+    },
+    { 
+        id: "p13", 
+        name: "Mubi", 
+        category: "Film", 
+        price: "129.00", 
+        color: "blue", 
+        image: "https://upload.wikimedia.org/wikipedia/commons/4/41/MUBI_logo.svg" 
+    },
+    { 
+        id: "p14", 
+        name: "Tod TV", 
+        category: "Spor", 
+        price: "249.00", 
+        color: "purple", 
+        image: "https://upload.wikimedia.org/wikipedia/commons/thumb/e/ef/TOD_logo.svg/1200px-TOD_logo.svg.png" 
+    },
+    { 
+        id: "p15", 
+        name: "Gain", 
+        category: "Eğlence", 
+        price: "99.00", 
+        color: "red", 
+        image: "https://upload.wikimedia.org/wikipedia/commons/3/32/GAİN_logo.svg" 
+    },
+    { 
+        id: "p16", 
+        name: "Adobe CC", 
+        category: "Yazılım", 
+        price: "582.00", 
+        color: "red", 
+        image: "https://upload.wikimedia.org/wikipedia/commons/a/ac/Creative_Cloud.svg" 
+    },
+    { 
+        id: "p17", 
+        name: "Canva Pro", 
+        category: "Tasarım", 
+        price: "149.00", 
+        color: "blue", 
+        image: "https://upload.wikimedia.org/wikipedia/commons/0/08/Canva_icon_2021.svg" 
+    },
+    { 
+        id: "p18", 
+        name: "ChatGPT Plus", 
+        category: "Yapay Zeka", 
+        price: "650.00", 
+        color: "green", 
+        image: "https://upload.wikimedia.org/wikipedia/commons/0/04/ChatGPT_logo.svg" 
+    },
+    { 
+        id: "p19", 
+        name: "Duolingo", 
+        category: "Eğitim", 
+        price: "89.99", 
+        color: "green", 
+        image: "https://upload.wikimedia.org/wikipedia/commons/a/a5/Duolingo_icon_%282019%29.svg" 
+    },
+    { 
+        id: "p20", 
+        name: "Tinder Gold", 
+        category: "Yaşam Tarzı", 
+        price: "250.00", 
+        color: "red", 
+        image: "https://upload.wikimedia.org/wikipedia/commons/e/e1/TinderIcon-2017.svg" 
+    },
 ];
 
 const SubscriptionList = () => {
 
-   
+    
     const { subscriptions, addSubscription, cancelSubscription, removeSubscription } = useGlobal();
     const [isAddingMode, setIsAddingMode] = useState(false);
     const [searchQuery, setSearchQuery] = useState("");
@@ -213,7 +353,16 @@ const SubscriptionList = () => {
                                 >
                                     {/* Platform Logo */}
                                     <div className="w-14 h-14 mb-4 rounded-xl bg-white border border-slate-100 p-2.5 flex items-center justify-center shadow-sm group-hover:scale-105 transition-transform duration-300">
-                                        <img src={platform.image} alt={platform.name} className="w-full h-full object-contain" />
+                                        <img 
+                                            src={platform.image} 
+                                            alt={platform.name} 
+                                            className="w-full h-full object-contain" 
+                                            loading="lazy"
+                                            onError={(e) => {
+                                               
+                                                e.target.style.display = 'none';
+                                            }}
+                                        />
                                     </div>
 
                                     <h3 className="font-bold text-slate-900 text-sm mb-1">{platform.name}</h3>
@@ -300,7 +449,15 @@ const SubscriptionList = () => {
                                             "w-14 h-14 rounded-2xl border p-2.5 flex items-center justify-center shadow-sm",
                                             isInactive ? "bg-slate-50 border-slate-100" : "bg-white border-slate-100"
                                         )}>
-                                            <img src={sub.image} alt={sub.name} className="w-full h-full object-contain" />
+                                            <img 
+                                                src={sub.image} 
+                                                alt={sub.name} 
+                                                className="w-full h-full object-contain" 
+                                                onError={(e) => {
+                                                 
+                                                    e.target.style.display = 'none';
+                                                }}
+                                            />
                                         </div>
 
                                         {isInactive ? (

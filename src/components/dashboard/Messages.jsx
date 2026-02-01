@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from "react";
-import { Phone, Video, MoreVertical, Send, Paperclip, CheckCheck, ShieldCheck, Headset } from "lucide-react";
+import {  Send, Paperclip, CheckCheck, ShieldCheck, Headset } from "lucide-react";
 import Button from "../ui/Button";
 import { cn } from "../../utils/helpers";
 import { motion } from "framer-motion";
@@ -51,10 +51,10 @@ const Messages = () => {
     <div className="h-[calc(100vh-140px)] animate-in fade-in slide-in-from-bottom-4 duration-500 pb-4">
       
       {/* Tek Sohbet Ekranı */}
-      <div className="h-full flex flex-col bg-white rounded-4xl border border-zinc-200 shadow-sm overflow-hidden relative">
+      <div className="h-full flex flex-col bg-yellow-600 rounded-4xl border border-zinc-200 shadow-sm overflow-hidden relative">
             
             {/* Sohbet Başlığı */}
-            <div className="p-4 md:p-6 border-b border-zinc-100 flex justify-between items-center bg-white/80 backdrop-blur-md z-10 sticky top-0">
+            <div className="p-4 md:p-6 border-b border-yellow-200 flex justify-between items-center bg-zinc-50 backdrop-blur-md z-10 sticky top-0">
                 <div className="flex items-center gap-4">
                     
                     {/* profil logo */}
@@ -67,24 +67,16 @@ const Messages = () => {
                     </div>
 
                     <div>
-                        <h3 className="font-bold text-zinc-900 text-lg">{contactInfo.name}</h3>
+                        <h3 className="font-bold text-yellow-900 text-2xl">{contactInfo.name}</h3>
                         <div className="flex items-center gap-1.5">
-                            <span className="w-2.5 h-2.5 rounded-full bg-green-500 animate-pulse border-2 border-white shadow-sm"></span>
+                            <span className="w-3.5 h-3.5 rounded-full bg-green-500 animate-pulse border-2 border-white shadow-sm"></span>
                             <span className="text-xs text-zinc-500 font-medium">{contactInfo.role}</span>
                         </div>
                     </div>
                 </div>
 
                 <div className="flex gap-2">
-                    <Button variant="ghost" size="icon" className="hidden sm:flex rounded-full hover:bg-zinc-100 text-zinc-400 cursor-pointer">
-                        <Phone size={20} />
-                    </Button>
-                    <Button variant="ghost" size="icon" className="hidden sm:flex rounded-full hover:bg-zinc-100 text-zinc-400 cursor-pointer">
-                        <Video size={20} />
-                    </Button>
-                    <Button variant="ghost" size="icon" className="rounded-full hover:bg-zinc-100 text-zinc-400 cursor-pointer">
-                        <MoreVertical size={20} />
-                    </Button>
+               
                 </div>
             </div>
 
@@ -93,8 +85,8 @@ const Messages = () => {
                 
                 {/* Güvenlik Uyarısı */}
                 <div className="flex justify-center my-4">
-                    <div className="bg-yellow-50 text-yellow-700 px-4 py-2 rounded-full text-[10px] font-bold border border-yellow-100 flex items-center gap-2 shadow-sm">
-                        <ShieldCheck size={12} />
+                    <div className="bg-yellow-50 text-yellow-800 px-4 py-2 rounded-full text-[10px] font-bold border border-yellow-300 flex items-center gap-2 shadow-sm">
+                        <ShieldCheck size={15} />
                         Bu sohbet uçtan uca şifrelenmektedir.
                     </div>
                 </div>
@@ -139,9 +131,9 @@ const Messages = () => {
             </div>
 
             {/* İnput Alanı */}
-            <div className="p-4 md:p-5 bg-white border-t border-zinc-100">
+            <div className="p-4 md:p-5 bg-white border-t border-zinc-300">
                 <form onSubmit={handleSend} className="flex items-center gap-3">
-                    <Button type="button" variant="ghost" size="icon" className="text-zinc-400 hover:text-zinc-600 hover:bg-zinc-100 rounded-xl shrink-0 cursor-pointer">
+                    <Button type="button" variant="ghost" size="icon" className="text-zinc-600 hover:text-zinc-600 hover:bg-zinc-100 rounded-xl shrink-0 cursor-pointer">
                         <Paperclip size={20} />
                     </Button>
                     
@@ -151,11 +143,9 @@ const Messages = () => {
                             value={inputText}
                             onChange={(e) => setInputText(e.target.value)}
                             placeholder="Mesajınızı buraya yazın..." 
-                            className="w-full bg-zinc-50 text-sm text-zinc-900 rounded-xl pl-5 pr-12 py-3.5 border border-zinc-200 focus:border-blue-500 focus:bg-white focus:outline-none transition-all placeholder:text-zinc-400"
+                            className="w-full bg-zinc-50 text-sm text-zinc-900 rounded-xl pl-5 pr-12 py-3.5 border border-zinc-200 focus:border-yellow-600 focus:bg-white focus:outline-none transition-all placeholder:text-zinc-400"
                         />
-                        <div className="absolute right-2 top-1/2 -translate-y-1/2 p-1.5 rounded-lg bg-zinc-100 text-xs text-zinc-400 border border-zinc-200 hidden sm:block pointer-events-none">
-                            ↵ Enter
-                        </div>
+                       
                     </div>
                     
                     <Button 
@@ -164,7 +154,7 @@ const Messages = () => {
                         size="icon" 
                         className={cn(
                             "w-12 h-12 rounded-xl transition-all duration-300 cursor-pointer",
-                            !inputText.trim() ? "bg-zinc-200 text-zinc-400 border-zinc-200 cursor-not-allowed" : "bg-blue-600 hover:bg-blue-500 text-white border-blue-500 shadow-lg shadow-blue-200"
+                            !inputText.trim() ? "bg-yellow-900 text-white border-zinc-200 cursor-not-allowed" : "bg-yellow-600 hover:bg-yellow-500 text-white border-yellow-500 "
                         )}
                         disabled={!inputText.trim()}
                     >

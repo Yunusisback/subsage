@@ -104,9 +104,15 @@ const DashboardView = ({ setActiveTab }) => {
         return activeSubs.map(sub => {
             let progressValue = 50;
             const n = sub.name.toLowerCase();
+            
+         
             if (n.includes("netflix")) progressValue = 85;
             else if (n.includes("spotify")) progressValue = 20;
-            else progressValue = Math.floor(Math.random() * 70) + 10;
+            else {
+              
+                const uniqueNumber = typeof sub.id === 'number' ? sub.id : sub.name.length;
+                progressValue = ((uniqueNumber * 7) % 80) + 10; 
+            }
 
             let themeKey = "dark";
             if (sub.color && THEMES[sub.color]) themeKey = sub.color; // Renk varsa kullan
@@ -159,7 +165,7 @@ const DashboardView = ({ setActiveTab }) => {
                     </div>
 
                     {/* Alt grafik */}
-                    <div className="absolute bottom-0 left-0 right-0 h-20 lg:h-24 pointer-events-none">
+                    <div className="absolute bottom-0 left-0 right-0 h-20 lg:h-16 pointer-events-none">
                         <ResponsiveContainer width="100%" height="100%">
                             <AreaChart data={chartData} margin={{ top: 0, right: 0, left: 0, bottom: 0 }}>
                                 <defs>
@@ -296,7 +302,7 @@ const DashboardView = ({ setActiveTab }) => {
                                     </div>
                                     <div>
                                         <h4 className="text-base lg:text-lg font-bold text-slate-900 leading-tight">{sub.name}</h4>
-                                        <span className={cn("text-[10px] font-bold uppercase tracking-wider", sub.theme.subtext)}>AYLIK PLAN</span>
+                                        
                                     </div>
                                 </div>
 
@@ -320,13 +326,13 @@ const DashboardView = ({ setActiveTab }) => {
                             </div>
 
                             {/* alt kısım fiyat*/}
-                            <div className="w-full flex justify-between items-center mt-4 pt-4 border-t border-slate-100 z-10">
-                                <div className="flex items-center gap-2 text-slate-400 text-xs font-medium">
-                                    <CreditCard size={14} />
+                            <div className="w-full flex justify-between items-center mt-3 pt-3 border-t border-slate-100 z-10">
+                                <div className="flex items-center gap-2 text-slate-500 text-sm font-medium">
+                                    <CreditCard size={15} />
                                     <span>Otomatik</span>
                                 </div>
-                                <div className="text-lg lg:text-xl font-black text-slate-900 tabular-nums tracking-tight">
-                                    {formatMoneyClean(sub.price)} <span className="text-xs font-bold text-slate-500">₺</span>
+                                <div className="text-lg lg:text-3xl font-black text-slate-900 tabular-nums tracking-tight">
+                                    {formatMoneyClean(sub.price)} <span className="text-xl font-bold text-slate-600">₺</span>
                                 </div>
                             </div>
 
