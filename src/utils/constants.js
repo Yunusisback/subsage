@@ -1,3 +1,27 @@
+
+export const SERVICE_LOGOS = {
+  NETFLIX: "/brands/netflix.svg",
+  SPOTIFY: "/brands/spotify.svg",
+  YOUTUBE: "/brands/youtube.svg",
+  AMAZON: "/brands/amazon.svg",
+  DISNEY: "/brands/disney.svg",
+  APPLE: "/brands/apple.svg",
+  ICLOUD: "/brands/icloud.svg",
+  EXXEN: "/brands/exxen.svg",
+  BLUTV: "/brands/blutv.svg",
+  XBOX: "/brands/xbox.svg",
+  PLAYSTATION: "/brands/playstation.svg",
+  DISCORD: "/brands/discord.svg",
+  MUBI: "/brands/mubi.svg",
+  TOD: "/brands/tod.svg", 
+  GAIN: "/brands/gain.svg",
+  ADOBE: "/brands/adobe.svg",
+  CANVA: "/brands/canva.svg",
+  CHATGPT: "/brands/chatgpt.svg",
+  DUOLINGO: "/brands/duolingo.svg",
+  DEFAULT: "/brands/default.svg" 
+};
+
 export const TABS = {
   DASHBOARD: "dashboard",
   SUBSCRIPTIONS: "subscriptions",
@@ -22,7 +46,7 @@ export const INITIAL_SUBSCRIPTIONS = [
     currency: "TRY",
     startDate: "2025-01-10", 
     category: "Eğlence",
-    image: "https://upload.wikimedia.org/wikipedia/commons/0/08/Netflix_2015_logo.svg",
+    image: SERVICE_LOGOS.NETFLIX,
     color: "bg-red-600"
   },
   {
@@ -32,7 +56,7 @@ export const INITIAL_SUBSCRIPTIONS = [
     currency: "TRY",
     startDate: "2025-01-20", 
     category: "Müzik",
-    image: "https://upload.wikimedia.org/wikipedia/commons/1/19/Spotify_logo_without_text.svg",
+    image: SERVICE_LOGOS.SPOTIFY,
     color: "bg-green-500"
   },
   {
@@ -42,7 +66,7 @@ export const INITIAL_SUBSCRIPTIONS = [
     currency: "TRY",
     startDate: "2025-02-15", 
     category: "Alışveriş",
-    image: "https://upload.wikimedia.org/wikipedia/commons/d/de/Amazon_icon.png",
+    image: SERVICE_LOGOS.AMAZON,
     color: "bg-blue-500"
   },
   {
@@ -52,7 +76,7 @@ export const INITIAL_SUBSCRIPTIONS = [
     currency: "TRY",
     startDate: "2025-03-01", 
     category: "Video",
-    image: "https://upload.wikimedia.org/wikipedia/commons/0/09/YouTube_full-color_icon_%282017%29.svg",
+    image: SERVICE_LOGOS.YOUTUBE,
     color: "bg-red-500"
   },
   {
@@ -62,7 +86,7 @@ export const INITIAL_SUBSCRIPTIONS = [
     currency: "TRY",
     startDate: "2025-01-05", 
     category: "Bulut Servisi",
-    image: "https://upload.wikimedia.org/wikipedia/commons/1/1c/ICloud_logo.svg",
+    image: SERVICE_LOGOS.ICLOUD,
     color: "bg-blue-400"
   },
   {
@@ -72,7 +96,7 @@ export const INITIAL_SUBSCRIPTIONS = [
     currency: "TRY",
     startDate: "2025-02-20", 
     category: "Eğlence",
-    image: "https://upload.wikimedia.org/wikipedia/commons/3/3e/Disney%2B_logo.svg",
+    image: SERVICE_LOGOS.DISNEY,
     color: "bg-blue-900"
   },
   {
@@ -82,7 +106,7 @@ export const INITIAL_SUBSCRIPTIONS = [
     currency: "TRY",
     startDate: "2025-03-10", 
     category: "Oyun",
-    image: "https://upload.wikimedia.org/wikipedia/commons/f/f3/Xbox_Game_Pass_logo.svg",
+    image: SERVICE_LOGOS.XBOX,
     color: "bg-green-600"
   },
   {
@@ -92,7 +116,7 @@ export const INITIAL_SUBSCRIPTIONS = [
     currency: "TRY",
     startDate: "2025-01-15", 
     category: "Eğlence",
-    image: "https://upload.wikimedia.org/wikipedia/commons/c/c7/Exxen_logo.svg",
+    image: SERVICE_LOGOS.EXXEN,
     color: "bg-yellow-400"
   },
   {
@@ -102,11 +126,12 @@ export const INITIAL_SUBSCRIPTIONS = [
     currency: "TRY",
     startDate: "2025-04-01", 
     category: "Eğlence",
-    image: "https://upload.wikimedia.org/wikipedia/commons/1/16/BluTV_Logo.png",
+    image: SERVICE_LOGOS.BLUTV,
     color: "bg-sky-500"
   }
 ];
 
+// Örnek bildirimler
 export const INITIAL_NOTIFICATIONS = [
   {
     id: 1,

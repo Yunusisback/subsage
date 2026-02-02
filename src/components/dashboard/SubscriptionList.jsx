@@ -5,6 +5,7 @@ import { useGlobal } from "../../context/GlobalContext";
 import { cn } from "../../utils/helpers";
 import { AnimatePresence, motion } from "framer-motion";
 import toast from "react-hot-toast";
+import { SERVICE_LOGOS } from "../../utils/constants";
 
 // Para birimi formatlayıcı 
 const formatMoneyClean = (amount) => {
@@ -15,173 +16,164 @@ const formatMoneyClean = (amount) => {
     }).format(amount);
 };
 
-
+// Abonelik Ekleme için kullanılabilir platformlar
 const PLATFORMS = [
-    { 
-        id: "p1", 
-        name: "Netflix", 
-        category: "Eğlence", 
-        price: "199.99", 
-        color: "red", 
-        image: "https://upload.wikimedia.org/wikipedia/commons/7/75/Netflix_icon.svg" 
+    {
+        id: "p1",
+        name: "Netflix",
+        category: "Eğlence",
+        price: "199.99",
+        color: "red",
+        image: SERVICE_LOGOS.NETFLIX
     },
-    { 
-        id: "p2", 
-        name: "Spotify", 
-        category: "Müzik", 
-        price: "59.99", 
-        color: "green", 
-        image: "https://upload.wikimedia.org/wikipedia/commons/1/19/Spotify_logo_without_text.svg" 
+    {
+        id: "p2",
+        name: "Spotify",
+        category: "Müzik",
+        price: "59.99",
+        color: "green",
+        image: SERVICE_LOGOS.SPOTIFY
     },
-    { 
-        id: "p3", 
-        name: "YouTube Premium", 
-        category: "Video", 
-        price: "57.99", 
-        color: "red", 
-        image: "https://upload.wikimedia.org/wikipedia/commons/0/09/YouTube_full-color_icon_%282017%29.svg" 
+    {
+        id: "p3",
+        name: "YouTube Premium",
+        category: "Video",
+        price: "57.99",
+        color: "red",
+        image: SERVICE_LOGOS.YOUTUBE
     },
-    { 
-        id: "p4", 
-        name: "Amazon Prime", 
-        category: "Alışveriş", 
-        price: "39.00", 
-        color: "blue", 
-        image: "https://upload.wikimedia.org/wikipedia/commons/4/41/Prime_Video.png" 
+    {
+        id: "p4",
+        name: "Amazon Prime",
+        category: "Alışveriş",
+        price: "39.00",
+        color: "blue",
+        image: SERVICE_LOGOS.AMAZON
     },
-    { 
-        id: "p5", 
-        name: "Disney+", 
-        category: "Eğlence", 
-        price: "134.99", 
-        color: "blue", 
-        image: "https://upload.wikimedia.org/wikipedia/commons/3/3e/Disney%2B_logo.svg" 
+    {
+        id: "p5",
+        name: "Disney+",
+        category: "Eğlence",
+        price: "134.99",
+        color: "blue",
+        image: SERVICE_LOGOS.DISNEY
     },
-    { 
-        id: "p6", 
-        name: "Apple One", 
-        category: "Paket", 
-        price: "194.00", 
-        color: "zinc", 
-        image: "https://upload.wikimedia.org/wikipedia/commons/f/fa/Apple_logo_black.svg" 
+    {
+        id: "p6",
+        name: "Apple One",
+        category: "Paket",
+        price: "194.00",
+        color: "zinc",
+        image: SERVICE_LOGOS.APPLE
     },
-    { 
-        id: "p7", 
-        name: "iCloud+", 
-        category: "Bulut", 
-        price: "12.99", 
-        color: "sky", 
-        image: "https://upload.wikimedia.org/wikipedia/commons/4/4e/ICloud_logo.svg" 
+    {
+        id: "p7",
+        name: "iCloud+",
+        category: "Bulut",
+        price: "12.99",
+        color: "sky",
+        image: SERVICE_LOGOS.ICLOUD
     },
-    { 
-        id: "p8", 
-        name: "Exxen", 
-        category: "Eğlence", 
-        price: "160.90", 
-        color: "yellow", 
-        image: "https://upload.wikimedia.org/wikipedia/commons/c/c8/Exxen_logo.svg" 
+    {
+        id: "p8",
+        name: "Exxen",
+        category: "Eğlence",
+        price: "160.90",
+        color: "yellow",
+        image: SERVICE_LOGOS.EXXEN
     },
-    { 
-        id: "p9", 
-        name: "BluTV", 
-        category: "Eğlence", 
-        price: "99.90", 
-        color: "sky", 
-        image: "https://upload.wikimedia.org/wikipedia/commons/3/3d/BluTV_logo.svg" 
+    {
+        id: "p9",
+        name: "BluTV",
+        category: "Eğlence",
+        price: "99.90",
+        color: "sky",
+        image: SERVICE_LOGOS.BLUTV
     },
-    { 
-        id: "p10", 
-        name: "Xbox Game Pass", 
-        category: "Oyun", 
-        price: "159.00", 
-        color: "green", 
-        image: "https://upload.wikimedia.org/wikipedia/commons/f/f9/Xbox_one_logo.svg" 
+    {
+        id: "p10",
+        name: "Xbox Game Pass",
+        category: "Oyun",
+        price: "159.00",
+        color: "green",
+        image: SERVICE_LOGOS.XBOX
     },
-    { 
-        id: "p11", 
-        name: "PlayStation Plus", 
-        category: "Oyun", 
-        price: "200.00", 
-        color: "blue", 
-        image: "https://upload.wikimedia.org/wikipedia/commons/4/4e/Playstation_logo_colour.svg" 
+    {
+        id: "p11",
+        name: "PlayStation Plus",
+        category: "Oyun",
+        price: "200.00",
+        color: "blue",
+        image: SERVICE_LOGOS.PLAYSTATION
     },
-    { 
-        id: "p12", 
-        name: "Discord Nitro", 
-        category: "Sosyal", 
-        price: "104.99", 
-        color: "purple", 
-        image: "https://upload.wikimedia.org/wikipedia/commons/7/72/Discord_App_Icon_Violet.svg" 
+    {
+        id: "p12",
+        name: "Discord Nitro",
+        category: "Sosyal",
+        price: "104.99",
+        color: "purple",
+        image: SERVICE_LOGOS.DISCORD
     },
-    { 
-        id: "p13", 
-        name: "Mubi", 
-        category: "Film", 
-        price: "129.00", 
-        color: "blue", 
-        image: "https://upload.wikimedia.org/wikipedia/commons/4/41/MUBI_logo.svg" 
+    {
+        id: "p13",
+        name: "Mubi",
+        category: "Film",
+        price: "129.00",
+        color: "blue",
+        image: SERVICE_LOGOS.MUBI
     },
-    { 
-        id: "p14", 
-        name: "Tod TV", 
-        category: "Spor", 
-        price: "249.00", 
-        color: "purple", 
-        image: "https://upload.wikimedia.org/wikipedia/commons/thumb/e/ef/TOD_logo.svg/1200px-TOD_logo.svg.png" 
+    {
+        id: "p14",
+        name: "Tod TV",
+        category: "Spor",
+        price: "249.00",
+        color: "purple",
+        image: SERVICE_LOGOS.TOD
     },
-    { 
-        id: "p15", 
-        name: "Gain", 
-        category: "Eğlence", 
-        price: "99.00", 
-        color: "red", 
-        image: "https://upload.wikimedia.org/wikipedia/commons/3/32/GAİN_logo.svg" 
+    {
+        id: "p15",
+        name: "Gain",
+        category: "Eğlence",
+        price: "99.00",
+        color: "red",
+        image: SERVICE_LOGOS.GAIN
     },
-    { 
-        id: "p16", 
-        name: "Adobe CC", 
-        category: "Yazılım", 
-        price: "582.00", 
-        color: "red", 
-        image: "https://upload.wikimedia.org/wikipedia/commons/a/ac/Creative_Cloud.svg" 
+    {
+        id: "p16",
+        name: "Adobe CC",
+        category: "Yazılım",
+        price: "582.00",
+        color: "red",
+        image: SERVICE_LOGOS.ADOBE
     },
-    { 
-        id: "p17", 
-        name: "Canva Pro", 
-        category: "Tasarım", 
-        price: "149.00", 
-        color: "blue", 
-        image: "https://upload.wikimedia.org/wikipedia/commons/0/08/Canva_icon_2021.svg" 
+    {
+        id: "p17",
+        name: "Canva Pro",
+        category: "Tasarım",
+        price: "149.00",
+        color: "blue",
+        image: SERVICE_LOGOS.CANVA
     },
-    { 
-        id: "p18", 
-        name: "ChatGPT Plus", 
-        category: "Yapay Zeka", 
-        price: "650.00", 
-        color: "green", 
-        image: "https://upload.wikimedia.org/wikipedia/commons/0/04/ChatGPT_logo.svg" 
+    {
+        id: "p18",
+        name: "ChatGPT Plus",
+        category: "Yapay Zeka",
+        price: "650.00",
+        color: "green",
+        image: SERVICE_LOGOS.CHATGPT
     },
-    { 
-        id: "p19", 
-        name: "Duolingo", 
-        category: "Eğitim", 
-        price: "89.99", 
-        color: "green", 
-        image: "https://upload.wikimedia.org/wikipedia/commons/a/a5/Duolingo_icon_%282019%29.svg" 
-    },
-    { 
-        id: "p20", 
-        name: "Tinder Gold", 
-        category: "Yaşam Tarzı", 
-        price: "250.00", 
-        color: "red", 
-        image: "https://upload.wikimedia.org/wikipedia/commons/e/e1/TinderIcon-2017.svg" 
+    {
+        id: "p19",
+        name: "Duolingo",
+        category: "Eğitim",
+        price: "89.99",
+        color: "green",
+        image: SERVICE_LOGOS.DUOLINGO
     },
 ];
 
 const SubscriptionList = () => {
 
-    
     const { subscriptions, addSubscription, cancelSubscription, removeSubscription } = useGlobal();
     const [isAddingMode, setIsAddingMode] = useState(false);
     const [searchQuery, setSearchQuery] = useState("");
@@ -261,7 +253,7 @@ const SubscriptionList = () => {
 
             {/* header ve kontroller */}
             <div className="flex flex-col md:flex-row md:items-center justify-start gap-4 mb-8">
-                
+
                 <div className="flex items-center gap-3 w-full md:w-auto">
 
                     {/* Arama Kutusu */}
@@ -280,7 +272,7 @@ const SubscriptionList = () => {
                     <Button
                         onClick={() => {
                             setIsAddingMode(!isAddingMode);
-                            setSearchQuery(""); 
+                            setSearchQuery("");
                         }}
                         className={cn(
                             "flex items-center gap-2 px-4 py-2.5 rounded-xl font-semibold transition-all cursor-pointer border shadow-sm shrink-0",
@@ -327,7 +319,7 @@ const SubscriptionList = () => {
             <AnimatePresence mode="wait">
 
                 {isAddingMode ? (
-                  
+
                     <motion.div
                         key="add-mode"
                         initial={{ opacity: 0, y: 10 }}
@@ -353,14 +345,15 @@ const SubscriptionList = () => {
                                 >
                                     {/* Platform Logo */}
                                     <div className="w-14 h-14 mb-4 rounded-xl bg-white border border-slate-100 p-2.5 flex items-center justify-center shadow-sm group-hover:scale-105 transition-transform duration-300">
-                                        <img 
-                                            src={platform.image} 
-                                            alt={platform.name} 
-                                            className="w-full h-full object-contain" 
+                                        <img
+                                            src={platform.image}
+                                            alt={platform.name}
+                                            className="w-full h-full object-contain"
                                             loading="lazy"
                                             onError={(e) => {
-                                               
-                                                e.target.style.display = 'none';
+
+                                                // Eğer resim yüklenmezse varsayılan göster
+                                                e.target.src = SERVICE_LOGOS.DEFAULT;
                                             }}
                                         />
                                     </div>
@@ -396,7 +389,7 @@ const SubscriptionList = () => {
                                         </div>
                                     </div>
 
-                                   {/* seçili değilken hover ikonu */}
+                                    {/* seçili değilken hover ikonu */}
                                     {!isSubscribed && (
                                         <div className="absolute top-3 right-3 w-6 h-6 rounded-full bg-blue-50 text-blue-600 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all scale-75 group-hover:scale-100">
                                             <Plus size={14} strokeWidth={3} />
@@ -414,7 +407,7 @@ const SubscriptionList = () => {
                         )}
                     </motion.div>
                 ) : (
-                    
+
                     <motion.div
                         key="list-mode"
                         initial={{ opacity: 0, x: -10 }}
@@ -449,13 +442,14 @@ const SubscriptionList = () => {
                                             "w-14 h-14 rounded-2xl border p-2.5 flex items-center justify-center shadow-sm",
                                             isInactive ? "bg-slate-50 border-slate-100" : "bg-white border-slate-100"
                                         )}>
-                                            <img 
-                                                src={sub.image} 
-                                                alt={sub.name} 
-                                                className="w-full h-full object-contain" 
+                                            <img
+                                                src={sub.image}
+                                                alt={sub.name}
+                                                className="w-full h-full object-contain"
                                                 onError={(e) => {
-                                                 
-                                                    e.target.style.display = 'none';
+
+                                                    // Hata durumunda varsayılan ikon
+                                                    e.target.src = SERVICE_LOGOS.DEFAULT;
                                                 }}
                                             />
                                         </div>
@@ -470,6 +464,7 @@ const SubscriptionList = () => {
                                                 <Trash2 size={16} />
                                             </button>
                                         ) : (
+                                            
                                             // İptal Butonu 
                                             <button
                                                 className={cn(

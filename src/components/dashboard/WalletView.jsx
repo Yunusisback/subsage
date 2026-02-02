@@ -15,6 +15,9 @@ const WalletView = () => {
   const { transactions, userSettings } = useGlobal(); 
   const [isExpanded, setIsExpanded] = useState(false);
 
+  // Sanal Limit State
+  const [spendingLimit, setSpendingLimit] = useState(15000); 
+
   // Kartın altındaki hızlı butonlar
   const QUICK_ACTIONS = [
       { icon: Lock, label: "Kartı Dondur", color: "text-red-500", bg: "bg-red-50 hover:bg-red-100" },
@@ -36,21 +39,26 @@ const WalletView = () => {
             
             {/* Başlık ve Ekle Butonu */}
             <div className="flex items-center justify-between ">
-           
                 <Button size="sm" className="flex items-center gap-1 pl-2 pr-4 rounded-full font-bold bg-white hover:bg-zinc-300 text-black shadow-sm hover:shadow-md border-transparent cursor-pointer">
                     <Plus size={16} strokeWidth={3} />
                     Kart Ekle
                 </Button>
             </div>
 
-            {/* kredi kartı */}
-         
-            <div className="relative w-full max-w-sm aspect-[1.586/1] rounded-3xl overflow-hidden shadow-2xl group perspective-1000 transition-transform duration-500 hover:scale-[1.02]">
+            {/* Kredi Kartı Alanı  */}
+            <motion.div 
+                className="relative w-full max-w-sm aspect-[1.586/1] rounded-3xl overflow-hidden shadow-2xl cursor-default"
+                whileHover={{ scale: 1.05, y: -5 }} 
+                transition={{ type: "spring", stiffness: 300, damping: 20 }}
+            >
+                {/* Arka Plan Gradient */}
                 <div className="absolute inset-0 bg-linear-to-br from-slate-900 via-purple-900 to-slate-900">
-        
+
+                    {/* Parlama Efekti */}
                     <div className="absolute top-[-50%] left-[-50%] w-[200%] h-[200%] bg-linear-to-b from-white/10 via-transparent to-transparent transform rotate-45 pointer-events-none"></div>
                 </div>
-
+                
+                {/* Kart İçeriği */}
                 <div className="relative h-full w-full p-6 flex flex-col justify-between text-white/90 z-10">
                     <div className="flex justify-between items-start">
                         <div className="flex flex-col gap-4">
@@ -68,6 +76,7 @@ const WalletView = () => {
                             </div>
                         </div>
                     </div>
+                    
                     <div className="mt-2 flex justify-center">
                         <div className="font-mono text-2xl sm:text-[26px] tracking-[0.15em] text-white drop-shadow-[0_2px_2px_rgba(0,0,0,0.3)] flex gap-4 font-medium">
                             <span>4556</span>
@@ -76,6 +85,7 @@ const WalletView = () => {
                             <span>3732</span>
                         </div>
                     </div>
+                    
                     <div className="flex justify-between items-end mb-1">
                         <div className="flex gap-10">
                             <div className="flex flex-col">
@@ -83,12 +93,10 @@ const WalletView = () => {
                                 <span className="text-sm font-bold text-white drop-shadow-sm font-mono tracking-wide">09/28</span>
                             </div>
                             <div className="flex flex-col">
-                                 <span className="text-[8px] uppercase text-white/70 mb-0.5 tracking-wider">CARD HOLDER</span>
-
-                               
-                                 <span className="text-sm font-bold text-white drop-shadow-sm tracking-wide uppercase">
+                                <span className="text-[8px] uppercase text-white/70 mb-0.5 tracking-wider">CARD HOLDER</span>
+                                <span className="text-sm font-bold text-white drop-shadow-sm tracking-wide uppercase">
                                     {userSettings.name}
-                                 </span>
+                                </span>
                             </div>
                         </div>
                         <div className="w-14">
@@ -96,9 +104,43 @@ const WalletView = () => {
                         </div>
                     </div>
                 </div>
-            </div>
+            </motion.div>
+            
+            {/* Sanal Harcama Limiti  */}
+            <BentoCard glowColor="purple" className="p-5">
+                <div className="flex justify-between items-end mb-4">
+                    <div>
+                        <h3 className="text-xs font-bold text-zinc-500 uppercase tracking-wider mb-1">Kullanılabilir Bakiye</h3>
+                        <div className="text-2xl font-black text-zinc-900 tracking-tight">
+                            {formatCurrency(spendingLimit)}
+                        </div>
+                    </div>
+                    <div className="bg-purple-50 text-purple-700 px-3 py-1 rounded-lg text-xs font-bold border border-purple-100">
+                        Sanal Kart
+                    </div>
+                </div>
 
-            {/* hızlı işlemler*/}
+                <div className="space-y-3">
+                    <div className="flex justify-between text-[10px] font-bold text-zinc-400">
+                        <span>1.000₺</span>
+                        <span>50.000₺</span>
+                    </div>
+                    <input 
+                        type="range" 
+                        min="1000" 
+                        max="50000" 
+                        step="500" 
+                        value={spendingLimit} 
+                        onChange={(e) => setSpendingLimit(Number(e.target.value))}
+                        className="w-full h-2 bg-zinc-100 rounded-lg appearance-none cursor-pointer accent-purple-600 hover:accent-purple-500 transition-all"
+                    />
+                    <p className="text-xs text-zinc-400 text-center">
+                        Limit değiştirmek için kaydırın
+                    </p>
+                </div>
+            </BentoCard>
+
+            {/* Hızlı İşlemler */}
             <BentoCard glowColor="zinc" className="p-6">
                 <h3 className="text-sm font-bold text-yellow-900 mb-4">Hızlı İşlemler</h3>
                 <div className="grid grid-cols-2 gap-3">
@@ -119,7 +161,7 @@ const WalletView = () => {
 
         </div>
 
-        {/* işlem geçmişi */}
+        {/* İşlem Geçmişi */}
         <div className="lg:col-span-2">
             <BentoCard 
                 glowColor="zinc" 
@@ -127,11 +169,10 @@ const WalletView = () => {
                 whileHover={{}} 
             >
                 
-                {/* header */}
+                {/* Header */}
                 <div className="p-6 border-b border-zinc-100 flex justify-between items-center bg-white/80 backdrop-blur-md sticky top-0 z-20">
                     <div>
                         <h3 className="text-2xl mr-50 font-bold text-red-900">Son İşlemler</h3>
-                       
                     </div>
                     <div className="flex gap-2">
                         <button className="p-2 rounded-xl hover:bg-zinc-100 text-zinc-400 hover:text-zinc-900 transition-colors cursor-pointer">
@@ -203,7 +244,7 @@ const WalletView = () => {
                     )}
                 </div>
 
-                {/* genişletme butonu footer*/}
+                {/* Genişletme Butonu */}
                 {transactions.length > 5 && (
                     <div className="p-4 border-t border-zinc-100 bg-zinc-50/30 flex justify-center">
                         <button 

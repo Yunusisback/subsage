@@ -1,7 +1,8 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Input from "../ui/Input";
 import Button from "../ui/Button";
 import { useGlobal } from "../../context/GlobalContext";
+import { SERVICE_LOGOS } from "../../utils/constants";
 
 const AddSubscriptionForm = ({ onSuccess }) => {
   const { addSubscription } = useGlobal();
@@ -12,10 +13,39 @@ const AddSubscriptionForm = ({ onSuccess }) => {
     price: "",
     category: "",
     startDate: new Date().toISOString().split("T")[0], // Bugünün tarihi
-    image: "https://upload.wikimedia.org/wikipedia/commons/e/e4/Infobox_info_icon.svg" 
+    image: SERVICE_LOGOS.DEFAULT 
   });
 
   const [errors, setErrors] = useState({});
+
+  // İsim değiştiğinde logoyu otomatik bulmaya çalış
+  useEffect(() => {
+    if(!formData.name) return;
+
+    const lowerName = formData.name.toLowerCase();
+    let matchedLogo = null;
+
+    // Basit bir eşleştirme mantığı
+    if(lowerName.includes("netflix")) matchedLogo = SERVICE_LOGOS.NETFLIX;
+    else if(lowerName.includes("spotify")) matchedLogo = SERVICE_LOGOS.SPOTIFY;
+    else if(lowerName.includes("youtube")) matchedLogo = SERVICE_LOGOS.YOUTUBE;
+    else if(lowerName.includes("prime") || lowerName.includes("amazon")) matchedLogo = SERVICE_LOGOS.AMAZON;
+    else if(lowerName.includes("disney")) matchedLogo = SERVICE_LOGOS.DISNEY;
+    else if(lowerName.includes("exxen")) matchedLogo = SERVICE_LOGOS.EXXEN;
+    else if(lowerName.includes("blutv")) matchedLogo = SERVICE_LOGOS.BLUTV;
+    else if(lowerName.includes("xbox")) matchedLogo = SERVICE_LOGOS.XBOX;
+    else if(lowerName.includes("playstation")) matchedLogo = SERVICE_LOGOS.PLAYSTATION;
+    else if(lowerName.includes("icloud") || lowerName.includes("apple")) matchedLogo = SERVICE_LOGOS.ICLOUD;
+    else if(lowerName.includes("tod")) matchedLogo = SERVICE_LOGOS.TOD;
+    else if(lowerName.includes("discord")) matchedLogo = SERVICE_LOGOS.DISCORD;
+    else if(lowerName.includes("mubi")) matchedLogo = SERVICE_LOGOS.MUBI;
+
+    // Eğer eşleşen varsa güncelle
+    if (matchedLogo) {
+        setFormData(prev => ({ ...prev, image: matchedLogo }));
+    }
+
+  }, [formData.name]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -110,6 +140,16 @@ const AddSubscriptionForm = ({ onSuccess }) => {
         onChange={handleChange}
         className="text-xs"
       />
+
+      {/* Logo Önizleme */}
+      {formData.image && (
+          <div className="flex items-center gap-2 text-xs text-zinc-500">
+              <div className="w-8 h-8 rounded border border-zinc-200 p-1 flex items-center justify-center">
+                   <img src={formData.image} alt="Logo Önizleme" className="w-full h-full object-contain" onError={(e) => e.target.style.opacity = 0.5} />
+              </div>
+              <span>Logo Önizleme</span>
+          </div>
+      )}
 
       <div className="pt-4">
         <Button 

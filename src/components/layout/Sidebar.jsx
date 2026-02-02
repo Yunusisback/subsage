@@ -51,6 +51,7 @@ const Sidebar = ({ isCollapsed, toggleSidebar, activeTab, setActiveTab, isMobile
         
         <div className={cn(
             "relative flex items-center gap-4 transition-all duration-500", 
+            
             // mobilde her zaman sola dayalı masaüstünde collapse durumuna göre
             isCollapsed ? "lg:justify-center lg:pl-0 pl-4" : "justify-start pl-2"
         )}>
@@ -130,6 +131,7 @@ const Sidebar = ({ isCollapsed, toggleSidebar, activeTab, setActiveTab, isMobile
                 {item.badge && (
                     <span className={cn(
                         "ml-auto text-[10px] font-bold px-2 py-0.5 rounded-full",
+
                         // collapsed mantığı
                         isCollapsed ? "lg:hidden" : "block",
                         isActive ? "bg-white/20 text-white" : "bg-zinc-100 text-zinc-600 group-hover:bg-white group-hover:shadow-sm"

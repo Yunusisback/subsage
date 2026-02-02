@@ -1,5 +1,5 @@
 import { createContext, useContext, useState, useEffect } from "react";
-import { INITIAL_SUBSCRIPTIONS, INITIAL_NOTIFICATIONS } from "../utils/constants";
+import { INITIAL_SUBSCRIPTIONS, INITIAL_NOTIFICATIONS, SERVICE_LOGOS } from "../utils/constants";
 
 const GlobalContext = createContext();
 
@@ -7,24 +7,64 @@ export const useGlobal = () => useContext(GlobalContext);
 
 export const GlobalProvider = ({ children }) => {
 
-  // states
+  // İsimden logoyu bul
+  const getLogoByName = (name) => {
+    if (!name) return SERVICE_LOGOS.DEFAULT;
+    const lowerName = name.toLowerCase();
+    
+    if(lowerName.includes("netflix")) return SERVICE_LOGOS.NETFLIX;
+    if(lowerName.includes("spotify")) return SERVICE_LOGOS.SPOTIFY;
+    if(lowerName.includes("youtube")) return SERVICE_LOGOS.YOUTUBE;
+    if(lowerName.includes("prime") || lowerName.includes("amazon")) return SERVICE_LOGOS.AMAZON;
+    if(lowerName.includes("disney")) return SERVICE_LOGOS.DISNEY;
+    if(lowerName.includes("exxen")) return SERVICE_LOGOS.EXXEN;
+    if(lowerName.includes("blutv")) return SERVICE_LOGOS.BLUTV;
+    if(lowerName.includes("xbox")) return SERVICE_LOGOS.XBOX;
+    if(lowerName.includes("playstation")) return SERVICE_LOGOS.PLAYSTATION;
+    if(lowerName.includes("icloud") || lowerName.includes("apple")) return SERVICE_LOGOS.ICLOUD;
+    if(lowerName.includes("tod")) return SERVICE_LOGOS.TOD;
+    if(lowerName.includes("discord")) return SERVICE_LOGOS.DISCORD;
+    if(lowerName.includes("mubi")) return SERVICE_LOGOS.MUBI;
+    if(lowerName.includes("gain")) return SERVICE_LOGOS.GAIN;
+    if(lowerName.includes("adobe")) return SERVICE_LOGOS.ADOBE;
+    if(lowerName.includes("canva")) return SERVICE_LOGOS.CANVA;
+    if(lowerName.includes("chatgpt")) return SERVICE_LOGOS.CHATGPT;
+    if(lowerName.includes("duolingo")) return SERVICE_LOGOS.DUOLINGO;
+    
+    return SERVICE_LOGOS.DEFAULT;
+  };
+
+  // state
   const [subscriptions, setSubscriptions] = useState(() => {
     const savedSubs = localStorage.getItem("subscriptions");
     let parsedSubs = savedSubs ? JSON.parse(savedSubs) : INITIAL_SUBSCRIPTIONS;
-    return parsedSubs.map(sub => ({ ...sub, status: sub.status || 'active' }));
+    
+
+    return parsedSubs.map(sub => ({ 
+        ...sub, 
+        status: sub.status || 'active',
+   
+        image: getLogoByName(sub.name) 
+    }));
   });
 
-  //  2. Bildirimler State
+  //  Bildirimler State
   const [notifications, setNotifications] = useState(() => {
     const savedNotes = localStorage.getItem("notifications");
     return savedNotes ? JSON.parse(savedNotes) : INITIAL_NOTIFICATIONS;
   });
 
-  // 3. İşlemler State
+  // İşlemler State
   const [transactions, setTransactions] = useState(() => {
     const savedTx = localStorage.getItem("transactions");
     if (savedTx) {
-        return JSON.parse(savedTx);
+
+        // İşlemlerin ikonlarını da onar
+        const parsedTx = JSON.parse(savedTx);
+        return parsedTx.map(tx => ({
+            ...tx,
+            icon: getLogoByName(tx.name)
+        }));
     }
     return INITIAL_SUBSCRIPTIONS.map((sub) => ({
         id: `init-tx-${sub.id}`,
@@ -33,11 +73,11 @@ export const GlobalProvider = ({ children }) => {
         amount: -parseFloat(sub.price),
         type: "subscription",
         category: sub.category,
-        icon: sub.image
+        icon: sub.image 
     }));
   });
 
-  // 4. Kullanıcı Ayarları State
+  // Kullanıcı Ayarları State
   const [userSettings, setUserSettings] = useState(() => {
     const savedSettings = localStorage.getItem("userSettings");
     return savedSettings ? JSON.parse(savedSettings) : {
@@ -56,7 +96,7 @@ export const GlobalProvider = ({ children }) => {
     };
   });
 
-  // 5. Mesajlar State 
+  // Mesajlar State 
   const [messages, setMessages] = useState(() => {
     const savedMessages = localStorage.getItem("messages");
     return savedMessages ? JSON.parse(savedMessages) : {
@@ -74,13 +114,10 @@ export const GlobalProvider = ({ children }) => {
   useEffect(() => { localStorage.setItem("userSettings", JSON.stringify(userSettings)); }, [userSettings]);
   useEffect(() => { localStorage.setItem("messages", JSON.stringify(messages)); }, [messages]); 
 
-  // hes"aplamalar
+  // hesaplamalar
   const totalExpenses = subscriptions
     .filter(sub => sub.status === 'active')
     .reduce((total, sub) => total + parseFloat(sub.price), 0);
-
-
-
 
   // Ayar Güncelleme
   const updateUserSettings = (newSettings) => {
@@ -104,7 +141,11 @@ export const GlobalProvider = ({ children }) => {
 
   // Abonelik Ekle
   const addSubscription = (newSub) => {
-    setSubscriptions([...subscriptions, { ...newSub, id: Date.now(), status: 'active' }]);
+    
+    // Eklerken de logoyu kontrol et
+    const finalImage = newSub.image || getLogoByName(newSub.name);
+    
+    setSubscriptions([...subscriptions, { ...newSub, image: finalImage, id: Date.now(), status: 'active' }]);
     
     const newTransaction = {
       id: Date.now() + 1,
@@ -113,10 +154,11 @@ export const GlobalProvider = ({ children }) => {
       amount: -parseFloat(newSub.price),
       type: "subscription",
       category: newSub.category,
-      icon: newSub.image
+      icon: finalImage
     };
     setTransactions(prev => [newTransaction, ...prev]);
 
+  
     const newNote = {
         id: Date.now() + 2,
         type: "success",
@@ -144,6 +186,7 @@ export const GlobalProvider = ({ children }) => {
             : sub
     ));
 
+     
     const cancelNote = {
         id: Date.now(),
         type: "alert",
