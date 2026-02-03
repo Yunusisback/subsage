@@ -132,12 +132,12 @@ const DashboardView = ({ setActiveTab }) => {
                     <div className="relative z-10 flex flex-col justify-between h-full">
                         <div className="flex justify-between items-start">
                             <div>
-                                <h3 className="text-slate-600 font-medium text-xm tracking-wide mb-2">AKTİF SERVİSLER</h3>
+                                <h3 className="text-indigo-500  font-bold text-xm tracking-wide mb-2">AKTİF SERVİSLER</h3>
                                 <div className="flex items-baseline gap-1.5">
-                                    <span className="text-5xl font-black text-slate-800 tracking-tighter">
+                                    <span className="text-5xl font-black text-indigo-800 tracking-tighter">
                                         {activeSubs.length}
                                     </span>
-                                    <span className="text-lg font-semibold text-slate-400">adet</span>
+                                    <span className="text-lg font-semibold text-slate-500">adet</span>
                                 </div>
                             </div>
                             <div className="p-3 bg-indigo-100/50 text-indigo-600 rounded-2xl shadow-sm border border-indigo-100 group-hover:bg-indigo-600 group-hover:text-white transition-colors duration-300">
@@ -180,11 +180,11 @@ const DashboardView = ({ setActiveTab }) => {
                     <div className="relative z-10 flex flex-col justify-between h-full">
                         <div className="flex justify-between items-start">
                             <div>
-                                <h3 className="text-slate-600 font-medium text-Xm tracking-wide mb-2 flex items-center gap-1">
+                                <h3 className="text-green-600 font-bold text-Xm tracking-wide mb-2 flex items-center gap-1">
                                     YILLIK PROJEKSİYON 
                                 </h3>
                                 <div className="flex items-baseline gap-1">
-                                    <span className="text-4xl lg:text-5xl font-black text-slate-800 tracking-tighter">
+                                    <span className="text-4xl lg:text-5xl font-black text-green-800 tracking-tighter">
                                         {formatMoneyClean(yearlyProjection)}
                                     </span>
                                     <span className="text-xl font-bold text-emerald-500">₺</span>
@@ -212,9 +212,9 @@ const DashboardView = ({ setActiveTab }) => {
                     
                     <div className="p-6 pb-0 relative z-20 flex justify-between items-start">
                         <div>
-                            <h3 className="text-slate-600 font-medium text-xm tracking-wide mb-2"> AYLIK TOPLAM</h3>
+                            <h3 className="text-orange-600 font-bold text-xm tracking-wide mb-2"> AYLIK TOPLAM</h3>
                             <div className="flex items-baseline gap-1">
-                                <span className="text-4xl lg:text-5xl font-black text-slate-800 tracking-tighter">
+                                <span className="text-4xl lg:text-5xl font-black text-orange-800 tracking-tighter">
                                     {formatMoneyClean(totalExpenses)}
                                 </span>
                                 <span className="text-xl font-bold text-orange-500">₺</span>
@@ -241,13 +241,13 @@ const DashboardView = ({ setActiveTab }) => {
                     </div>
 
                     {/* Grafik */}
-                    <div className="absolute bottom-0 left-0 right-0 h-20 w-full z-10 opacity-60 group-hover:opacity-100 transition-opacity duration-500">
+                    <div className="absolute -bottom-2 left-2 right-0 h-20 w-full z-10 opacity-60 group-hover:opacity-100 transition-opacity duration-500">
                         <ResponsiveContainer width="100%" height="100%">
                             <AreaChart data={chartData}>
                                 <defs>
                                     <linearGradient id="colorSpend" x1="0" y1="0" x2="0" y2="1">
-                                        <stop offset="5%" stopColor="#f97316" stopOpacity={0.2} />
-                                        <stop offset="95%" stopColor="#f97316" stopOpacity={0} />
+                                        <stop offset="5%" stopColor="#f97316" stopOpacity={0.8} />
+                                        <stop offset="95%" stopColor="#f97316" stopOpacity={0.5} />
                                     </linearGradient>
                                 </defs>
                                 <Area

@@ -47,7 +47,7 @@ const Sidebar = ({ isCollapsed, toggleSidebar, activeTab, setActiveTab, isMobile
 >
       
       {/* Logo Alanı */}
-      <div className="h-20 lg:h-28 flex items-center justify-center relative border-b border-zinc-100/50 mb-2 mt-4 lg:mt-0">
+      <div className="h-20 lg:h-28 flex items-center justify-center relative border-b border-zinc-100/50 mb-2 mt-4  lg:mt-0">
         
         <div className={cn(
             "relative flex items-center gap-4 transition-all duration-500", 
@@ -68,7 +68,7 @@ const Sidebar = ({ isCollapsed, toggleSidebar, activeTab, setActiveTab, isMobile
             
             {/* Yazı */}
             <h1 className={cn(
-                "text-3xl font-black tracking-tighter overflow-hidden transition-all duration-500 whitespace-nowrap relative z-10",
+                "text-3xl font-black tracking-tighter overflow-hidden transition-all duration-500 mr-3 whitespace-nowrap relative z-10",
                 "text-yellow-900", 
               
                 isCollapsed ? "lg:w-0 lg:opacity-0 lg:hidden block w-auto opacity-100" : "w-auto opacity-100 block"
