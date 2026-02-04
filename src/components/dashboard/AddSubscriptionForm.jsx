@@ -3,23 +3,39 @@ import Input from "../ui/Input";
 import Button from "../ui/Button";
 import { useGlobal } from "../../context/GlobalContext";
 import { SERVICE_LOGOS } from "../../utils/constants";
+import toast from "react-hot-toast";
 
-const AddSubscriptionForm = ({ onSuccess }) => {
-  const { addSubscription } = useGlobal();
+const AddSubscriptionForm = ({ onSuccess, initialData }) => {
+  const { addSubscription, updateSubscription } = useGlobal();
   const [isLoading, setIsLoading] = useState(false);
+  
   
   const [formData, setFormData] = useState({
     name: "",
     price: "",
     category: "",
-    startDate: new Date().toISOString().split("T")[0], // Bugünün tarihi
+    startDate: new Date().toISOString().split("T")[0], 
     image: SERVICE_LOGOS.DEFAULT 
   });
 
   const [errors, setErrors] = useState({});
 
-  // İsim değiştiğinde logoyu otomatik bulmaya çalış
+
   useEffect(() => {
+    if (initialData) {
+      setFormData({
+        ...initialData,
+     
+        startDate: initialData.startDate || new Date().toISOString().split("T")[0]
+      });
+    }
+  }, [initialData]);
+
+ 
+  useEffect(() => {
+    
+    if (initialData && initialData.image !== SERVICE_LOGOS.DEFAULT) return;
+    
     if(!formData.name) return;
 
     const lowerName = formData.name.toLowerCase();
@@ -40,12 +56,12 @@ const AddSubscriptionForm = ({ onSuccess }) => {
     else if(lowerName.includes("discord")) matchedLogo = SERVICE_LOGOS.DISCORD;
     else if(lowerName.includes("mubi")) matchedLogo = SERVICE_LOGOS.MUBI;
 
-    // Eğer eşleşen varsa güncelle
+    
     if (matchedLogo) {
         setFormData(prev => ({ ...prev, image: matchedLogo }));
     }
 
-  }, [formData.name]);
+  }, [formData.name, initialData]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -77,16 +93,20 @@ const AddSubscriptionForm = ({ onSuccess }) => {
 
     // Yapay bir gecikme 
     setTimeout(() => {
+        if (initialData) {
+          
+            updateSubscription(formData);
+            toast.success("Abonelik güncellendi!");
+        } else {
+          
+            const colors = ["bg-red-500", "bg-blue-500", "bg-green-500", "bg-purple-500", "bg-orange-500"];
+            const randomColor = colors[Math.floor(Math.random() * colors.length)];
 
-        // Rastgele bir renk ata 
-        const colors = ["bg-red-500", "bg-blue-500", "bg-green-500", "bg-purple-500", "bg-orange-500"];
-        const randomColor = colors[Math.floor(Math.random() * colors.length)];
-
-        addSubscription({
-            ...formData,
-            color: randomColor,
-     
-        });
+            addSubscription({
+                ...formData,
+                color: randomColor,
+            });
+        }
 
         setIsLoading(false);
         if (onSuccess) onSuccess();
@@ -158,7 +178,7 @@ const AddSubscriptionForm = ({ onSuccess }) => {
             className="w-full text-black"
             isLoading={isLoading}
         >
-            Aboneliği Kaydet
+            {initialData ? "Değişiklikleri Kaydet" : "Aboneliği Kaydet"}
         </Button>
       </div>
     </form>

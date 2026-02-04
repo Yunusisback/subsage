@@ -1,11 +1,13 @@
 import { useState, useMemo } from "react";
-import { Plus, Calendar, ArrowLeft, CheckCircle2, X, Loader2, Sparkles, Search, Filter, Trash2, XCircle } from "lucide-react";
+import { Plus, Calendar, ArrowLeft, CheckCircle2, X, Loader2, Sparkles, Search, Filter, Trash2, XCircle, PenTool, Pencil, AlertTriangle } from "lucide-react";
 import Button from "../ui/Button";
 import { useGlobal } from "../../context/GlobalContext";
 import { cn } from "../../utils/helpers";
 import { AnimatePresence, motion } from "framer-motion";
 import toast from "react-hot-toast";
 import { SERVICE_LOGOS } from "../../utils/constants";
+import AddSubscriptionForm from "./AddSubscriptionForm";
+import Modal from "../ui/Modal";
 
 // Para birimi formatlayıcı 
 const formatMoneyClean = (amount) => {
@@ -176,6 +178,12 @@ const SubscriptionList = () => {
 
     const { subscriptions, addSubscription, cancelSubscription, removeSubscription } = useGlobal();
     const [isAddingMode, setIsAddingMode] = useState(false);
+
+    const [showCustomForm, setShowCustomForm] = useState(false);
+
+    const [editingSub, setEditingSub] = useState(null);
+    const [deletingId, setDeletingId] = useState(null);
+
     const [searchQuery, setSearchQuery] = useState("");
     const [loadingStates, setLoadingStates] = useState({});
 
@@ -239,14 +247,37 @@ const SubscriptionList = () => {
         }, 1000);
     };
 
-    //  Kalıcı Silme Fonksiyonu
-    const handleDelete = (e, subId) => {
+   
+    const handleDeleteClick = (e, subId) => {
         e.stopPropagation();
-        if (window.confirm("Bu kaydı geçmişten tamamen silmek istediğine emin misin?")) {
-            removeSubscription(subId);
-            toast.success("Kayıt silindi.");
-        }
+        setDeletingId(subId);
     }
+
+    // Modal Onaylayınca Sil
+    const confirmDelete = () => {
+        if (deletingId) {
+            removeSubscription(deletingId);
+            toast.success("Kayıt kalıcı olarak silindi.");
+            setDeletingId(null);
+        }
+    };
+
+    // handle custom 
+    const handleCustomSuccess = () => {
+        setShowCustomForm(false);
+        setIsAddingMode(false);
+        toast.success("Özel abonelik başarıyla oluşturuldu!");
+    };
+    
+    
+    const handleEditClick = (e, sub) => {
+        e.stopPropagation();
+        setEditingSub(sub);
+    };
+
+    const handleEditSuccess = () => {
+        setEditingSub(null);
+    };
 
     return (
         <div className="pb-20">
@@ -257,46 +288,52 @@ const SubscriptionList = () => {
                 <div className="flex items-center gap-3 w-full md:w-auto">
 
                     {/* Arama Kutusu */}
-                    <div className="relative group w-full md:w-auto">
-                        <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 group-focus-within:text-yellow-500 transition-colors" size={18} />
-                        <input
-                            type="text"
-                            placeholder={isAddingMode ? "Servis ara..." : "Abonelik ara..."}
-                            value={searchQuery}
-                            onChange={(e) => setSearchQuery(e.target.value)}
-                            className="pl-10 pr-4 py-2.5 bg-white border border-slate-200 rounded-xl text-sm focus:outline-hidden focus:ring-2 focus:ring-yellow-100 focus:border-yellow-300 w-full md:w-64 transition-all"
-                        />
-                    </div>
+                    {!showCustomForm && (
+                        <div className="relative group w-full md:w-auto">
+                            <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 group-focus-within:text-yellow-500 transition-colors" size={18} />
+                            <input
+                                type="text"
+                                placeholder={isAddingMode ? "Servis ara..." : "Abonelik ara..."}
+                                value={searchQuery}
+                                onChange={(e) => setSearchQuery(e.target.value)}
+                                className="pl-10 pr-4 py-2.5 bg-white border border-slate-200 rounded-xl text-sm focus:outline-hidden focus:ring-2 focus:ring-yellow-100 focus:border-yellow-300 w-full md:w-64 transition-all"
+                            />
+                        </div>
+                    )}
 
                     {/* Ekle -İptal Butonu */}
                     <Button
                         onClick={() => {
-                            setIsAddingMode(!isAddingMode);
-                            setSearchQuery("");
+                            if (showCustomForm) {
+                                setShowCustomForm(false);
+                            } else {
+                                setIsAddingMode(!isAddingMode);
+                                setSearchQuery("");
+                            }
                         }}
                         className={cn(
                             "flex items-center gap-2 px-4 py-2.5 rounded-xl font-semibold transition-all cursor-pointer border shadow-sm shrink-0",
-                            isAddingMode
+                            isAddingMode || showCustomForm
                                 ? "bg-white text-slate-700 hover:bg-slate-50 border-slate-200"
-                                : "bg-yellow-600 text-white hover:bg-yellow-700 border-transparent shadow-blue-200 -shadow-md"
+                                : "bg-yellow-600 text-white hover:bg-yellow-700 border-transparent shadow-yellow-200 -shadow-md"
                         )}
                     >
-                        {isAddingMode ? <ArrowLeft size={18} /> : <Plus size={18} />}
-                        {isAddingMode ? "Listeye Dön" : " Abonelik Ekle"}
+                        {(isAddingMode || showCustomForm) ? <ArrowLeft size={18} /> : <Plus size={18} />}
+                        {(isAddingMode || showCustomForm) ? "Listeye Dön" : " Abonelik Ekle"}
                     </Button>
                 </div>
             </div>
 
             {/* tab menü */}
-            {!isAddingMode && (
+            {!isAddingMode && !showCustomForm && (
                 <div className="flex gap-2 mb-6 border-b border-slate-200 pb-1">
                     <button
                         onClick={() => setViewFilter("active")}
                         className={cn(
                             "px-4 py-2 text-sm font-bold cursor-pointer rounded-t-lg transition-all relative top-1",
                             viewFilter === "active"
-                                ? "text-yellow-600 border-b-2 border-byellow-600 bg-yellow-50/50"
-                                : "text-slate-500 hover:text-slate-700 hover:bg-slate-50"
+                                ? "text-yellow-700 border-b-2 border-yellow-600 bg-yellow-100"
+                                : "text-yellow-700 hover:text-yellow-700 hover:bg-yellow-50"
                         )}
                     >
                         Aktif Abonelikler
@@ -319,7 +356,25 @@ const SubscriptionList = () => {
             <AnimatePresence mode="wait">
 
                 {isAddingMode ? (
-
+                 
+                    showCustomForm ? (
+                         <motion.div
+                            key="custom-form"
+                            initial={{ opacity: 0, scale: 0.95 }}
+                            animate={{ opacity: 1, scale: 1 }}
+                            exit={{ opacity: 0, scale: 0.95 }}
+                            className="max-w-xl mx-auto bg-white p-8 rounded-3xl border border-slate-200 shadow-lg"
+                        >
+                             <div className="text-center mb-6">
+                                <div className="w-12 h-12 bg-yellow-100 text-yellow-600 rounded-full flex items-center justify-center mx-auto mb-3">
+                                    <PenTool size={24} />
+                                </div>
+                                <h3 className="text-xl font-bold text-slate-900">Özel Abonelik Oluştur</h3>
+                                <p className="text-sm text-slate-500">Listede olmayan servisi kendin ekle.</p>
+                             </div>
+                            <AddSubscriptionForm onSuccess={handleCustomSuccess} />
+                        </motion.div>
+                    ) : (
                     <motion.div
                         key="add-mode"
                         initial={{ opacity: 0, y: 10 }}
@@ -399,6 +454,30 @@ const SubscriptionList = () => {
                             );
                         })}
 
+                         {/* oluşturma kartı */}
+                        <div
+                            className="group relative bg-white border border-dashed border-slate-300 rounded-3xl p-5 flex flex-col items-center text-center transition-all duration-300 hover:border-yellow-400 hover:bg-yellow-50 cursor-pointer"
+                            onClick={() => setShowCustomForm(true)}
+                        >
+                             <div className="w-14 h-14 mb-4 rounded-xl bg-slate-50 border border-slate-100 text-slate-400 p-2.5 flex items-center justify-center shadow-sm group-hover:scale-105 group-hover:bg-white group-hover:text-yellow-500 transition-all duration-300">
+                                <Plus size={24} />
+                             </div>
+                             <h3 className="font-bold text-slate-900 text-sm mb-1">Özel Oluştur</h3>
+                             <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider bg-slate-50 px-2 py-0.5 rounded border border-slate-100 mb-3">
+                                Kişisel
+                             </span>
+                             <div className="mt-auto w-full pt-3 border-t border-slate-50 flex flex-col items-center justify-center gap-1">
+                                <div className="flex items-baseline gap-1">
+                                    <span className="text-lg font-black text-slate-300 group-hover:text-yellow-600">-</span>
+                                </div>
+                                <div className="h-6 flex items-center justify-center">
+                                    <span className="text-[10px] font-bold text-slate-400 group-hover:text-yellow-600">
+                                        Formu Aç
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+
                         {filteredPlatforms.length === 0 && (
                             <div className="col-span-full py-20 text-center">
                                 <Filter className="mx-auto h-12 w-12 text-slate-200 mb-2" />
@@ -406,6 +485,7 @@ const SubscriptionList = () => {
                             </div>
                         )}
                     </motion.div>
+                    )
                 ) : (
 
                     <motion.div
@@ -453,33 +533,46 @@ const SubscriptionList = () => {
                                                 }}
                                             />
                                         </div>
+                                        
+                                        <div className="flex gap-2">
+                                           
+                                            {!isInactive && (
+                                                <button
+                                                    className="w-8 h-8 flex cursor-pointer items-center justify-center rounded-full transition-all border bg-white border-slate-300 text-slate-500 hover:bg-blue-800 hover:text-blue-100 hover:border-blue-700"
+                                                    onClick={(e) => handleEditClick(e, sub)}
+                                                    title="Düzenle"
+                                                >
+                                                    <Pencil size={14} />
+                                                </button>
+                                            )}
 
-                                        {isInactive ? (
-                                            // Silme Butonu
-                                            <button
-                                                className="w-8 h-8 flex items-center justify-center rounded-full transition-all border bg-slate-50 border-slate-200 text-slate-400 hover:bg-red-50 hover:text-red-600 hover:border-red-100"
-                                                onClick={(e) => handleDelete(e, sub.id)}
-                                                title="Geçmişten Sil"
-                                            >
-                                                <Trash2 size={16} />
-                                            </button>
-                                        ) : (
-                                            
-                                            // İptal Butonu 
-                                            <button
-                                                className={cn(
-                                                    "w-8 h-8 flex items-center justify-center rounded-full transition-all border",
-                                                    "bg-white border-slate-200 text-slate-400",
-                                                    "hover:bg-red-50 hover:text-red-600 hover:border-red-100",
-                                                    isCanceling && "opacity-70 cursor-not-allowed"
-                                                )}
-                                                onClick={(e) => !isCanceling && handleCancel(e, sub.id)}
-                                                disabled={isCanceling}
-                                                title="Aboneliği İptal Et"
-                                            >
-                                                {isCanceling ? <Loader2 size={14} className="animate-spin" /> : <X size={16} />}
-                                            </button>
-                                        )}
+                                            {isInactive ? (
+                                                // Silme Butonu
+                                                <button
+                                                    className="w-8 h-8 flex items-center justify-center rounded-full transition-all border bg-slate-50 border-slate-200 text-slate-400 hover:bg-red-50 hover:text-red-600 hover:border-red-100"
+                                                    onClick={(e) => handleDeleteClick(e, sub.id)}
+                                                    title="Geçmişten Sil"
+                                                >
+                                                    <Trash2 size={16} />
+                                                </button>
+                                            ) : (
+                                                
+                                                // İptal Butonu 
+                                                <button
+                                                    className={cn(
+                                                        "w-8 h-8 flex cursor-pointer items-center justify-center rounded-full transition-all border",
+                                                        "bg-white border-slate-300 text-slate-500",
+                                                        "hover:bg-red-500 hover:text-red-100 hover:border-red-200",
+                                                        isCanceling && "opacity-70 cursor-not-allowed"
+                                                    )}
+                                                    onClick={(e) => !isCanceling && handleCancel(e, sub.id)}
+                                                    disabled={isCanceling}
+                                                    title="Aboneliği İptal Et"
+                                                >
+                                                    {isCanceling ? <Loader2 size={14} className="animate-spin" /> : <X size={16} />}
+                                                </button>
+                                            )}
+                                        </div>
                                     </div>
 
                                     {/* İçerik */}
@@ -527,7 +620,7 @@ const SubscriptionList = () => {
                         {displayedSubscriptions.length === 0 && (
                             <div className="col-span-full py-24 text-center border-2 border-dashed border-slate-200 rounded-[2.5rem] bg-slate-50/50">
                                 <Sparkles className="mx-auto h-12 w-12 text-slate-300 mb-4 animate-pulse" />
-                                <h3 className="text-slate-900 font-bold text-lg">
+                                <h3 className="text-slate-700 font-bold text-lg">
                                     {viewFilter === 'active' ? 'Aktif abonelik bulunamadı' : 'Geçmiş abonelik bulunamadı'}
                                 </h3>
                                 <p className="text-slate-500 text-sm mb-6 max-w-xs mx-auto">
@@ -549,6 +642,56 @@ const SubscriptionList = () => {
                     </motion.div>
                 )}
             </AnimatePresence>
+
+            {/* Düzenleme  */}
+            <Modal
+                isOpen={!!editingSub}
+                onClose={() => setEditingSub(null)}
+                title="Aboneliği Düzenle"
+            >
+                <AddSubscriptionForm 
+                    initialData={editingSub}
+                    onSuccess={handleEditSuccess}
+                />
+            </Modal>
+
+            {/* Silme Onay */}
+            <Modal
+                isOpen={!!deletingId}
+                onClose={() => setDeletingId(null)}
+                title="Kaydı Sil"
+            >
+                <div className="p-1">
+                    <div className="bg-red-50 border border-red-100 rounded-xl p-4 flex gap-4 mb-6">
+                        <div className="bg-white p-2 rounded-full h-10 w-10 flex items-center justify-center shrink-0 shadow-sm text-red-500">
+                             <AlertTriangle size={20} />
+                        </div>
+                        <div>
+                            <h4 className="font-bold text-red-900 text-sm mb-1">Kalıcı İşlem</h4>
+                            <p className="text-xs text-red-700 leading-relaxed">
+                                Bu abonelik kaydını ve geçmişe dönük tüm verilerini kalıcı olarak silmek üzeresiniz. Bu işlem geri alınamaz.
+                            </p>
+                        </div>
+                    </div>
+                    
+                    <div className="flex justify-end gap-3">
+                        <Button 
+                            variant="ghost" 
+                            onClick={() => setDeletingId(null)}
+                            className="text-slate-500 hover:text-slate-900"
+                        >
+                            Vazgeç
+                        </Button>
+                        <Button 
+                            variant="danger" 
+                            onClick={confirmDelete}
+                            className="bg-red-600 hover:bg-red-700 text-white border-transparent shadow-red-200 shadow-lg"
+                        >
+                            Evet, Kalıcı Olarak Sil
+                        </Button>
+                    </div>
+                </div>
+            </Modal>
         </div>
     );
 };

@@ -69,7 +69,9 @@ export const GlobalProvider = ({ children }) => {
     return INITIAL_SUBSCRIPTIONS.map((sub) => ({
         id: `init-tx-${sub.id}`,
         name: sub.name,
-        date: "24 Ocak 2025",
+
+     
+        date: new Date().toLocaleDateString('tr-TR', { day: 'numeric', month: 'long', year: 'numeric' }),
         amount: -parseFloat(sub.price),
         type: "subscription",
         category: sub.category,
@@ -170,6 +172,18 @@ export const GlobalProvider = ({ children }) => {
     setNotifications(prev => [newNote, ...prev]);
   };
 
+  
+  const updateSubscription = (updatedSub) => {
+      setSubscriptions(prev => prev.map(sub => {
+          if (sub.id === updatedSub.id) {
+            
+              const finalImage = updatedSub.image || getLogoByName(updatedSub.name);
+              return { ...updatedSub, image: finalImage };
+          }
+          return sub;
+      }));
+  };
+
   // Abonelik Sil 
   const removeSubscription = (id) => {
     setSubscriptions(subscriptions.filter(sub => sub.id !== id));
@@ -216,7 +230,8 @@ export const GlobalProvider = ({ children }) => {
   return (
     <GlobalContext.Provider value={{ 
         subscriptions, 
-        addSubscription, 
+        addSubscription,
+        updateSubscription, 
         removeSubscription,
         cancelSubscription, 
         totalExpenses,

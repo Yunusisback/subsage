@@ -18,7 +18,7 @@ const WalletView = () => {
   // Sanal Limit State
   const [spendingLimit, setSpendingLimit] = useState(15000); 
 
-  // Kartın altındaki hızlı butonlar
+  // Kartın altındaki butonlar
   const QUICK_ACTIONS = [
       { icon: Lock, label: "Kartı Dondur", color: "text-red-500", bg: "bg-red-50 hover:bg-red-100" },
       { icon: FileText, label: "Hesap Özeti", color: "text-blue-500", bg: "bg-blue-50 hover:bg-blue-100" },

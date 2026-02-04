@@ -1,7 +1,25 @@
 {
-  "name": "saas",
+  "name": "subsage",
   "private": true,
-  "version": "0.0.0",
+  "version": "1.0.0",
+  "description": "Premium SaaS Dashboard developed by Yunusisback. Features Bento Grid design and React 19.",
+  "author": {
+    "name": "Yunusisback",
+    "url": "https://github.com/Yunusisback"
+  },
+  "license": "UNLICENSED",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Yunusisback/subsage.git"
+  },
+  "keywords": [
+    "react",
+    "saas",
+    "dashboard",
+    "tailwindcss",
+    "Yunusisback",
+    "portfolio"
+  ],
   "type": "module",
   "scripts": {
     "dev": "vite",
@@ -12,7 +30,6 @@
   "dependencies": {
     "@tailwindcss/vite": "^4.1.18",
     "clsx": "^2.1.1",
-    "date-fns": "^4.1.0",
     "framer-motion": "^12.28.1",
     "lucide-react": "^0.562.0",
     "react": "^19.2.0",
@@ -20,8 +37,7 @@
     "react-hot-toast": "^2.6.0",
     "recharts": "^3.7.0",
     "tailwind-merge": "^3.4.0",
-    "tailwindcss": "^4.1.18",
-    "uuid": "^13.0.0"
+    "tailwindcss": "^4.1.18"
   },
   "devDependencies": {
     "@eslint/js": "^9.39.1",

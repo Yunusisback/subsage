@@ -23,8 +23,10 @@ const DashboardView = ({ setActiveTab }) => {
 
     // Grafik verisi hesaplama
     const chartData = useMemo(() => {
-        const allDates = activeSubs
+       
+        const allDates = subscriptions
             .map(sub => new Date(sub.startDate))
+            .filter(date => !isNaN(date))
             .sort((a, b) => a - b);
 
         if (allDates.length === 0) return [{ value: 0 }];
@@ -34,16 +36,37 @@ const DashboardView = ({ setActiveTab }) => {
         const timeline = [];
         let current = new Date(start);
 
+   
         while (current <= end) {
             timeline.push(new Date(current));
             current.setMonth(current.getMonth() + 1);
         }
+       
         if (timeline.length === 0 || timeline[timeline.length - 1] < end) {
             timeline.push(end);
         }
 
         const data = timeline.map(date => {
-            const subsActiveAtDate = activeSubs.filter(sub => new Date(sub.startDate) <= date);
+        
+            const subsActiveAtDate = subscriptions.filter(sub => {
+                const startDate = new Date(sub.startDate);
+                
+                
+                let cancelDateObj = null;
+                if (sub.status === 'canceled' && sub.canceledDate) {
+                     const parts = sub.canceledDate.split('.');
+                     if (parts.length === 3) {
+                         cancelDateObj = new Date(parts[2], parts[1] - 1, parts[0]);
+                     }
+                }
+
+                const isStarted = startDate <= date;
+               
+                const isStillActiveAtThisDate = !cancelDateObj || cancelDateObj > date;
+
+                return isStarted && isStillActiveAtThisDate;
+            });
+
             const totalValue = subsActiveAtDate.reduce((acc, sub) => acc + parseFloat(sub.price), 0);
             return {
                 date: date.toLocaleDateString('tr-TR', { month: 'short' }),
@@ -54,7 +77,7 @@ const DashboardView = ({ setActiveTab }) => {
 
         if (data.length === 1) return [{ ...data[0], date: 'Başlangıç' }, data[0]];
         return data;
-    }, [activeSubs]);
+    }, [subscriptions]); 
 
     // Son ayın değişim oranı 
     const growthPercentage = useMemo(() => {
@@ -269,7 +292,7 @@ const DashboardView = ({ setActiveTab }) => {
             <div>
                 <div className="flex items-center justify-between mb-4 lg:mb-6 px-1">
                     <div>
-                        <h2 className="text-xl lg:text-2xl font-bold text-zinc-800 flex items-center gap-2">
+                        <h2 className="text-xl lg:text-2xl font-bold text-yellow-800 flex items-center gap-2">
                             Aboneliklerim
                         </h2>
                     </div>

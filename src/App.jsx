@@ -1,3 +1,13 @@
+/**
+ * SubSage SaaS Dashboard
+ * * @author Yunusisback <
+ * @copyright 2026 Yunusisback
+ * @license Proprietary - No License (See LICENSE file)
+ * * 🛑 NOTICE: This source code is protected by copyright laws. 
+ * Unauthorized use, reproduction, or distribution is prohibited.
+ * Bu kodun izinsiz ticari kullanımı yasaktır.
+ */
+
 import { useState } from "react";
 import { Toaster } from "react-hot-toast";
 import Sidebar from "./components/layout/Sidebar";
@@ -13,7 +23,6 @@ import AddSubscriptionForm from "./components/dashboard/AddSubscriptionForm";
 import Modal from "./components/ui/Modal"; 
 import { cn } from "./utils/helpers";
 import { TABS } from "./utils/constants";
-
 function App() {
   const [isCollapsed, setIsCollapsed] = useState(false);
   const [activeTab, setActiveTab] = useState(TABS.DASHBOARD);
