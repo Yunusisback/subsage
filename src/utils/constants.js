@@ -1,4 +1,3 @@
-
 export const SERVICE_LOGOS = {
   NETFLIX: "/brands/netflix.svg",
   SPOTIFY: "/brands/spotify.svg",
@@ -22,15 +21,7 @@ export const SERVICE_LOGOS = {
   DEFAULT: "/brands/default.svg" 
 };
 
-export const TABS = {
-  DASHBOARD: "dashboard",
-  SUBSCRIPTIONS: "subscriptions",
-  WALLET: "wallet", 
-  REPORTS: "reports",
-  MESSAGES: "messages",
-  NOTIFICATIONS: "notifications",
-  SETTINGS: "settings",
-};
+
 
 export const CURRENCY = {
   TRY: "TRY",

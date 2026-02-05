@@ -10,10 +10,11 @@ const COLORS = ['#f97316', '#06b6d4', '#84cc16', '#eab308', '#ec4899', '#8b5cf6'
 const SummaryChart = () => {
 
   const { subscriptions, totalExpenses, userSettings } = useGlobal();
+
   // Aylık Bütçe Limiti
   const monthlyLimit = parseInt(userSettings.budgetLimit) || 5000;
   
-  // Limit Yüzdesi ve Kalan Bütçe
+    // Limit Yüzdesi ve Kalan Bütçe
   const limitPercentage = Math.min((totalExpenses / monthlyLimit) * 100, 100);
   const remainingBudget = Math.max(monthlyLimit - totalExpenses, 0);
 
@@ -50,6 +51,7 @@ const SummaryChart = () => {
     }
     return acc;
   }, []);
+
 // Servis Bazlı Veri 
   const subscriptionData = subscriptions
     .filter(sub => sub.status === 'active')
@@ -101,6 +103,7 @@ const SummaryChart = () => {
 
         {/* Kart limit kullanımı */}
         <BentoCard className="relative overflow-hidden p-6 bg-linear-to-br from-cyan-500 to-blue-600 text-white shadow-xl shadow-cyan-500/20 border border-cyan-400/50 group transition-all duration-500">
+
              {/* Arka Plan  */}
              <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-40 h-40 bg-white/10 blur-[60px] rounded-full" />
              <div className="absolute top-0 right-0 w-20 h-20 bg-teal-300/20 blur-[30px] rounded-full mix-blend-overlay" />

@@ -9,7 +9,6 @@ const AddSubscriptionForm = ({ onSuccess, initialData }) => {
   const { addSubscription, updateSubscription } = useGlobal();
   const [isLoading, setIsLoading] = useState(false);
   
-  
   const [formData, setFormData] = useState({
     name: "",
     price: "",
@@ -20,20 +19,16 @@ const AddSubscriptionForm = ({ onSuccess, initialData }) => {
 
   const [errors, setErrors] = useState({});
 
-
   useEffect(() => {
     if (initialData) {
       setFormData({
         ...initialData,
-     
         startDate: initialData.startDate || new Date().toISOString().split("T")[0]
       });
     }
   }, [initialData]);
 
- 
   useEffect(() => {
-    
     if (initialData && initialData.image !== SERVICE_LOGOS.DEFAULT) return;
     
     if(!formData.name) return;
@@ -41,7 +36,6 @@ const AddSubscriptionForm = ({ onSuccess, initialData }) => {
     const lowerName = formData.name.toLowerCase();
     let matchedLogo = null;
 
-    // Basit bir eşleştirme mantığı
     if(lowerName.includes("netflix")) matchedLogo = SERVICE_LOGOS.NETFLIX;
     else if(lowerName.includes("spotify")) matchedLogo = SERVICE_LOGOS.SPOTIFY;
     else if(lowerName.includes("youtube")) matchedLogo = SERVICE_LOGOS.YOUTUBE;
@@ -55,7 +49,6 @@ const AddSubscriptionForm = ({ onSuccess, initialData }) => {
     else if(lowerName.includes("tod")) matchedLogo = SERVICE_LOGOS.TOD;
     else if(lowerName.includes("discord")) matchedLogo = SERVICE_LOGOS.DISCORD;
     else if(lowerName.includes("mubi")) matchedLogo = SERVICE_LOGOS.MUBI;
-
     
     if (matchedLogo) {
         setFormData(prev => ({ ...prev, image: matchedLogo }));
@@ -91,14 +84,11 @@ const AddSubscriptionForm = ({ onSuccess, initialData }) => {
 
     setIsLoading(true);
 
-    // Yapay bir gecikme 
     setTimeout(() => {
         if (initialData) {
-          
             updateSubscription(formData);
             toast.success("Abonelik güncellendi!");
         } else {
-          
             const colors = ["bg-red-500", "bg-blue-500", "bg-green-500", "bg-purple-500", "bg-orange-500"];
             const randomColor = colors[Math.floor(Math.random() * colors.length)];
 
@@ -122,6 +112,7 @@ const AddSubscriptionForm = ({ onSuccess, initialData }) => {
         value={formData.name}
         onChange={handleChange}
         error={errors.name}
+        className="focus:bg-cyan-50 focus:ring-cyan-100 focus:border-cyan-300 transition-colors"
       />
       
       <div className="grid grid-cols-2 gap-4">
@@ -133,6 +124,8 @@ const AddSubscriptionForm = ({ onSuccess, initialData }) => {
             value={formData.price}
             onChange={handleChange}
             error={errors.price}
+         
+            className="focus:bg-cyan-50 focus:ring-cyan-100 focus:border-cyan-300 transition-colors [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
         />
         <Input 
             label="Kategori" 
@@ -141,6 +134,7 @@ const AddSubscriptionForm = ({ onSuccess, initialData }) => {
             value={formData.category}
             onChange={handleChange}
             error={errors.category}
+            className="focus:bg-cyan-50 focus:ring-cyan-100 focus:border-cyan-300 transition-colors"
         />
       </div>
 
@@ -150,6 +144,7 @@ const AddSubscriptionForm = ({ onSuccess, initialData }) => {
         type="date"
         value={formData.startDate}
         onChange={handleChange}
+        className="focus:bg-cyan-50 focus:ring-cyan-100 focus:border-cyan-300 transition-colors"
       />
 
        <Input 
@@ -158,7 +153,7 @@ const AddSubscriptionForm = ({ onSuccess, initialData }) => {
         placeholder="https://..." 
         value={formData.image}
         onChange={handleChange}
-        className="text-xs"
+        className="text-xs focus:bg-cyan-50 focus:ring-cyan-100 focus:border-cyan-300 transition-colors"
       />
 
       {/* Logo Önizleme */}
@@ -174,11 +169,10 @@ const AddSubscriptionForm = ({ onSuccess, initialData }) => {
       <div className="pt-4">
         <Button 
             type="submit" 
-            variant="primary" 
-            className="w-full text-black"
+            className="w-full text-white bg-cyan-600 hover:bg-cyan-800 shadow-lg shadow-cyan-200 transition-all cursor-pointer "
             isLoading={isLoading}
         >
-            {initialData ? "Değişiklikleri Kaydet" : "Aboneliği Kaydet"}
+            {initialData ? "Aboneliği Güncelle" : "Aboneliği Kaydet"}
         </Button>
       </div>
     </form>

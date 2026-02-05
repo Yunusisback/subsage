@@ -5,6 +5,7 @@ import { useGlobal } from "../../context/GlobalContext";
 import { cn } from "../../utils/helpers";
 import { AreaChart, Area, ResponsiveContainer } from 'recharts';
 import { SERVICE_LOGOS } from "../../utils/constants"; 
+import { useNavigate } from "react-router-dom"; 
 
 // Para formatlama fonksiyonu
 const formatMoneyClean = (amount) => {
@@ -15,8 +16,9 @@ const formatMoneyClean = (amount) => {
     }).format(amount);
 };
 
-const DashboardView = ({ setActiveTab }) => {
+const DashboardView = () => { 
     const { totalExpenses, subscriptions } = useGlobal();
+    const navigate = useNavigate(); 
 
     const activeSubs = subscriptions.filter(sub => sub.status === 'active');
     const canceledSubs = subscriptions.filter(sub => sub.status === 'canceled');
@@ -104,7 +106,7 @@ const DashboardView = ({ setActiveTab }) => {
         : "Abonelik ekleyerek tasarruf analizlerini görebilirsin.";
 
 
-    // Renk Temaları 
+   
     const THEMES = {
         red: { bg: "bg-rose-50/50 hover:bg-rose-50", border: "border-rose-100 hover:border-rose-200", text: "text-rose-950", subtext: "text-rose-600", bar: "bg-rose-500", gradient: "from-rose-500 to-pink-600", iconBg: "bg-rose-100 text-rose-600" },
         green: { bg: "bg-emerald-50/50 hover:bg-emerald-50", border: "border-emerald-100 hover:border-emerald-200", text: "text-emerald-950", subtext: "text-emerald-600", bar: "bg-emerald-500", gradient: "from-emerald-500 to-teal-600", iconBg: "bg-emerald-100 text-emerald-600" },
@@ -155,7 +157,7 @@ const DashboardView = ({ setActiveTab }) => {
                     <div className="relative z-10 flex flex-col justify-between h-full">
                         <div className="flex justify-between items-start">
                             <div>
-                                <h3 className="text-indigo-500  font-bold text-xm tracking-wide mb-2">AKTİF SERVİSLER</h3>
+                                <h3 className="text-indigo-600  font-bold text-xm tracking-wide mb-2">AKTİF SERVİSLER</h3>
                                 <div className="flex items-baseline gap-1.5">
                                     <span className="text-5xl font-black text-indigo-800 tracking-tighter">
                                         {activeSubs.length}
@@ -235,12 +237,12 @@ const DashboardView = ({ setActiveTab }) => {
                     
                     <div className="p-6 pb-0 relative z-20 flex justify-between items-start">
                         <div>
-                            <h3 className="text-orange-600 font-bold text-xm tracking-wide mb-2"> AYLIK TOPLAM</h3>
+                            <h3 className="text-red-600 font-bold text-xm tracking-wide mb-2"> AYLIK TOPLAM</h3>
                             <div className="flex items-baseline gap-1">
-                                <span className="text-4xl lg:text-5xl font-black text-orange-800 tracking-tighter">
+                                <span className="text-4xl lg:text-5xl font-black text-red-800 tracking-tighter">
                                     {formatMoneyClean(totalExpenses)}
                                 </span>
-                                <span className="text-xl font-bold text-orange-500">₺</span>
+                                <span className="text-xl font-bold text-red-500">₺</span>
                             </div>
                             
                             {/* Büyüme Oranı Rozeti */}
@@ -248,7 +250,7 @@ const DashboardView = ({ setActiveTab }) => {
                                 <div className={cn(
                                     "inline-flex items-center gap-1.5 mt-3 px-2.5 py-1 rounded-full text-xs font-bold border",
                                     growthPercentage > 0 
-                                        ? "bg-orange-50 text-orange-600 border-orange-100" 
+                                        ? "bg-red-50 text-red-600 border-red-100" 
                                         : "bg-emerald-50 text-emerald-600 border-emerald-100"
                                 )}>
                                     {growthPercentage > 0 ? <TrendingUp size={12} /> : <TrendingDown size={12} />}
@@ -258,26 +260,26 @@ const DashboardView = ({ setActiveTab }) => {
                             )}
                         </div>
 
-                        <div className="p-3 bg-orange-100/50 text-orange-600 rounded-2xl shadow-sm border border-orange-100 group-hover:bg-orange-600 group-hover:text-white transition-colors duration-300">
+                        <div className="p-3 bg-red-100/50 text-red-600 rounded-2xl shadow-sm border border-red-100 group-hover:bg-red-600 group-hover:text-white transition-colors duration-300">
                             <Wallet size={22} strokeWidth={2} />
                         </div>
                     </div>
 
                     {/* Grafik */}
-                    <div className="absolute -bottom-2 left-2 right-0 h-20 w-full z-10 opacity-60 group-hover:opacity-100 transition-opacity duration-500">
+                    <div className="absolute -bottom-2  left-2 right-0 h-25 w-full z-10 opacity-80 group-hover:opacity-100 transition-opacity duration-500">
                         <ResponsiveContainer width="100%" height="100%">
                             <AreaChart data={chartData}>
                                 <defs>
                                     <linearGradient id="colorSpend" x1="0" y1="0" x2="0" y2="1">
-                                        <stop offset="5%" stopColor="#f97316" stopOpacity={0.8} />
-                                        <stop offset="95%" stopColor="#f97316" stopOpacity={0.5} />
+                                        <stop offset="5%" stopColor="#C23115" stopOpacity={0.8} />
+                                        <stop offset="95%" stopColor="#C23115" stopOpacity={0.5} />
                                     </linearGradient>
                                 </defs>
                                 <Area
                                     type="monotone" 
                                     dataKey="value"
-                                    stroke="#f97316"
-                                    strokeWidth={3}
+                                    stroke="#C23115"
+                                    strokeWidth={4}
                                     fill="url(#colorSpend)"
                                     fillOpacity={1}
                                 />
@@ -292,12 +294,12 @@ const DashboardView = ({ setActiveTab }) => {
             <div>
                 <div className="flex items-center justify-between mb-4 lg:mb-6 px-1">
                     <div>
-                        <h2 className="text-xl lg:text-2xl font-bold text-yellow-800 flex items-center gap-2">
+                        <h2 className="text-xl lg:text-2xl font-bold text-cyan-700 flex items-center gap-2">
                             Aboneliklerim
                         </h2>
                     </div>
                     <button
-                        onClick={() => setActiveTab('subscriptions')}
+                        onClick={() => navigate('/subscriptions')} 
                         className="text-xs lg:text-sm font-semibold text-zinc-600 border border-zinc-200 bg-white hover:bg-zinc-50 hover:border-zinc-300 px-4 py-2 rounded-xl shadow-sm transition-all cursor-pointer flex items-center gap-1"
                     >
                         Tümünü Gör <ChevronRight size={14} />

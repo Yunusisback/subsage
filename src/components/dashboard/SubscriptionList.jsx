@@ -18,7 +18,7 @@ const formatMoneyClean = (amount) => {
     }).format(amount);
 };
 
-// Abonelik Ekleme için kullanılabilir platformlar
+ // Abonelik platform listesi
 const PLATFORMS = [
     {
         id: "p1",
@@ -186,8 +186,7 @@ const SubscriptionList = () => {
 
     const [searchQuery, setSearchQuery] = useState("");
     const [loadingStates, setLoadingStates] = useState({});
-
-    // liste Filtresi
+    
     const [viewFilter, setViewFilter] = useState("active");
 
     // Görüntülenecek abonelikleri filtrele
@@ -290,13 +289,13 @@ const SubscriptionList = () => {
                     {/* Arama Kutusu */}
                     {!showCustomForm && (
                         <div className="relative group w-full md:w-auto">
-                            <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 group-focus-within:text-yellow-500 transition-colors" size={18} />
+                            <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 group-focus-within:text-cyan-500 transition-colors" size={18} />
                             <input
                                 type="text"
                                 placeholder={isAddingMode ? "Servis ara..." : "Abonelik ara..."}
                                 value={searchQuery}
                                 onChange={(e) => setSearchQuery(e.target.value)}
-                                className="pl-10 pr-4 py-2.5 bg-white border border-slate-200 rounded-xl text-sm focus:outline-hidden focus:ring-2 focus:ring-yellow-100 focus:border-yellow-300 w-full md:w-64 transition-all"
+                                className="pl-10 pr-4 py-2.5 bg-white border border-slate-200 rounded-xl text-sm focus:outline-hidden focus:ring-2 focus:ring-cyan-100 focus:border-cyan-300 w-full md:w-64 transition-all"
                             />
                         </div>
                     )}
@@ -315,7 +314,7 @@ const SubscriptionList = () => {
                             "flex items-center gap-2 px-4 py-2.5 rounded-xl font-semibold transition-all cursor-pointer border shadow-sm shrink-0",
                             isAddingMode || showCustomForm
                                 ? "bg-white text-slate-700 hover:bg-slate-50 border-slate-200"
-                                : "bg-yellow-600 text-white hover:bg-yellow-700 border-transparent shadow-yellow-200 -shadow-md"
+                                : "bg-cyan-600 text-white hover:bg-cyan-700 border-transparent shadow-cyan-200 -shadow-md"
                         )}
                     >
                         {(isAddingMode || showCustomForm) ? <ArrowLeft size={18} /> : <Plus size={18} />}
@@ -332,8 +331,8 @@ const SubscriptionList = () => {
                         className={cn(
                             "px-4 py-2 text-sm font-bold cursor-pointer rounded-t-lg transition-all relative top-1",
                             viewFilter === "active"
-                                ? "text-yellow-700 border-b-2 border-yellow-600 bg-yellow-100"
-                                : "text-yellow-700 hover:text-yellow-700 hover:bg-yellow-50"
+                                ? "text-cyan-700 border-b-2 border-cyan-600 bg-cyan-50"
+                                : "text-slate-500 hover:text-cyan-700 hover:bg-cyan-50"
                         )}
                     >
                         Aktif Abonelikler
@@ -344,7 +343,7 @@ const SubscriptionList = () => {
                             "px-4 py-2 text-sm font-bold rounded-t-lg cursor-pointer transition-all relative top-1",
                             viewFilter === "canceled"
                                 ? "text-red-800 border-b-2 border-red-800 bg-red-100"
-                                : "text-red-800 hover:text-red-700 hover:bg-red-50"
+                                : "text-slate-500 hover:text-red-700 hover:bg-red-50"
                         )}
                     >
                         İptal Edilenler
@@ -366,7 +365,7 @@ const SubscriptionList = () => {
                             className="max-w-xl mx-auto bg-white p-8 rounded-3xl border border-slate-200 shadow-lg"
                         >
                              <div className="text-center mb-6">
-                                <div className="w-12 h-12 bg-yellow-100 text-yellow-600 rounded-full flex items-center justify-center mx-auto mb-3">
+                                <div className="w-12 h-12 bg-cyan-100 text-cyan-600 rounded-full flex items-center justify-center mx-auto mb-3">
                                     <PenTool size={24} />
                                 </div>
                                 <h3 className="text-xl font-bold text-slate-900">Özel Abonelik Oluştur</h3>
@@ -394,7 +393,7 @@ const SubscriptionList = () => {
                                         "group relative bg-white border rounded-3xl p-5 flex flex-col items-center text-center transition-all duration-300",
                                         isSubscribed && status !== "success"
                                             ? "opacity-50 grayscale border-slate-100 bg-slate-50 cursor-default"
-                                            : "border-slate-200 hover:border-blue-300 hover:shadow-[0_8px_30px_-6px_rgba(0,0,0,0.1)] hover:-translate-y-1 cursor-pointer"
+                                            : "border-slate-200 hover:border-cyan-300 hover:shadow-[0_8px_30px_-6px_rgba(0,0,0,0.1)] hover:-translate-y-1 cursor-pointer"
                                     )}
                                     onClick={() => !isSubscribed && handleAddPlatform(platform)}
                                 >
@@ -427,7 +426,7 @@ const SubscriptionList = () => {
                                         {/* State göstergesi */}
                                         <div className="h-6 flex items-center justify-center">
                                             {status === "loading" ? (
-                                                <Loader2 size={16} className="animate-spin text-blue-500" />
+                                                <Loader2 size={16} className="animate-spin text-cyan-500" />
                                             ) : status === "success" ? (
                                                 <div className="flex items-center gap-1 text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded-full border border-emerald-100 animate-in zoom-in">
                                                     <CheckCircle2 size={12} /> <span className="text-[10px] font-bold">Eklendi</span>
@@ -437,7 +436,7 @@ const SubscriptionList = () => {
                                                     <CheckCircle2 size={12} /> Mevcut
                                                 </span>
                                             ) : (
-                                                <span className="text-[10px] font-bold text-blue-600 opacity-0 group-hover:opacity-100 transition-opacity">
+                                                <span className="text-[10px] font-bold text-cyan-600 opacity-0 group-hover:opacity-100 transition-opacity">
                                                     Seçmek için tıkla
                                                 </span>
                                             )}
@@ -446,7 +445,7 @@ const SubscriptionList = () => {
 
                                     {/* seçili değilken hover ikonu */}
                                     {!isSubscribed && (
-                                        <div className="absolute top-3 right-3 w-6 h-6 rounded-full bg-blue-50 text-blue-600 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all scale-75 group-hover:scale-100">
+                                        <div className="absolute top-3 right-3 w-6 h-6 rounded-full bg-cyan-50 text-cyan-600 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all scale-75 group-hover:scale-100">
                                             <Plus size={14} strokeWidth={3} />
                                         </div>
                                     )}
@@ -456,10 +455,10 @@ const SubscriptionList = () => {
 
                          {/* oluşturma kartı */}
                         <div
-                            className="group relative bg-white border border-dashed border-slate-300 rounded-3xl p-5 flex flex-col items-center text-center transition-all duration-300 hover:border-yellow-400 hover:bg-yellow-50 cursor-pointer"
+                            className="group relative bg-white border border-dashed border-slate-300 rounded-3xl p-5 flex flex-col items-center text-center transition-all duration-300 hover:border-cyan-400 hover:bg-cyan-50 cursor-pointer"
                             onClick={() => setShowCustomForm(true)}
                         >
-                             <div className="w-14 h-14 mb-4 rounded-xl bg-slate-50 border border-slate-100 text-slate-400 p-2.5 flex items-center justify-center shadow-sm group-hover:scale-105 group-hover:bg-white group-hover:text-yellow-500 transition-all duration-300">
+                             <div className="w-14 h-14 mb-4 rounded-xl bg-slate-50 border border-slate-100 text-slate-400 p-2.5 flex items-center justify-center shadow-sm group-hover:scale-105 group-hover:bg-white group-hover:text-cyan-500 transition-all duration-300">
                                 <Plus size={24} />
                              </div>
                              <h3 className="font-bold text-slate-900 text-sm mb-1">Özel Oluştur</h3>
@@ -468,10 +467,10 @@ const SubscriptionList = () => {
                              </span>
                              <div className="mt-auto w-full pt-3 border-t border-slate-50 flex flex-col items-center justify-center gap-1">
                                 <div className="flex items-baseline gap-1">
-                                    <span className="text-lg font-black text-slate-300 group-hover:text-yellow-600">-</span>
+                                    <span className="text-lg font-black text-slate-300 group-hover:text-cyan-600">-</span>
                                 </div>
                                 <div className="h-6 flex items-center justify-center">
-                                    <span className="text-[10px] font-bold text-slate-400 group-hover:text-yellow-600">
+                                    <span className="text-[10px] font-bold text-slate-400 group-hover:text-cyan-600">
                                         Formu Aç
                                     </span>
                                 </div>
@@ -535,10 +534,10 @@ const SubscriptionList = () => {
                                         </div>
                                         
                                         <div className="flex gap-2">
-                                           
+                                            
                                             {!isInactive && (
                                                 <button
-                                                    className="w-8 h-8 flex cursor-pointer items-center justify-center rounded-full transition-all border bg-white border-slate-300 text-slate-500 hover:bg-blue-800 hover:text-blue-100 hover:border-blue-700"
+                                                    className="w-8 h-8 flex cursor-pointer items-center justify-center rounded-full transition-all border bg-white border-slate-300 text-slate-500 hover:bg-cyan-800 hover:text-cyan-100 hover:border-cyan-700"
                                                     onClick={(e) => handleEditClick(e, sub)}
                                                     title="Düzenle"
                                                 >
@@ -547,6 +546,7 @@ const SubscriptionList = () => {
                                             )}
 
                                             {isInactive ? (
+
                                                 // Silme Butonu
                                                 <button
                                                     className="w-8 h-8 flex items-center justify-center rounded-full transition-all border bg-slate-50 border-slate-200 text-slate-400 hover:bg-red-50 hover:text-red-600 hover:border-red-100"
@@ -558,6 +558,7 @@ const SubscriptionList = () => {
                                             ) : (
                                                 
                                                 // İptal Butonu 
+                                                
                                                 <button
                                                     className={cn(
                                                         "w-8 h-8 flex cursor-pointer items-center justify-center rounded-full transition-all border",
@@ -647,7 +648,7 @@ const SubscriptionList = () => {
             <Modal
                 isOpen={!!editingSub}
                 onClose={() => setEditingSub(null)}
-                title="Aboneliği Düzenle"
+                title={<span className="text-cyan-700 font-bold">Aboneliği Düzenle</span>}
             >
                 <AddSubscriptionForm 
                     initialData={editingSub}

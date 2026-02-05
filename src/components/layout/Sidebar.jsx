@@ -1,27 +1,29 @@
 import { LayoutGrid, CreditCard, BarChart2, Settings, MessageSquare, Bell, LogOut, ChevronLeft, ChevronRight, Wallet } from "lucide-react";
 import { cn } from "../../utils/helpers";
-import { TABS } from "../../utils/constants";
+import { NavLink } from "react-router-dom"; 
 import { useGlobal } from "../../context/GlobalContext"; 
 
-const Sidebar = ({ isCollapsed, toggleSidebar, activeTab, setActiveTab, isMobileMenuOpen, closeMobileMenu }) => {
+const Sidebar = ({ isCollapsed, toggleSidebar, isMobileMenuOpen, closeMobileMenu }) => {
+ 
   const { notifications } = useGlobal(); 
 
   // Okunmamış bildirim sayısını hesapla
   const unreadCount = notifications.filter(n => !n.read).length;
   
+ 
   const menuItems = [
-    { id: TABS.DASHBOARD, icon: LayoutGrid, label: "Genel Bakış" },
-    { id: TABS.SUBSCRIPTIONS, icon: CreditCard, label: "Abonelikler", badge: 5 }, 
-    { id: TABS.WALLET, icon: Wallet, label: "Cüzdanım" }, 
-    { id: TABS.REPORTS, icon: BarChart2, label: "Raporlar" },
-    { id: TABS.MESSAGES, icon: MessageSquare, label: "Mesajlar", badge: 3 }, 
+    { path: "/", icon: LayoutGrid, label: "Genel Bakış" },
+    { path: "/subscriptions", icon: CreditCard, label: "Abonelikler", badge: 5 }, 
+    { path: "/wallet", icon: Wallet, label: "Cüzdanım" }, 
+    { path: "/reports", icon: BarChart2, label: "Raporlar" },
+    { path: "/messages", icon: MessageSquare, label: "Mesajlar", badge: 3 }, 
     { 
-        id: TABS.NOTIFICATIONS, 
+        path: "/notifications", 
         icon: Bell, 
         label: "Bildirimler", 
         badge: unreadCount > 0 ? unreadCount : null 
     },
-    { id: TABS.SETTINGS, icon: Settings, label: "Ayarlar" },
+    { path: "/settings", icon: Settings, label: "Ayarlar" },
   ];
 
   return (
@@ -56,12 +58,12 @@ const Sidebar = ({ isCollapsed, toggleSidebar, activeTab, setActiveTab, isMobile
             isCollapsed ? "lg:justify-center lg:pl-0 pl-4" : "justify-start pl-2"
         )}>
             
-            {/* Glow  */}
-            <div className="absolute inset-0 w-10 h-10 bg-yellow-400/20 blur-2xl rounded-full -z-10"></div>
+            {/* Glow */}
+            <div className="absolute inset-0 w-10 h-10 bg-cyan-400/20 blur-2xl rounded-full -z-10"></div>
 
             {/* Logo İkonu  */}
             <div className="relative z-10 flex items-center justify-center">
-                <svg width="46" height="46" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className="text-yellow-500 drop-shadow-sm">
+                <svg width="46" height="46" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className="text-cyan-500 drop-shadow-sm">
                  <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/>
                 </svg>
             </div>
@@ -69,7 +71,7 @@ const Sidebar = ({ isCollapsed, toggleSidebar, activeTab, setActiveTab, isMobile
             {/* Yazı */}
             <h1 className={cn(
                 "text-3xl font-black tracking-tighter overflow-hidden transition-all duration-500 mr-3 whitespace-nowrap relative z-10",
-                "text-yellow-900", 
+                "text-cyan-500",
               
                 isCollapsed ? "lg:w-0 lg:opacity-0 lg:hidden block w-auto opacity-100" : "w-auto opacity-100 block"
             )}>
@@ -80,7 +82,7 @@ const Sidebar = ({ isCollapsed, toggleSidebar, activeTab, setActiveTab, isMobile
         {/* Desktop Toggle Butonu */}
         <button 
             onClick={toggleSidebar}
-            className="hidden lg:flex absolute -right-3 top-1/1 -translate-y-1/2 w-7 h-7 bg-white border border-zinc-200 rounded-full items-center justify-center text-yellow-600 hover:text-zinc-900 hover:scale-110 transition-all shadow-sm cursor-pointer z-50"
+            className="hidden lg:flex absolute -right-3 top-1/1 -translate-y-1/2 w-7 h-7 bg-white border border-zinc-200 rounded-full items-center justify-center text-cyan-600 hover:text-zinc-900 hover:scale-110 transition-all shadow-sm cursor-pointer z-50"
         >
             {isCollapsed ? <ChevronRight size={15} /> : <ChevronLeft size={15} />}
         </button>
@@ -89,13 +91,13 @@ const Sidebar = ({ isCollapsed, toggleSidebar, activeTab, setActiveTab, isMobile
 
       {/* Menü */}
       <nav className="flex-1 py-4 px-3 space-y-2 overflow-y-auto custom-scrollbar">
-        {menuItems.map((item) => {
-          const isActive = activeTab === item.id;
-          return (
-            <button
-                key={item.id}
-                onClick={() => setActiveTab(item.id)}
-                className={cn(
+        {menuItems.map((item) => (
+        
+            <NavLink
+                key={item.path}
+                to={item.path}
+                onClick={closeMobileMenu}
+                className={({ isActive }) => cn(
                     "w-full flex items-center transition-all duration-300 group relative font-medium outline-none",
                     "hover:scale-[1.02] active:scale-[0.98]",
                   
@@ -108,48 +110,51 @@ const Sidebar = ({ isCollapsed, toggleSidebar, activeTab, setActiveTab, isMobile
                 )}
                 title={isCollapsed ? item.label : ""}
             >
-                {/* Aktif*/}
-                {isActive && (
-                   <div className={cn(
-                       "absolute left-0 top-1/2 -translate-y-1/2 w-1 h-6 bg-yellow-400 rounded-r-full",
-                       !isCollapsed ? "" : "hidden lg:block" 
-                   )}></div>
-                )}
+                {({ isActive }) => (
+                <>
+                    {/* Aktif*/}
+                    {isActive && (
+                    <div className={cn(
+                        "absolute left-0 top-1/2 -translate-y-1/2 w-1 h-6 bg-cyan-400 rounded-r-full",
+                        !isCollapsed ? "" : "hidden lg:block" 
+                    )}></div>
+                    )}
 
-                <item.icon 
-                    size={22} 
-                    strokeWidth={isActive ? 2.5 : 2}
-                    className={cn("transition-colors", isActive ? "text-yellow-400" : "group-hover:text-zinc-900")} 
-                />
-                
-                {/* masaüstünde collapsed ise gizle mobilde hep göster */}
-                <span className={cn("tracking-tight", isCollapsed ? "lg:hidden" : "block")}>
-                    {item.label}
-                </span>
-
-                {/* Badge */}
-                {item.badge && (
-                    <span className={cn(
-                        "ml-auto text-[10px] font-bold px-2 py-0.5 rounded-full",
-
-                        // collapsed mantığı
-                        isCollapsed ? "lg:hidden" : "block",
-                        isActive ? "bg-white/20 text-white" : "bg-zinc-100 text-zinc-600 group-hover:bg-white group-hover:shadow-sm"
-                    )}>
-                        {item.badge}
+                    <item.icon 
+                        size={22} 
+                        strokeWidth={isActive ? 2.5 : 2}
+                        className={cn("transition-colors", isActive ? "text-cyan-400" : "group-hover:text-zinc-900")} 
+                    />
+                    
+                    {/* masaüstünde collapsed ise gizle mobilde hep göster */}
+                    <span className={cn("tracking-tight", isCollapsed ? "lg:hidden" : "block")}>
+                        {item.label}
                     </span>
-                )}
 
-                {/* Badge Dot ( sadece collapsed desktop için) */}
-                {item.badge && isCollapsed && (
-                    <span className={cn(
-                        "hidden lg:block absolute top-2 right-2 w-2.5 h-2.5 rounded-full shadow-sm animate-ping", 
-                        item.id === TABS.NOTIFICATIONS ? "bg-red-500" : "bg-yellow-500"
-                    )}></span>
+                    {/* Badge */}
+                    {item.badge && (
+                        <span className={cn(
+                            "ml-auto text-[10px] font-bold px-2 py-0.5 rounded-full",
+
+                            // collapsed mantığı
+                            isCollapsed ? "lg:hidden" : "block",
+                            isActive ? "bg-white/20 text-white" : "bg-zinc-100 text-zinc-600 group-hover:bg-white group-hover:shadow-sm"
+                        )}>
+                            {item.badge}
+                        </span>
+                    )}
+
+                    {/* Badge Dot ( sadece collapsed desktop için) */}
+                    {item.badge && isCollapsed && (
+                        <span className={cn(
+                            "hidden lg:block absolute top-2 right-2 w-2.5 h-2.5 rounded-full shadow-sm animate-ping", 
+                            item.path === "/notifications" ? "bg-red-500" : "bg-cyan-500"
+                        )}></span>
+                    )}
+                </>
                 )}
-            </button>
-          )
-        })}
+            </NavLink>
+        ))}
       </nav>
 
       {/* Footer ve  Çıkış */}

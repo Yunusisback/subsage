@@ -56,7 +56,7 @@ const Settings = () => {
         onClick={onClick}
         className={cn(
             "w-11 h-6 rounded-full p-1 transition-colors duration-300 flex items-center cursor-pointer border",
-            active ? "bg-yellow-400 border-yellow-400" : "bg-zinc-200 border-zinc-200"
+            active ? "bg-cyan-400 border-cyan-400" : "bg-zinc-200 border-zinc-200"
         )}
     >
         <div className={cn(
@@ -75,7 +75,7 @@ const Settings = () => {
             <Button 
                 variant="primary" 
                 onClick={handleSave} 
-                className="bg-yellow-400 hover:bg-yellow-500 text-black font-bold px-6 shadow-sm"
+                className="bg-cyan-500 hover:bg-cyan-700 text-white font-bold px-6 shadow-sm cursor-pointer"
                 disabled={loading}
             >
                 {loading ? (
@@ -107,7 +107,7 @@ const Settings = () => {
                     
                     {/* avatar değiştirme */}
                     <div className="flex flex-col items-center gap-3">
-                        <div className="w-24 h-24 rounded-full border-2 border-dashed border-zinc-300 p-1 cursor-pointer hover:border-yellow-500 transition-colors group relative overflow-hidden">
+                        <div className="w-24 h-24 rounded-full border-2 border-dashed border-zinc-300 p-1 cursor-pointer hover:border-cyan-500 transition-colors group relative overflow-hidden">
                             <img 
                                 src={formData.avatar} 
                                 alt="Profil" 
@@ -131,7 +131,7 @@ const Settings = () => {
                                     name="name"
                                     value={formData.name}
                                     onChange={handleChange}
-                                    className="w-full bg-white border border-zinc-200 rounded-xl py-2.5 pl-10 pr-4 text-sm text-zinc-900 focus:border-yellow-500 focus:outline-none transition-colors" 
+                                    className="w-full bg-white border border-zinc-200 rounded-xl py-2.5 pl-10 pr-4 text-sm text-zinc-900 focus:border-cyan-500 focus:outline-none transition-colors" 
                                 />
                             </div>
                         </div>
@@ -145,7 +145,7 @@ const Settings = () => {
                                     name="email"
                                     value={formData.email}
                                     onChange={handleChange}
-                                    className="w-full bg-white border border-zinc-200 rounded-xl py-2.5 pl-10 pr-4 text-sm text-zinc-900 focus:border-yellow-500 focus:outline-none transition-colors" 
+                                    className="w-full bg-white border border-zinc-200 rounded-xl py-2.5 pl-10 pr-4 text-sm text-zinc-900 focus:border-cyan-500 focus:outline-none transition-colors" 
                                 />
                             </div>
                         </div>

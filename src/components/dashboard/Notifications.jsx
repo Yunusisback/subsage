@@ -6,7 +6,7 @@ const Notifications = () => {
   const { notifications, markAllNotificationsAsRead } = useGlobal();
 
   return (
-    <div className="animate-in fade-in slide-in-from-bottom-4 duration-500 max-w-4xl mr-auto pb-15 pt-2">
+    <div className="animate-in fade-in slide-in-from-bottom-4 duration-500 max-w-4xl mr-auto pb-15 -mt-4">
       
       {/* Üst Kısım */}
       <div className="flex justify-end mb-6">
@@ -34,7 +34,7 @@ const Notifications = () => {
               notifications.map((item) => {
                   const isUnread = !item.read;
 
-                  // Bildirim türüne göre stiller
+                 
                   const typeStyles = {
                       success: { 
                           card: "bg-emerald-50/80 border-emerald-200/60 hover:border-emerald-300", 

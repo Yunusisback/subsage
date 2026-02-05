@@ -1,15 +1,19 @@
 import { useState, useEffect, useRef } from "react";
 import { Bell, CheckCircle, Info, Clock, XCircle, Menu } from "lucide-react"; 
-import { TABS } from "../../utils/constants";
 import { useGlobal } from "../../context/GlobalContext";
 import { motion, AnimatePresence } from "framer-motion";
 import { cn } from "../../utils/helpers";
+import { useLocation, useNavigate } from "react-router-dom"; 
 
-const Header = ({ activeTab, setActiveTab, onOpenMobileMenu }) => {
- 
+const Header = ({ onOpenMobileMenu }) => {
+
   const { notifications, userSettings } = useGlobal(); 
   const [showNotifications, setShowNotifications] = useState(false);
   const notificationRef = useRef(null);
+  
+ 
+  const location = useLocation();
+  const navigate = useNavigate();
 
   // Okunmamış bildirim sayısı
   const unreadCount = notifications.filter(n => !n.read).length;
@@ -23,6 +27,22 @@ const Header = ({ activeTab, setActiveTab, onOpenMobileMenu }) => {
     document.addEventListener("mousedown", handleClickOutside);
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
+
+ 
+  const getPageTitle = (path) => {
+      switch(path) {
+          case "/": return "Yönetim Paneli";
+          case "/subscriptions": return "Abonelikler";
+          case "/wallet": return "Cüzdanım";
+          case "/reports": return "Raporlar";
+          case "/messages": return "Mesajlar";
+          case "/notifications": return "Bildirimler";
+          case "/settings": return "Ayarlar";
+          default: return "Yönetim Paneli";
+      }
+  };
+
+  const currentTitle = getPageTitle(location.pathname);
 
   // Bildirim tipi stilleri
   const getTypeStyles = (type) => {
@@ -50,14 +70,8 @@ const Header = ({ activeTab, setActiveTab, onOpenMobileMenu }) => {
             <Menu size={24} />
         </button>
 
-        <h1 className="text-2xl md:text-3xl pl-1 md:pl-3 font-bold tracking-tight text-yellow-800 truncate">
-          {activeTab === TABS.DASHBOARD && "Yönetim Paneli"}
-          {activeTab === TABS.SUBSCRIPTIONS && "Abonelikler"}
-          {activeTab === TABS.WALLET && "Cüzdanım"}
-          {activeTab === TABS.REPORTS && "Raporlar"}
-          {activeTab === TABS.MESSAGES && "Mesajlar"}
-          {activeTab === TABS.NOTIFICATIONS && "Bildirimler"}
-          {activeTab === TABS.SETTINGS && "Ayarlar"}
+        <h1 className="text-2xl md:text-3xl pl-1 md:pl-3 font-bold tracking-tight text-cyan-700 truncate">
+          {currentTitle}
         </h1>
       </div>
 
@@ -89,7 +103,7 @@ const Header = ({ activeTab, setActiveTab, onOpenMobileMenu }) => {
                         <div className="p-4 border-b border-zinc-100 flex justify-between items-center bg-zinc-50/30 backdrop-blur-md">
                             <span className="text-sm font-bold text-zinc-900">Bildirimler</span>
                             {unreadCount > 0 ? (
-                            <span className="text-[10px] bg-yellow-100 text-yellow-700 px-2 py-0.5 rounded-full font-bold border border-yellow-200 shadow-sm">{unreadCount} Yeni</span>
+                            <span className="text-[10px] bg-cyan-100 text-cyan-700 px-2 py-0.5 rounded-full font-bold border border-cyan-200 shadow-sm">{unreadCount} Yeni</span>
                             ) : (
                             <span className="text-[10px] bg-zinc-100 text-zinc-500 px-2 py-0.5 rounded-full font-bold">Hepsi Okundu</span>
                             )}
@@ -105,7 +119,10 @@ const Header = ({ activeTab, setActiveTab, onOpenMobileMenu }) => {
                                 return (
                                     <button 
                                         key={note.id}
-                                        onClick={() => { setActiveTab(TABS.NOTIFICATIONS); setShowNotifications(false); }} 
+                                        onClick={() => { 
+                                            navigate("/notifications"); 
+                                            setShowNotifications(false); 
+                                        }} 
                                         className={cn(
                                             "w-full text-left px-4 py-3 transition-all flex gap-3 group border-b border-zinc-50 last:border-0 relative overflow-hidden",
                                             isUnread 
@@ -159,7 +176,10 @@ const Header = ({ activeTab, setActiveTab, onOpenMobileMenu }) => {
 
                         <div className="p-2 border-t border-zinc-100 bg-zinc-50/50">
                             <button 
-                                onClick={() => { setActiveTab(TABS.NOTIFICATIONS); setShowNotifications(false); }}
+                                onClick={() => { 
+                                    navigate("/notifications"); 
+                                    setShowNotifications(false); 
+                                }}
                                 className="w-full py-2 text-xs text-center text-zinc-500 hover:text-zinc-900 font-bold transition-colors cursor-pointer flex items-center justify-center gap-1"
                             >
                                 Tümünü Gör
@@ -173,8 +193,8 @@ const Header = ({ activeTab, setActiveTab, onOpenMobileMenu }) => {
 
         {/* Profil Bölümü */}
         <button 
-            onClick={() => setActiveTab(TABS.SETTINGS)}
-            className="flex items-center gap-2 pl-1.5 md:pl-2.5 pr-1.5 md:pr-4 py-1.5 md:py-2 rounded-full bg-white border border-yellow-500 hover:bg-zinc-50 hover:border-zinc-300 transition-all group cursor-pointer shadow-sm"
+            onClick={() => navigate("/settings")} 
+            className="flex items-center gap-2 pl-1.5 md:pl-2.5 pr-1.5 md:pr-4 py-1.5 md:py-2 rounded-full bg-white border border-cyan-100 hover:bg-zinc-50 hover:border-zinc-300 transition-all group cursor-pointer shadow-sm"
         >
             <div className="w-8 h-8 md:w-10 md:h-10 min-w-8 md:min-w-9 rounded-full bg-zinc-100 ring-2 ring-white flex items-center justify-center overflow-hidden">
                 <img 

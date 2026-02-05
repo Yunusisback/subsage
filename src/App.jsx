@@ -10,6 +10,7 @@
 
 import { useState } from "react";
 import { Toaster } from "react-hot-toast";
+import { Routes, Route, Navigate } from "react-router-dom";
 import Sidebar from "./components/layout/Sidebar";
 import Header from "./components/layout/Header"; 
 import DashboardView from "./components/dashboard/DashboardView"; 
@@ -22,12 +23,11 @@ import Settings from "./components/dashboard/Settings";
 import AddSubscriptionForm from "./components/dashboard/AddSubscriptionForm"; 
 import Modal from "./components/ui/Modal"; 
 import { cn } from "./utils/helpers";
-import { TABS } from "./utils/constants";
+
 function App() {
   const [isCollapsed, setIsCollapsed] = useState(false);
-  const [activeTab, setActiveTab] = useState(TABS.DASHBOARD);
+
   const [isModalOpen, setIsModalOpen] = useState(false);
-  
   
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
@@ -70,11 +70,7 @@ function App() {
       <Sidebar 
         isCollapsed={isCollapsed} 
         toggleSidebar={() => setIsCollapsed(!isCollapsed)} 
-        activeTab={activeTab}
-        setActiveTab={(tab) => {
-          setActiveTab(tab);
-          setIsMobileMenuOpen(false); 
-        }}
+      
         isMobileMenuOpen={isMobileMenuOpen}
         closeMobileMenu={() => setIsMobileMenuOpen(false)}
       />
@@ -89,34 +85,24 @@ function App() {
         
         {/* header  */}
         <Header 
-            activeTab={activeTab} 
-            setActiveTab={setActiveTab} 
+      
             onOpenModal={() => setIsModalOpen(true)}
             onOpenMobileMenu={() => setIsMobileMenuOpen(true)}
         />
 
-        {/* dashboard  */}
-        {activeTab === TABS.DASHBOARD && (
-            <DashboardView setActiveTab={setActiveTab} />
-        )}
-
-        {/* abonelikler */}
-        {activeTab === TABS.SUBSCRIPTIONS && <SubscriptionList />}
-
-        {/* cüzdan (Yeni) */}
-        {activeTab === TABS.WALLET && <WalletView />}
-        
-        {/* raporlar */}
-        {activeTab === TABS.REPORTS && <SummaryChart />}
-        
-        {/* mesajlar */}
-        {activeTab === TABS.MESSAGES && <Messages />}
-        
-        {/* bildirimler */}
-        {activeTab === TABS.NOTIFICATIONS && <Notifications />} 
-
-        {/* ayarlar */}
-        {activeTab === TABS.SETTINGS && <Settings />}
+        {/* dashboard- routes  */}
+        <Routes>
+            <Route path="/" element={<DashboardView />} />
+            <Route path="/subscriptions" element={<SubscriptionList />} />
+            <Route path="/wallet" element={<WalletView />} />
+            <Route path="/reports" element={<SummaryChart />} />
+            <Route path="/messages" element={<Messages />} />
+            <Route path="/notifications" element={<Notifications />} />
+            <Route path="/settings" element={<Settings />} />
+            
+            {/* Hatalı URL gelirse ana sayfaya at */}
+            <Route path="*" element={<Navigate to="/" replace />} />
+        </Routes>
 
         {/* global modal */}
         <Modal 

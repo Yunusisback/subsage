@@ -1,6 +1,28 @@
 import { createContext, useContext, useState, useEffect } from "react";
 import { INITIAL_SUBSCRIPTIONS, INITIAL_NOTIFICATIONS, SERVICE_LOGOS } from "../utils/constants";
 
+
+const LOGO_MAPPINGS = [
+  { keywords: ["netflix"], logo: SERVICE_LOGOS.NETFLIX },
+  { keywords: ["spotify"], logo: SERVICE_LOGOS.SPOTIFY },
+  { keywords: ["youtube"], logo: SERVICE_LOGOS.YOUTUBE },
+  { keywords: ["prime", "amazon"], logo: SERVICE_LOGOS.AMAZON },
+  { keywords: ["disney"], logo: SERVICE_LOGOS.DISNEY },
+  { keywords: ["exxen"], logo: SERVICE_LOGOS.EXXEN },
+  { keywords: ["blutv"], logo: SERVICE_LOGOS.BLUTV },
+  { keywords: ["xbox"], logo: SERVICE_LOGOS.XBOX },
+  { keywords: ["playstation"], logo: SERVICE_LOGOS.PLAYSTATION },
+  { keywords: ["icloud", "apple"], logo: SERVICE_LOGOS.ICLOUD },
+  { keywords: ["tod"], logo: SERVICE_LOGOS.TOD },
+  { keywords: ["discord"], logo: SERVICE_LOGOS.DISCORD },
+  { keywords: ["mubi"], logo: SERVICE_LOGOS.MUBI },
+  { keywords: ["gain"], logo: SERVICE_LOGOS.GAIN },
+  { keywords: ["adobe"], logo: SERVICE_LOGOS.ADOBE },
+  { keywords: ["canva"], logo: SERVICE_LOGOS.CANVA },
+  { keywords: ["chatgpt"], logo: SERVICE_LOGOS.CHATGPT },
+  { keywords: ["duolingo"], logo: SERVICE_LOGOS.DUOLINGO }
+];
+
 const GlobalContext = createContext();
 
 export const useGlobal = () => useContext(GlobalContext);
@@ -12,26 +34,12 @@ export const GlobalProvider = ({ children }) => {
     if (!name) return SERVICE_LOGOS.DEFAULT;
     const lowerName = name.toLowerCase();
     
-    if(lowerName.includes("netflix")) return SERVICE_LOGOS.NETFLIX;
-    if(lowerName.includes("spotify")) return SERVICE_LOGOS.SPOTIFY;
-    if(lowerName.includes("youtube")) return SERVICE_LOGOS.YOUTUBE;
-    if(lowerName.includes("prime") || lowerName.includes("amazon")) return SERVICE_LOGOS.AMAZON;
-    if(lowerName.includes("disney")) return SERVICE_LOGOS.DISNEY;
-    if(lowerName.includes("exxen")) return SERVICE_LOGOS.EXXEN;
-    if(lowerName.includes("blutv")) return SERVICE_LOGOS.BLUTV;
-    if(lowerName.includes("xbox")) return SERVICE_LOGOS.XBOX;
-    if(lowerName.includes("playstation")) return SERVICE_LOGOS.PLAYSTATION;
-    if(lowerName.includes("icloud") || lowerName.includes("apple")) return SERVICE_LOGOS.ICLOUD;
-    if(lowerName.includes("tod")) return SERVICE_LOGOS.TOD;
-    if(lowerName.includes("discord")) return SERVICE_LOGOS.DISCORD;
-    if(lowerName.includes("mubi")) return SERVICE_LOGOS.MUBI;
-    if(lowerName.includes("gain")) return SERVICE_LOGOS.GAIN;
-    if(lowerName.includes("adobe")) return SERVICE_LOGOS.ADOBE;
-    if(lowerName.includes("canva")) return SERVICE_LOGOS.CANVA;
-    if(lowerName.includes("chatgpt")) return SERVICE_LOGOS.CHATGPT;
-    if(lowerName.includes("duolingo")) return SERVICE_LOGOS.DUOLINGO;
-    
-    return SERVICE_LOGOS.DEFAULT;
+  
+    const match = LOGO_MAPPINGS.find(item => 
+      item.keywords.some(keyword => lowerName.includes(keyword))
+    );
+
+    return match ? match.logo : SERVICE_LOGOS.DEFAULT;
   };
 
   // state
@@ -39,11 +47,9 @@ export const GlobalProvider = ({ children }) => {
     const savedSubs = localStorage.getItem("subscriptions");
     let parsedSubs = savedSubs ? JSON.parse(savedSubs) : INITIAL_SUBSCRIPTIONS;
     
-
     return parsedSubs.map(sub => ({ 
         ...sub, 
         status: sub.status || 'active',
-   
         image: getLogoByName(sub.name) 
     }));
   });
@@ -54,12 +60,16 @@ export const GlobalProvider = ({ children }) => {
     return savedNotes ? JSON.parse(savedNotes) : INITIAL_NOTIFICATIONS;
   });
 
+  
+  const [spendingLimit, setSpendingLimit] = useState(() => {
+    const savedLimit = localStorage.getItem("spendingLimit");
+    return savedLimit ? JSON.parse(savedLimit) : 15000;
+  });
+
   // İşlemler State
   const [transactions, setTransactions] = useState(() => {
     const savedTx = localStorage.getItem("transactions");
     if (savedTx) {
-
-        // İşlemlerin ikonlarını da onar
         const parsedTx = JSON.parse(savedTx);
         return parsedTx.map(tx => ({
             ...tx,
@@ -69,8 +79,6 @@ export const GlobalProvider = ({ children }) => {
     return INITIAL_SUBSCRIPTIONS.map((sub) => ({
         id: `init-tx-${sub.id}`,
         name: sub.name,
-
-     
         date: new Date().toLocaleDateString('tr-TR', { day: 'numeric', month: 'long', year: 'numeric' }),
         amount: -parseFloat(sub.price),
         type: "subscription",
@@ -115,6 +123,9 @@ export const GlobalProvider = ({ children }) => {
   useEffect(() => { localStorage.setItem("transactions", JSON.stringify(transactions)); }, [transactions]);
   useEffect(() => { localStorage.setItem("userSettings", JSON.stringify(userSettings)); }, [userSettings]);
   useEffect(() => { localStorage.setItem("messages", JSON.stringify(messages)); }, [messages]); 
+  
+ 
+  useEffect(() => { localStorage.setItem("spendingLimit", JSON.stringify(spendingLimit)); }, [spendingLimit]);
 
   // hesaplamalar
   const totalExpenses = subscriptions
@@ -124,6 +135,11 @@ export const GlobalProvider = ({ children }) => {
   // Ayar Güncelleme
   const updateUserSettings = (newSettings) => {
       setUserSettings(prev => ({ ...prev, ...newSettings }));
+  };
+
+  
+  const updateSpendingLimit = (newLimit) => {
+      setSpendingLimit(newLimit);
   };
 
   // Mesaj Gönderme
@@ -143,8 +159,6 @@ export const GlobalProvider = ({ children }) => {
 
   // Abonelik Ekle
   const addSubscription = (newSub) => {
-    
-    // Eklerken de logoyu kontrol et
     const finalImage = newSub.image || getLogoByName(newSub.name);
     
     setSubscriptions([...subscriptions, { ...newSub, image: finalImage, id: Date.now(), status: 'active' }]);
@@ -160,7 +174,6 @@ export const GlobalProvider = ({ children }) => {
     };
     setTransactions(prev => [newTransaction, ...prev]);
 
-  
     const newNote = {
         id: Date.now() + 2,
         type: "success",
@@ -172,11 +185,9 @@ export const GlobalProvider = ({ children }) => {
     setNotifications(prev => [newNote, ...prev]);
   };
 
-  
   const updateSubscription = (updatedSub) => {
       setSubscriptions(prev => prev.map(sub => {
           if (sub.id === updatedSub.id) {
-            
               const finalImage = updatedSub.image || getLogoByName(updatedSub.name);
               return { ...updatedSub, image: finalImage };
           }
@@ -200,7 +211,6 @@ export const GlobalProvider = ({ children }) => {
             : sub
     ));
 
-     
     const cancelNote = {
         id: Date.now(),
         type: "alert",
@@ -241,7 +251,9 @@ export const GlobalProvider = ({ children }) => {
         userSettings,
         updateUserSettings,
         messages,    
-        sendMessage  
+        sendMessage,
+        spendingLimit,      
+        updateSpendingLimit 
     }}>
       {children}
     </GlobalContext.Provider>
