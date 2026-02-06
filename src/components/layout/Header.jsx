@@ -76,7 +76,7 @@ const Header = ({ onOpenMobileMenu }) => {
       </div>
 
       {/* Bildirim ve Profil */}
-      <div className="flex items-center gap-2 md:gap-4 pr-0 md:pr-2">
+      <div className="flex items-center  gap-3 md:gap-4 pr-0 md:pr-2">
         
         {/* Bildirim */}
         <div className="relative" ref={notificationRef}>
@@ -90,7 +90,7 @@ const Header = ({ onOpenMobileMenu }) => {
                 )}
             </button>
 
-            {/* Menü  */}
+           {/* Menü  */}
             <AnimatePresence>
                 {showNotifications && (
                     <motion.div 
@@ -98,7 +98,8 @@ const Header = ({ onOpenMobileMenu }) => {
                         animate={{ opacity: 1, y: 0, scale: 1 }}
                         exit={{ opacity: 0, y: 10, scale: 0.95 }}
                         transition={{ duration: 0.2, ease: "easeOut" }}
-                        className="absolute right-0 top-full mt-3 w-80 md:w-96 bg-white border border-zinc-200 rounded-2xl shadow-xl z-50 overflow-hidden origin-top-right"
+                       
+                        className="absolute -right-6 md:right-0 top-full mt-3 w-80 md:w-96 bg-white border border-zinc-200 rounded-2xl shadow-xl z-50 overflow-hidden origin-top-right"
                     >
                         <div className="p-4 border-b border-zinc-100 flex justify-between items-center bg-zinc-50/30 backdrop-blur-md">
                             <span className="text-sm font-bold text-zinc-900">Bildirimler</span>

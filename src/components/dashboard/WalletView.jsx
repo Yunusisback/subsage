@@ -115,10 +115,11 @@ const WalletView = () => {
   return (
     <div className="animate-in fade-in zoom-in-95 duration-500 pb-10">
       
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-8">
+     
+      <div className="flex flex-col lg:flex-row gap-6 lg:gap-8">
         
-        {/* Sol taraf */}
-        <div className="lg:col-span-4 space-y-6">
+        
+        <div className="w-full lg:w-96 xl:w-[420px] shrink-0 space-y-6">
             
             {/* Başlık ve Ekle Butonu */}
             <div className="flex items-center justify-between px-1">
@@ -150,7 +151,6 @@ const WalletView = () => {
                     <div className="flex justify-between items-start">
                         <div className="flex flex-col gap-1">
                             <span className="font-bold text-lg tracking-[0.2em] text-white/90">VAULT</span>
-                            <span className="text-[10px] uppercase tracking-widest text-white/50 font-medium">Business Premium</span>
                         </div>
                         <div className="flex items-center gap-3">
                             <Wifi size={24} className="rotate-90 text-white/60" strokeWidth={2} />
@@ -158,14 +158,15 @@ const WalletView = () => {
                     </div>
                     
                     <div className="flex items-center gap-4 my-auto">
-                        <div className="w-12 h-9 rounded-md bg-linear-to-br from-yellow-200 to-yellow-500 shadow-inner flex items-center justify-center relative overflow-hidden">
+                        <div className="w-12 h-9 shrink-0 rounded-md bg-linear-to-br from-yellow-200 to-yellow-500 shadow-inner flex items-center justify-center relative overflow-hidden">
                              <div className="absolute inset-0 border border-black/10 rounded-md"></div>
                              <div className="w-full h-px bg-black/20 absolute top-1/3"></div>
                              <div className="w-full h-px bg-black/20 absolute bottom-1/3"></div>
                              <div className="h-full w-px bg-black/20 absolute left-1/3"></div>
                              <div className="h-full w-px bg-black/20 absolute right-1/3"></div>
                         </div>
-                        <div className="font-mono text-xl sm:text-2xl tracking-[0.12em] text-white/90 flex gap-4 drop-shadow-md">
+                       
+                        <div className="font-mono text-base sm:text-xl tracking-[0.12em] text-white/90 flex gap-3 sm:gap-4 drop-shadow-md whitespace-nowrap">
                             <span>••••</span> <span>••••</span> <span>••••</span> <span>3732</span>
                         </div>
                     </div>
@@ -177,6 +178,13 @@ const WalletView = () => {
                                 {userSettings.name}
                             </span>
                         </div>
+                        
+                        {/* valid thru */}
+                        <div className="flex flex-col items-center">
+                             <span className="text-[7px] uppercase text-white/50 mb-0.5 tracking-wider font-semibold">VALID THRU</span>
+                             <span className="text-sm font-bold text-white tracking-widest">12/28</span>
+                        </div>
+
                         <div className="flex flex-col items-end">
                              <img src="https://upload.wikimedia.org/wikipedia/commons/5/5e/Visa_Inc._logo.svg" alt="Visa" className="h-5 sm:h-6 w-auto brightness-0 invert opacity-90" />
                         </div>
@@ -263,8 +271,8 @@ const WalletView = () => {
 
         </div>
 
-        {/*  son işlemler*/}
-        <div className="lg:col-span-8">
+        {/* son işlemler */}
+        <div className="flex-1 min-w-0">
             <BentoCard 
                 glowColor="zinc" 
                 className="h-fit p-0 overflow-hidden flex flex-col bg-white border border-slate-200/60 shadow-xl shadow-slate-200/40 rounded-4xl"

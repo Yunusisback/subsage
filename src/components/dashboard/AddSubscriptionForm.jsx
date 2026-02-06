@@ -69,7 +69,7 @@ const AddSubscriptionForm = ({ onSuccess, initialData }) => {
     const newErrors = {};
     if (!formData.name.trim()) newErrors.name = "Servis adı gereklidir";
     
-   
+ 
     const cleanPrice = formData.price.toString().replace(',', '.');
     if (!formData.price) {
         newErrors.price = "Fiyat gereklidir";
@@ -118,57 +118,66 @@ const AddSubscriptionForm = ({ onSuccess, initialData }) => {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-4">
-      <Input 
-        label="Servis Adı" 
-        name="name" 
-        placeholder="Örn: Netflix, Spotify" 
-        value={formData.name}
-        onChange={handleChange}
-        error={errors.name}
-        className="focus:bg-cyan-50 focus:ring-cyan-100 focus:border-cyan-300 transition-colors"
-      />
+    <form onSubmit={handleSubmit} className="space-y-4 mt-2">
       
-      <div className="grid grid-cols-2 gap-4">
-         <Input 
-            label="Fiyat (₺)" 
-            name="price" 
-            type="text"
-            placeholder="0.00" 
-            value={formData.price}
+     
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          
+        
+          <Input 
+            label="Servis Adı" 
+            name="name" 
+            placeholder="Örn: Netflix, Spotify" 
+            value={formData.name}
             onChange={handleChange}
-            error={errors.price}
-            inputMode="decimal"
+            error={errors.name}
             className="focus:bg-cyan-50 focus:ring-cyan-100 focus:border-cyan-300 transition-colors"
-        />
-        <Input 
-            label="Kategori" 
-            name="category" 
-            placeholder="Eğlence, İş..." 
-            value={formData.category}
+          />
+          
+          
+          <div className="grid grid-cols-2 gap-4">
+             <Input 
+                label="Fiyat (₺)" 
+                name="price" 
+                type="text"
+                placeholder="0.00" 
+                value={formData.price}
+                onChange={handleChange}
+                error={errors.price}
+                inputMode="decimal"
+                className="focus:bg-cyan-50 focus:ring-cyan-100 focus:border-cyan-300 transition-colors"
+            />
+            <Input 
+                label="Kategori" 
+                name="category" 
+                placeholder="Eğlence, İş..." 
+                value={formData.category}
+                onChange={handleChange}
+                error={errors.category}
+                className="focus:bg-cyan-50 focus:ring-cyan-100 focus:border-cyan-300 transition-colors"
+            />
+          </div>
+
+        
+          <Input 
+            label="Başlangıç Tarihi" 
+            name="startDate" 
+            type="date"
+            value={formData.startDate}
             onChange={handleChange}
-            error={errors.category}
             className="focus:bg-cyan-50 focus:ring-cyan-100 focus:border-cyan-300 transition-colors"
-        />
+          />
+
+        
+           <Input 
+            label="Logo URL (Opsiyonel)" 
+            name="image" 
+            placeholder="https://..." 
+            value={formData.image}
+            onChange={handleChange}
+            className="text-xs focus:bg-cyan-50 focus:ring-cyan-100 focus:border-cyan-300 transition-colors"
+          />
       </div>
-
-      <Input 
-        label="Başlangıç Tarihi" 
-        name="startDate" 
-        type="date"
-        value={formData.startDate}
-        onChange={handleChange}
-        className="focus:bg-cyan-50 focus:ring-cyan-100 focus:border-cyan-300 transition-colors"
-      />
-
-       <Input 
-        label="Logo URL (Opsiyonel)" 
-        name="image" 
-        placeholder="https://..." 
-        value={formData.image}
-        onChange={handleChange}
-        className="text-xs focus:bg-cyan-50 focus:ring-cyan-100 focus:border-cyan-300 transition-colors"
-      />
 
       {/* Logo Önizleme */}
       {formData.image && (
