@@ -82,7 +82,7 @@ const Header = ({ onOpenMobileMenu }) => {
         <div className="relative" ref={notificationRef}>
             <button 
                 onClick={() => setShowNotifications(!showNotifications)}
-                className="p-2.5 md:p-3 rounded-3xl bg-white border border-zinc-200 hover:bg-zinc-50 text-zinc-500 hover:text-zinc-900 transition-colors relative cursor-pointer shadow-sm"
+                className="p-2.5 md:p-3 rounded-3xl bg-white border border-cyan-100 hover:bg-zinc-50 text-zinc-500 hover:text-zinc-900 transition-colors relative cursor-pointer shadow-sm"
             >
                 <Bell size={22} className="md:w-6 md:h-6" />
                 {unreadCount > 0 && (

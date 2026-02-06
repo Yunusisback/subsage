@@ -70,9 +70,14 @@ const DashboardView = () => {
             });
 
             const totalValue = subsActiveAtDate.reduce((acc, sub) => acc + parseFloat(sub.price), 0);
+            
+      
+            const sharpFluctuation = totalValue === 0 ? 0 : totalValue * (0.3 + Math.random() * 1.4);
+
             return {
                 date: date.toLocaleDateString('tr-TR', { month: 'short' }),
                 value: totalValue,
+                displayValue: sharpFluctuation, 
                 count: subsActiveAtDate.length
             };
         });
@@ -124,7 +129,20 @@ const DashboardView = () => {
             if (n.includes("netflix")) progressValue = 85;
             else if (n.includes("spotify")) progressValue = 20;
             else {
-                const uniqueNumber = typeof sub.id === 'number' ? sub.id : sub.name.length;
+                
+
+                
+                // Benzersiz bir sayı üretmek için ID veya isim uzunluğu kullannımı
+                let uniqueNumber = 0;
+                if (typeof sub.id === 'number') {
+                    uniqueNumber = sub.id;
+                } else if (typeof sub.id === 'string') {
+                    
+                      uniqueNumber = sub.id.split('').reduce((acc, char) => acc + char.charCodeAt(0), 0);
+                } else {
+                      uniqueNumber = sub.name.length;
+                }
+
                 progressValue = ((uniqueNumber * 7) % 80) + 10; 
             }
 
@@ -276,8 +294,8 @@ const DashboardView = () => {
                                     </linearGradient>
                                 </defs>
                                 <Area
-                                    type="monotone" 
-                                    dataKey="value"
+                                    type="linear" 
+                                    dataKey="displayValue"
                                     stroke="#C23115"
                                     strokeWidth={4}
                                     fill="url(#colorSpend)"
@@ -311,7 +329,7 @@ const DashboardView = () => {
                         <BentoCard
                             key={sub.id}
                             className={cn(
-                                "group relative overflow-hidden p-5 flex flex-col justify-between transition-all duration-300 border shadow-sm hover:shadow-lg hover:-translate-y-1 rounded-3xl bg-white",
+                                "group relative overflow-hidden p-5 flex flex-col justify-between transition-all duration-300 border shadow-sm hover:shadow-md rounded-3xl bg-white",
                                 sub.theme.border
                             )}
                         >

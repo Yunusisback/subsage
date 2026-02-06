@@ -27,6 +27,17 @@ const GlobalContext = createContext();
 
 export const useGlobal = () => useContext(GlobalContext);
 
+
+const safeJSONParse = (key, fallback) => {
+    try {
+        const item = localStorage.getItem(key);
+        return item ? JSON.parse(item) : fallback;
+    } catch (error) {
+        console.warn(`Error parsing ${key} from localStorage, using fallback.`, error);
+        return fallback;
+    }
+};
+
 export const GlobalProvider = ({ children }) => {
 
   // İsimden logoyu bul
@@ -44,9 +55,12 @@ export const GlobalProvider = ({ children }) => {
 
   // state
   const [subscriptions, setSubscriptions] = useState(() => {
-    const savedSubs = localStorage.getItem("subscriptions");
-    let parsedSubs = savedSubs ? JSON.parse(savedSubs) : INITIAL_SUBSCRIPTIONS;
     
+    let parsedSubs = safeJSONParse("subscriptions", INITIAL_SUBSCRIPTIONS);
+    
+    // Eğer veri bozuksa veya array değilse fallbacke dön
+    if (!Array.isArray(parsedSubs)) parsedSubs = INITIAL_SUBSCRIPTIONS;
+
     return parsedSubs.map(sub => ({ 
         ...sub, 
         status: sub.status || 'active',
@@ -56,22 +70,19 @@ export const GlobalProvider = ({ children }) => {
 
   //  Bildirimler State
   const [notifications, setNotifications] = useState(() => {
-    const savedNotes = localStorage.getItem("notifications");
-    return savedNotes ? JSON.parse(savedNotes) : INITIAL_NOTIFICATIONS;
+    return safeJSONParse("notifications", INITIAL_NOTIFICATIONS);
   });
 
   
   const [spendingLimit, setSpendingLimit] = useState(() => {
-    const savedLimit = localStorage.getItem("spendingLimit");
-    return savedLimit ? JSON.parse(savedLimit) : 15000;
+    return safeJSONParse("spendingLimit", 15000);
   });
 
   // İşlemler State
   const [transactions, setTransactions] = useState(() => {
-    const savedTx = localStorage.getItem("transactions");
-    if (savedTx) {
-        const parsedTx = JSON.parse(savedTx);
-        return parsedTx.map(tx => ({
+    const savedTx = safeJSONParse("transactions", null);
+    if (savedTx && Array.isArray(savedTx)) {
+        return savedTx.map(tx => ({
             ...tx,
             icon: getLogoByName(tx.name)
         }));
@@ -89,8 +100,7 @@ export const GlobalProvider = ({ children }) => {
 
   // Kullanıcı Ayarları State
   const [userSettings, setUserSettings] = useState(() => {
-    const savedSettings = localStorage.getItem("userSettings");
-    return savedSettings ? JSON.parse(savedSettings) : {
+    const defaultSettings = {
         name: "Burak Y.",
         email: "burak@example.com",
         avatar: "https://thispersonnotexist.org/downloadimage/Ac3RhdGljL21hbi9zZWVkNTM1NTYuanBlZw==",
@@ -104,17 +114,18 @@ export const GlobalProvider = ({ children }) => {
             paymentAlert: true
         }
     };
+    return safeJSONParse("userSettings", defaultSettings);
   });
 
   // Mesajlar State 
   const [messages, setMessages] = useState(() => {
-    const savedMessages = localStorage.getItem("messages");
-    return savedMessages ? JSON.parse(savedMessages) : {
+    const defaultMessages = {
         1: [ 
             { id: 1, sender: "them", text: "Merhaba Burak Bey, SubSage Destek Ekibi'ne hoş geldiniz. 👋", time: "09:00" },
             { id: 2, sender: "them", text: "Abonelikleriniz veya sistemle ilgili yaşadığınız herhangi bir sorunda size yardımcı olmak için buradayız.", time: "09:00" },
         ]
     };
+    return safeJSONParse("messages", defaultMessages);
   });
 
   // localStorage senkronizasyonu
@@ -145,7 +156,7 @@ export const GlobalProvider = ({ children }) => {
   // Mesaj Gönderme
   const sendMessage = (contactId, text, sender = "me") => {
       const newMessage = {
-          id: Date.now(),
+          id: crypto.randomUUID(),
           sender: sender,
           text: text,
           time: new Date().toLocaleTimeString('tr-TR', { hour: '2-digit', minute: '2-digit' })
@@ -161,10 +172,11 @@ export const GlobalProvider = ({ children }) => {
   const addSubscription = (newSub) => {
     const finalImage = newSub.image || getLogoByName(newSub.name);
     
-    setSubscriptions([...subscriptions, { ...newSub, image: finalImage, id: Date.now(), status: 'active' }]);
+   //uuid
+    setSubscriptions([...subscriptions, { ...newSub, image: finalImage, id: crypto.randomUUID(), status: 'active' }]);
     
     const newTransaction = {
-      id: Date.now() + 1,
+      id: crypto.randomUUID(),
       name: newSub.name,
       date: "Bugün",
       amount: -parseFloat(newSub.price),
@@ -175,7 +187,7 @@ export const GlobalProvider = ({ children }) => {
     setTransactions(prev => [newTransaction, ...prev]);
 
     const newNote = {
-        id: Date.now() + 2,
+        id: crypto.randomUUID(),
         type: "success",
         title: "Yeni Abonelik",
         message: `${newSub.name} başarıyla takibe alındı.`,
@@ -212,7 +224,7 @@ export const GlobalProvider = ({ children }) => {
     ));
 
     const cancelNote = {
-        id: Date.now(),
+        id: crypto.randomUUID(),
         type: "alert",
         title: "Abonelik İptal Edildi",
         message: `${subToCancel.name} aboneliği iptal edildi. Artık toplam gidere yansımayacak.`,
@@ -222,7 +234,7 @@ export const GlobalProvider = ({ children }) => {
     setNotifications(prev => [cancelNote, ...prev]);
 
     const cancelTx = {
-        id: `cancel-${Date.now()}`,
+        id: crypto.randomUUID(),
         name: subToCancel.name,
         date: "Bugün",
         amount: 0,

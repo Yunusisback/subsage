@@ -362,7 +362,7 @@ const SubscriptionList = () => {
                             initial={{ opacity: 0, scale: 0.95 }}
                             animate={{ opacity: 1, scale: 1 }}
                             exit={{ opacity: 0, scale: 0.95 }}
-                            className="max-w-xl mx-auto bg-white p-8 rounded-3xl border border-slate-200 shadow-lg"
+                            className="max-w-xl mx-auto bg-white p-8 -mt-10 rounded-3xl border border-slate-200 shadow-lg"
                         >
                              <div className="text-center mb-6">
                                 <div className="w-12 h-12 bg-cyan-100 text-cyan-600 rounded-full flex items-center justify-center mx-auto mb-3">

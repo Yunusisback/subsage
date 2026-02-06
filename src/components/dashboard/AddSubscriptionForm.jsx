@@ -68,7 +68,15 @@ const AddSubscriptionForm = ({ onSuccess, initialData }) => {
   const validate = () => {
     const newErrors = {};
     if (!formData.name.trim()) newErrors.name = "Servis adı gereklidir";
-    if (!formData.price) newErrors.price = "Fiyat gereklidir";
+    
+   
+    const cleanPrice = formData.price.toString().replace(',', '.');
+    if (!formData.price) {
+        newErrors.price = "Fiyat gereklidir";
+    } else if (parseFloat(cleanPrice) < 0) {
+        newErrors.price = "Fiyat negatif olamaz";
+    }
+
     if (!formData.category.trim()) newErrors.category = "Kategori gereklidir";
     return newErrors;
   };
@@ -84,16 +92,22 @@ const AddSubscriptionForm = ({ onSuccess, initialData }) => {
 
     setIsLoading(true);
 
+   
+    const formattedData = {
+        ...formData,
+        price: formData.price.toString().replace(',', '.')
+    };
+
     setTimeout(() => {
         if (initialData) {
-            updateSubscription(formData);
+            updateSubscription(formattedData);
             toast.success("Abonelik güncellendi!");
         } else {
             const colors = ["bg-red-500", "bg-blue-500", "bg-green-500", "bg-purple-500", "bg-orange-500"];
             const randomColor = colors[Math.floor(Math.random() * colors.length)];
 
             addSubscription({
-                ...formData,
+                ...formattedData,
                 color: randomColor,
             });
         }
@@ -119,13 +133,13 @@ const AddSubscriptionForm = ({ onSuccess, initialData }) => {
          <Input 
             label="Fiyat (₺)" 
             name="price" 
-            type="number"
+            type="text"
             placeholder="0.00" 
             value={formData.price}
             onChange={handleChange}
             error={errors.price}
-         
-            className="focus:bg-cyan-50 focus:ring-cyan-100 focus:border-cyan-300 transition-colors [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
+            inputMode="decimal"
+            className="focus:bg-cyan-50 focus:ring-cyan-100 focus:border-cyan-300 transition-colors"
         />
         <Input 
             label="Kategori" 
