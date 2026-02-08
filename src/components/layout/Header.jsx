@@ -86,7 +86,7 @@ const Header = ({ onOpenMobileMenu }) => {
         <div className="relative" ref={notificationRef}>
             <button 
                 onClick={() => setShowNotifications(!showNotifications)}
-                className="p-2.5 md:p-3.5 rounded-3xl bg-gray-200  border border-cyan-100 hover:bg-zinc-50 text-zinc-500 hover:text-zinc-900 transition-colors relative cursor-pointer shadow-sm"
+                className="p-2.5 ring-2 ring-gray-300 md:p-3.5 rounded-3xl bg-gray-200  hover:bg-zinc-50 text-cyan-600 hover:text-cyan-800 transition-colors relative cursor-pointer shadow-sm"
             >
                 <Bell size={22} className="md:w-6 md:h-6" />
                 {unreadCount > 0 && (
@@ -199,7 +199,7 @@ const Header = ({ onOpenMobileMenu }) => {
         {/* Profil Bölümü */}
         <button 
             onClick={() => navigate("/settings")} 
-            className="flex items-center gap-2 pl-1.5 md:pl-2.5 pr-1.5 md:pr-4 py-1.5 md:py-2 rounded-full bg-gray-200 border border-gray-100 hover:bg-gray-400 hover:border-gray-100 transition-all group cursor-pointer shadow-sm"
+            className="flex items-center gap-2 pl-1.5 md:pl-2.5 pr-1.5 md:pr-4 py-1.5 md:py-2 rounded-full ring-2 ring-gray-300 bg-gray-200 border border-gray-100 hover:bg-gray-100 hover:border-gray-100 transition-all group cursor-pointer shadow-sm"
         >
             <div className="w-8 h-8 md:w-10 md:h-10 min-w-8 md:min-w-9 rounded-full bg-zinc-100 flex items-center justify-center overflow-hidden">
                 <img 
@@ -209,7 +209,7 @@ const Header = ({ onOpenMobileMenu }) => {
                 />
             </div>
             <div className="text-left hidden md:block">
-                <h4 className="text-m font-bold text-zinc-900 group-hover:text-black transition-colors">
+                <h4 className="text-m font-bold text-cyan-600 group-hover:text-cyan-800 transition-colors">
                     {userSettings.name}
                 </h4>
             </div>

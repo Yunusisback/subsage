@@ -1,11 +1,19 @@
 import BentoCard from "../ui/BentoCard";
 import { formatCurrency, cn } from "../../utils/helpers";
 import { PieChart, Pie, Cell, ResponsiveContainer, BarChart, Bar, XAxis, YAxis, Tooltip } from 'recharts';
-import { Activity, Target, Wallet, TrendingDown, Sparkles, Layers,  Droplets } from "lucide-react";
+import { Activity, Target, Wallet, TrendingDown, Sparkles, Layers, Droplets } from "lucide-react";
 import { useData } from "../../context/DataContext"; 
 import { useUser } from "../../context/UserContext"; 
 
 const COLORS = ['#f97316', '#06b6d4', '#84cc16', '#eab308', '#ec4899', '#8b5cf6'];
+
+
+const hexToRgba = (hex, alpha) => {
+    const r = parseInt(hex.slice(1, 3), 16);
+    const g = parseInt(hex.slice(3, 5), 16);
+    const b = parseInt(hex.slice(5, 7), 16);
+    return `rgba(${r}, ${g}, ${b}, ${alpha})`;
+};
 
 const SummaryChart = () => {
 
@@ -63,11 +71,16 @@ const SummaryChart = () => {
   const CustomTooltip = ({ active, payload }) => {
     if (active && payload && payload.length) {
       return (
-        <div className="bg-white/95 backdrop-blur-xl p-3 border border-zinc-100 shadow-[0_8px_30px_rgb(0,0,0,0.12)] rounded-xl text-xs">
+        <div className="bg-white/95 backdrop-blur-xl p-3 border border-zinc-100 shadow-[0_8px_30px_rgb(0,0,0,0.12)] rounded-xl text-xs z-50 relative"> 
           <p className="font-bold text-zinc-700 mb-1">{payload[0].name}</p>
-          <p className="font-black text-base text-zinc-900">
-            {formatCurrency(payload[0].value)}
-          </p>
+          
+         
+          <div className="flex items-center gap-2">
+             <span className="text-zinc-500 font-medium">Fiyat:</span>
+             <span className="font-black text-base text-zinc-900">
+                {formatCurrency(payload[0].value)}
+             </span>
+          </div>
         </div>
       );
     }
@@ -183,44 +196,64 @@ const SummaryChart = () => {
                 Kategori Dağılımı
             </h3>
             
-            <div className="flex-1 w-full min-h-75 mt-4 relative">
-                <ResponsiveContainer width="100%" height="100%">
-                    <PieChart>
-                        <Pie
-                            data={categoryData}
-                            cx="50%"
-                            cy="50%"
-                            innerRadius={80}
-                            outerRadius={115}
-                            paddingAngle={4}
-                            dataKey="value"
-                            stroke="none"
-                        >
-                            {categoryData.map((entry, index) => (
-                                <Cell 
-                                    key={`cell-${index}`} 
-                                    fill={COLORS[index % COLORS.length]} 
-                                    className="hover:opacity-80 transition-all duration-300 outline-none  filter drop-shadow-[0_2px_4px_rgba(0,0,0,0.05)]"
-                                />
-                            ))}
-                        </Pie>
-                        <Tooltip content={<CustomTooltip />} />
-                    </PieChart>
-                </ResponsiveContainer>
-                
-                <div className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none">
+            <div className="flex-1 w-full min-h-75 mt-4 relative isolate"> 
+               
+                <div className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none z-0">
                      <span className="text-slate-600 text-xs font-bold uppercase tracking-wider">Toplam</span>
                      <span className="text-slate-800 text-2xl font-black">{formatCurrency(totalExpenses)}</span>
                 </div>
+
+                {/* Grafik  */}
+                <div className="absolute inset-0 z-10">
+                    <ResponsiveContainer width="100%" height="100%">
+                        <PieChart>
+                            <Pie
+                                data={categoryData}
+                                cx="50%"
+                                cy="50%"
+                                innerRadius={80}
+                                outerRadius={115}
+                                paddingAngle={4}
+                                dataKey="value"
+                                stroke="none"
+                            >
+                                {categoryData.map((entry, index) => (
+                                    <Cell 
+                                        key={`cell-${index}`} 
+                                        fill={COLORS[index % COLORS.length]} 
+                                        className="hover:opacity-80 transition-all duration-300 outline-none filter drop-shadow-[0_2px_4px_rgba(0,0,0,0.05)] cursor-pointer"
+                                    />
+                                ))}
+                            </Pie>
+                           
+                            <Tooltip 
+                                content={<CustomTooltip />} 
+                                wrapperStyle={{ zIndex: 100 }} 
+                            />
+                        </PieChart>
+                    </ResponsiveContainer>
+                </div>
+
             </div>
             
-            <div className="flex flex-wrap justify-center gap-x-4 gap-y-2 mt-2">
-                {categoryData.slice(0, 5).map((entry, index) => (
-                    <div key={index} className="flex items-center gap-2 text-xs font-bold text-slate-600 bg-slate-50 px-2 py-1 rounded-md border border-slate-100">
-                        <span className="w-2 h-2 rounded-full shadow-sm" style={{ backgroundColor: COLORS[index % COLORS.length] }} />
-                        {entry.name}
-                    </div>
-                ))}
+            <div className="flex flex-wrap justify-center gap-x-4 gap-y-2 mt-2 relative z-20">
+                {categoryData.slice(0, 5).map((entry, index) => {
+                    const color = COLORS[index % COLORS.length];
+                    return (
+                        <div 
+                            key={index} 
+                            className="flex items-center gap-2 text-xs font-bold px-2.5 py-1.5 rounded-lg border transition-colors duration-300 shadow-sm"
+                            style={{ 
+                                backgroundColor: color, 
+                                borderColor: color,      
+                                color: '#ffffff'        
+                            }}
+                        >
+                            <span className="w-2 h-2 rounded-full shadow-sm bg-white" />
+                            {entry.name}
+                        </div>
+                    );
+                })}
             </div>
           </BentoCard>
 
@@ -246,8 +279,14 @@ const SummaryChart = () => {
                     axisLine={false} 
                     tickLine={false} 
                 />
+                
                 <Tooltip cursor={{fill: 'rgba(241, 245, 249, 0.6)', radius: 8 }} content={<CustomTooltip />} />
-                <Bar dataKey="price" radius={[0, 8, 8, 0]} background={{ fill: '#f8fafc', radius: [0, 8, 8, 0] }}>
+                <Bar 
+                  dataKey="price" 
+                  name="Fiyat" 
+                  radius={[0, 8, 8, 0]} 
+                  background={{ fill: '#f8fafc', radius: [0, 8, 8, 0] }}
+                >
                   {
                       subscriptionData.map((entry, index) => (
                         <Cell 

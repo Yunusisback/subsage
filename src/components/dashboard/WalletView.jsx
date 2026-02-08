@@ -198,10 +198,10 @@ const WalletView = () => {
             
             {/* Limit Kontrolü */}
             <BentoCard glowColor="purple" className="p-6 sm:p-7 border border-slate-100/50 shadow-lg shadow-purple-500/5">
-                <div className="flex justify-between items-end mb-6">
+                <div className="flex justify-between items-end mb-2">
                     <div>
-                        <h3 className="text-xs font-bold text-slate-600 uppercase tracking-wider mb-1.5 flex items-center gap-1.5">
-                            <Shield size={16} /> Lİmİt Kontrolü
+                        <h3 className="text-xm font-bold text-red-600 uppercase tracking-wider mb-1.5 flex items-center gap-1.5">
+                            <Shield size={25} /> Lİmİt Kontrolü
                         </h3>
                         <div className="flex items-baseline gap-1">
                             <span className="text-3xl mt-2 font-black text-slate-900 tracking-tight">{formatCurrency(localLimit)}</span>
@@ -458,7 +458,7 @@ const WalletView = () => {
                                 <Shield size={32} />
                         </div>
                         <div>
-                            <h4 className="font-bold text-slate-900 text-lg mb-2">Limit Güncelleme</h4>
+                            <h4 className="font-bold text-red-500 text-lg mb-2">Limit Güncelleme</h4>
                             <div className="flex items-center justify-center gap-3 text-2xl font-black text-slate-900 tracking-tight my-2">
                                 <span className="text-slate-400 line-through text-lg">{formatCurrency(spendingLimit)}</span>
                                 <span className="text-slate-300">→</span>
@@ -470,8 +470,8 @@ const WalletView = () => {
                         </div>
                     </div>
                     <div className="grid grid-cols-2 gap-3">
-                        <Button variant="ghost" onClick={cancelLimitUpdate} className="rounded-xl h-12 font-bold text-slate-500 hover:bg-slate-50">Vazgeç</Button>
-                        <Button onClick={startLimitUpdateProcess} className="bg-slate-900 hover:bg-black text-white shadow-xl shadow-slate-200 rounded-xl h-12">
+                        <Button variant="ghost" onClick={cancelLimitUpdate} className="rounded-xl h-12 font-bold text-indigo-500 hover:bg-indigo-500 cursor-pointer hover:scale-90">Vazgeç</Button>
+                        <Button onClick={startLimitUpdateProcess} className="bg-indigo-600 hover:bg-indigo-700 text-white shadow-xl shadow-indigo-200 rounded-xl h-12 cursor-pointer hover:scale-90">
                             Onayla ve Güncelle
                         </Button>
                     </div>
