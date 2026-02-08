@@ -1,12 +1,14 @@
 import { useState, useEffect } from "react";
 import Input from "../ui/Input";
 import Button from "../ui/Button";
-import { useGlobal } from "../../context/GlobalContext";
 import { SERVICE_LOGOS } from "../../utils/constants";
 import toast from "react-hot-toast";
+import { useData } from "../../context/DataContext"; 
 
 const AddSubscriptionForm = ({ onSuccess, initialData }) => {
-  const { addSubscription, updateSubscription } = useGlobal();
+  
+
+  const { addSubscription, updateSubscription } = useData();
   const [isLoading, setIsLoading] = useState(false);
   
   const [formData, setFormData] = useState({
@@ -120,7 +122,7 @@ const AddSubscriptionForm = ({ onSuccess, initialData }) => {
   return (
     <form onSubmit={handleSubmit} className="space-y-4 mt-2">
       
-     
+      
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           
         

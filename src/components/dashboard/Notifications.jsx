@@ -1,9 +1,10 @@
 import { CheckCircle, Info, Clock, Check, Bell, XCircle } from "lucide-react";
 import { cn } from "../../utils/helpers";
-import { useGlobal } from "../../context/GlobalContext";
+import { useUI } from "../../context/UIContext"; 
 
 const Notifications = () => {
-  const { notifications, markAllNotificationsAsRead } = useGlobal();
+
+  const { notifications, markAllNotificationsAsRead } = useUI();
 
   return (
     <div className="animate-in fade-in slide-in-from-bottom-4 duration-500 max-w-4xl mr-auto pb-15 -mt-4">
@@ -34,7 +35,7 @@ const Notifications = () => {
               notifications.map((item) => {
                   const isUnread = !item.read;
 
-                 
+                  
                   const typeStyles = {
                       success: { 
                           card: "bg-emerald-50/80 border-emerald-200/60 hover:border-emerald-300", 
@@ -71,7 +72,7 @@ const Notifications = () => {
                               : "bg-white border-zinc-100 hover:border-zinc-200 hover:bg-zinc-50/80 opacity-75 hover:opacity-100"
                       )}
                   >
-                      {/* Sol Vurgu Çizgisi*/}
+                      {/* okunmamış bildirim arkaplanı */}
                       {isUnread && (
                           <div className={cn("absolute left-0 top-6 bottom-6 w-1 rounded-r-full opacity-60", style.highlight)} />
                       )}

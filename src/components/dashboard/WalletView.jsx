@@ -10,12 +10,16 @@ import BentoCard from "../ui/BentoCard";
 import Button from "../ui/Button";
 import Modal from "../ui/Modal"; 
 import { formatCurrency, cn } from "../../utils/helpers";
-import { useGlobal } from "../../context/GlobalContext";
+import { useUser } from "../../context/UserContext"; 
+import { useData } from "../../context/DataContext"; useData
 import { motion, AnimatePresence } from "framer-motion";
 
 const WalletView = () => {
   
-  const { transactions, userSettings, spendingLimit, updateSpendingLimit } = useGlobal(); 
+  
+  const { transactions } = useData();
+  const { userSettings, spendingLimit, updateSpendingLimit } = useUser();
+  
   const [isExpanded, setIsExpanded] = useState(false);
 
  
@@ -119,7 +123,7 @@ const WalletView = () => {
       <div className="flex flex-col lg:flex-row gap-6 lg:gap-8">
         
         
-        <div className="w-full lg:w-96 xl:w-[420px] shrink-0 space-y-6">
+        <div className="w-full lg:w-96 xl:w-105 shrink-0 space-y-6">
             
             {/* Başlık ve Ekle Butonu */}
             <div className="flex items-center justify-between px-1">

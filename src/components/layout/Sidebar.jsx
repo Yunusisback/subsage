@@ -1,11 +1,12 @@
 import { LayoutGrid, CreditCard, BarChart2, Settings, MessageSquare, Bell, LogOut, ChevronLeft, ChevronRight, Wallet } from "lucide-react";
 import { cn } from "../../utils/helpers";
 import { NavLink } from "react-router-dom"; 
-import { useGlobal } from "../../context/GlobalContext"; 
+import { useUI } from "../../context/UIContext"; 
 
 const Sidebar = ({ isCollapsed, toggleSidebar, isMobileMenuOpen, closeMobileMenu }) => {
  
-  const { notifications } = useGlobal(); 
+ 
+  const { notifications } = useUI(); 
 
   // Okunmamış bildirim sayısını hesapla
   const unreadCount = notifications.filter(n => !n.read).length;

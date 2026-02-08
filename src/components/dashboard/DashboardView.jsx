@@ -1,11 +1,12 @@
 import { useMemo } from 'react';
 import BentoCard from "../ui/BentoCard";
-import {  ArchiveX, ChevronRight, Wallet, CreditCard, CalendarClock, TrendingDown, Layers,  TrendingUp } from "lucide-react";
-import { useGlobal } from "../../context/GlobalContext";
+import { ArchiveX, ChevronRight, Wallet, CreditCard, CalendarClock, TrendingDown, Layers, TrendingUp } from "lucide-react";
+import { useData } from "../../context/DataContext";
+import { useSpendingAnalysis } from "../../hooks/useSpendingAnalysis";
 import { cn } from "../../utils/helpers";
 import { AreaChart, Area, ResponsiveContainer } from 'recharts';
-import { SERVICE_LOGOS } from "../../utils/constants"; 
-import { useNavigate } from "react-router-dom"; 
+import { SERVICE_LOGOS } from "../../utils/constants";
+import { useNavigate } from "react-router-dom";
 
 // Para formatlama fonksiyonu
 const formatMoneyClean = (amount) => {
@@ -16,102 +17,44 @@ const formatMoneyClean = (amount) => {
     }).format(amount);
 };
 
-const DashboardView = () => { 
-    const { totalExpenses, subscriptions } = useGlobal();
-    const navigate = useNavigate(); 
+// Kalan gün hesaplama fonksiyonu
+const calculateDaysLeft = (startDateStr) => {
+    if (!startDateStr) return 30; 
 
-    const activeSubs = subscriptions.filter(sub => sub.status === 'active');
-    const canceledSubs = subscriptions.filter(sub => sub.status === 'canceled');
-
-    // Grafik verisi hesaplama
-    const chartData = useMemo(() => {
-       
-        const allDates = subscriptions
-            .map(sub => new Date(sub.startDate))
-            .filter(date => !isNaN(date))
-            .sort((a, b) => a - b);
-
-        if (allDates.length === 0) return [{ value: 0 }];
-
-        const start = allDates[0];
-        const end = new Date();
-        const timeline = [];
-        let current = new Date(start);
+    const today = new Date();
+    const start = new Date(startDateStr);
+    const billingDay = start.getDate(); 
 
    
-        while (current <= end) {
-            timeline.push(new Date(current));
-            current.setMonth(current.getMonth() + 1);
-        }
-       
-        if (timeline.length === 0 || timeline[timeline.length - 1] < end) {
-            timeline.push(end);
-        }
+    let nextBilling = new Date(today.getFullYear(), today.getMonth(), billingDay);
 
-        const data = timeline.map(date => {
-        
-            const subsActiveAtDate = subscriptions.filter(sub => {
-                const startDate = new Date(sub.startDate);
-                
-                
-                let cancelDateObj = null;
-                if (sub.status === 'canceled' && sub.canceledDate) {
-                     const parts = sub.canceledDate.split('.');
-                     if (parts.length === 3) {
-                         cancelDateObj = new Date(parts[2], parts[1] - 1, parts[0]);
-                     }
-                }
+    // Eğer bu ayın fatura günü geçtiyse bir sonraki aya geç
+    if (nextBilling < today) {
+        nextBilling.setMonth(nextBilling.getMonth() + 1);
+    }
 
-                const isStarted = startDate <= date;
-               
-                const isStillActiveAtThisDate = !cancelDateObj || cancelDateObj > date;
+    
+    const diffTime = Math.abs(nextBilling - today);
+    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
 
-                return isStarted && isStillActiveAtThisDate;
-            });
+    return diffDays;
+};
 
-            const totalValue = subsActiveAtDate.reduce((acc, sub) => acc + parseFloat(sub.price), 0);
-            
-      
-            const sharpFluctuation = totalValue === 0 ? 0 : totalValue * (0.3 + Math.random() * 1.4);
-
-            return {
-                date: date.toLocaleDateString('tr-TR', { month: 'short' }),
-                value: totalValue,
-                displayValue: sharpFluctuation, 
-                count: subsActiveAtDate.length
-            };
-        });
-
-        if (data.length === 1) return [{ ...data[0], date: 'Başlangıç' }, data[0]];
-        return data;
-    }, [subscriptions]); 
-
-    // Son ayın değişim oranı 
-    const growthPercentage = useMemo(() => {
-        if (chartData.length < 2) return 0;
-        const last = chartData[chartData.length - 1].value;
-        const prev = chartData[chartData.length - 2].value;
-        if (prev === 0) return 100;
-        return Math.round(((last - prev) / prev) * 100);
-    }, [chartData]);
-
-
-    // En pahalıyı bul
-    const mostExpensive = useMemo(() => {
-        if (activeSubs.length === 0) return { name: '-', price: 0 };
-        return activeSubs.reduce((prev, current) => {
-            return (parseFloat(prev.price) > parseFloat(current.price)) ? prev : current;
-        }, activeSubs[0]);
-    }, [activeSubs]);
-
-    // Yıllık Projeksiyon Hesabı
-    const yearlyProjection = totalExpenses * 12;
-    const yearlySavingsTip = mostExpensive.price > 0 
-        ? `${mostExpensive.name} iptal edilirse yılda ${formatMoneyClean(mostExpensive.price * 12)}₺ cepte.`
-        : "Abonelik ekleyerek tasarruf analizlerini görebilirsin.";
-
+const DashboardView = () => {
+   
+    const { totalExpenses, subscriptions } = useData();
+    const navigate = useNavigate();
 
    
+    const {
+        activeSubs,
+        canceledSubs,
+        chartData,
+        growthPercentage,
+        yearlyProjection,
+        yearlySavingsTip
+    } = useSpendingAnalysis(subscriptions, totalExpenses);
+
     const THEMES = {
         red: { bg: "bg-rose-50/50 hover:bg-rose-50", border: "border-rose-100 hover:border-rose-200", text: "text-rose-950", subtext: "text-rose-600", bar: "bg-rose-500", gradient: "from-rose-500 to-pink-600", iconBg: "bg-rose-100 text-rose-600" },
         green: { bg: "bg-emerald-50/50 hover:bg-emerald-50", border: "border-emerald-100 hover:border-emerald-200", text: "text-emerald-950", subtext: "text-emerald-600", bar: "bg-emerald-500", gradient: "from-emerald-500 to-teal-600", iconBg: "bg-emerald-100 text-emerald-600" },
@@ -124,30 +67,17 @@ const DashboardView = () => {
 
     const enhancedSubscriptions = useMemo(() => {
         return activeSubs.map(sub => {
-            let progressValue = 50;
-            const n = sub.name.toLowerCase();
-            if (n.includes("netflix")) progressValue = 85;
-            else if (n.includes("spotify")) progressValue = 20;
-            else {
-                
 
-                
-                // Benzersiz bir sayı üretmek için ID veya isim uzunluğu kullannımı
-                let uniqueNumber = 0;
-                if (typeof sub.id === 'number') {
-                    uniqueNumber = sub.id;
-                } else if (typeof sub.id === 'string') {
-                    
-                      uniqueNumber = sub.id.split('').reduce((acc, char) => acc + char.charCodeAt(0), 0);
-                } else {
-                      uniqueNumber = sub.name.length;
-                }
+           
+            const daysLeft = calculateDaysLeft(sub.startDate);
 
-                progressValue = ((uniqueNumber * 7) % 80) + 10; 
-            }
+           
+            const progressValue = Math.min(100, Math.max(0, (daysLeft / 30) * 100));
 
             let themeKey = "dark";
-            if (sub.color && THEMES[sub.color]) themeKey = sub.color; 
+            const n = sub.name.toLowerCase();
+
+            if (sub.color && THEMES[sub.color]) themeKey = sub.color;
             else {
                 if (n.includes("netflix") || n.includes("youtube") || n.includes("tinder")) themeKey = "red";
                 else if (n.includes("spotify") || n.includes("xbox") || n.includes("whatsapp")) themeKey = "green";
@@ -156,7 +86,13 @@ const DashboardView = () => {
                 else if (n.includes("exxen") || n.includes("tod")) themeKey = "yellow";
                 else if (n.includes("discord")) themeKey = "purple";
             }
-            return { ...sub, progress: progressValue, theme: THEMES[themeKey] || THEMES.dark };
+
+            return {
+                ...sub,
+                daysLeft: daysLeft, 
+                progress: progressValue,
+                theme: THEMES[themeKey] || THEMES.dark
+            };
         });
     }, [activeSubs]);
 
@@ -171,7 +107,7 @@ const DashboardView = () => {
 
                     {/* Arkaplan */}
                     <div className="absolute top-0 right-0 w-32 h-32 bg-indigo-50 rounded-bl-[4rem] transition-all group-hover:scale-110 z-0"></div>
-                    
+
                     <div className="relative z-10 flex flex-col justify-between h-full">
                         <div className="flex justify-between items-start">
                             <div>
@@ -192,13 +128,13 @@ const DashboardView = () => {
                         <div className="mt-4">
                             <div className="flex items-center">
                                 {activeSubs.slice(0, 5).map((sub, i) => (
-                                    <div key={i} 
+                                    <div key={i}
                                         className="w-11 h-11 rounded-full border-[3px] border-white bg-white shadow-sm -ml-3 first:ml-0 relative z-0 hover:z-10 hover:scale-110 transition-transform cursor-pointer"
                                         style={{ zIndex: 10 - i }}
                                     >
-                                        <img 
-                                            src={sub.image || SERVICE_LOGOS.DEFAULT} 
-                                            alt={sub.name} 
+                                        <img
+                                            src={sub.image || SERVICE_LOGOS.DEFAULT}
+                                            alt={sub.name}
                                             className="w-full h-full object-cover rounded-full"
                                             onError={(e) => e.target.src = SERVICE_LOGOS.DEFAULT}
                                         />
@@ -217,14 +153,14 @@ const DashboardView = () => {
                 {/* yıllık projeksiyon */}
                 <div className="relative group bg-white rounded-4xl p-6 border border-slate-100 shadow-[0_2px_20px_-5px_rgba(0,0,0,0.20)] hover:shadow-xl hover:-translate-y-1 transition-all duration-300 h-48 overflow-hidden">
 
-                     {/* Arkaplan */}
-                     <div className="absolute -bottom-8 -left-8 w-40 h-40 bg-emerald-50/80 rounded-full blur-2xl group-hover:bg-emerald-100/50 transition-colors"></div>
-                    
+                    {/* Arkaplan */}
+                    <div className="absolute -bottom-8 -left-8 w-40 h-40 bg-emerald-50/80 rounded-full blur-2xl group-hover:bg-emerald-100/50 transition-colors"></div>
+
                     <div className="relative z-10 flex flex-col justify-between h-full">
                         <div className="flex justify-between items-start">
                             <div>
                                 <h3 className="text-green-600 font-bold text-Xm tracking-wide mb-2 flex items-center gap-1">
-                                    YILLIK PROJEKSİYON 
+                                    YILLIK PROJEKSİYON
                                 </h3>
                                 <div className="flex items-baseline gap-1">
                                     <span className="text-4xl lg:text-5xl font-black text-green-800 tracking-tighter">
@@ -252,7 +188,7 @@ const DashboardView = () => {
 
                 {/* aylık toplam */}
                 <div className="relative group bg-white rounded-4xl border border-slate-100 shadow-[0_2px_20px_-5px_rgba(0,0,0,0.20)] hover:shadow-xl hover:-translate-y-1 transition-all duration-300 h-48 overflow-hidden flex flex-col">
-                    
+
                     <div className="p-6 pb-0 relative z-20 flex justify-between items-start">
                         <div>
                             <h3 className="text-red-600 font-bold text-xm tracking-wide mb-2"> AYLIK TOPLAM</h3>
@@ -262,13 +198,13 @@ const DashboardView = () => {
                                 </span>
                                 <span className="text-xl font-bold text-red-500">₺</span>
                             </div>
-                            
-                            {/* Büyüme Oranı Rozeti */}
+
+                             {/* büyüme yüzdesi */}
                             {growthPercentage !== 0 && (
                                 <div className={cn(
                                     "inline-flex items-center gap-1.5 mt-3 px-2.5 py-1 rounded-full text-xs font-bold border",
-                                    growthPercentage > 0 
-                                        ? "bg-red-50 text-red-600 border-red-100" 
+                                    growthPercentage > 0
+                                        ? "bg-red-50 text-red-600 border-red-100"
                                         : "bg-emerald-50 text-emerald-600 border-emerald-100"
                                 )}>
                                     {growthPercentage > 0 ? <TrendingUp size={12} /> : <TrendingDown size={12} />}
@@ -294,7 +230,7 @@ const DashboardView = () => {
                                     </linearGradient>
                                 </defs>
                                 <Area
-                                    type="linear" 
+                                    type="linear"
                                     dataKey="displayValue"
                                     stroke="#C23115"
                                     strokeWidth={4}
@@ -316,12 +252,7 @@ const DashboardView = () => {
                             Aboneliklerim
                         </h2>
                     </div>
-                    <button
-                        onClick={() => navigate('/subscriptions')} 
-                        className="text-xs lg:text-sm font-semibold text-zinc-600 border border-zinc-200 bg-white hover:bg-zinc-50 hover:border-zinc-300 px-4 py-2 rounded-xl shadow-sm transition-all cursor-pointer flex items-center gap-1"
-                    >
-                        Tümünü Gör <ChevronRight size={14} />
-                    </button>
+                    <button onClick={() => navigate('/subscriptions')} className="text-xs lg:text-sm font-semibold text-white border border-zinc-200 bg-cyan-600 hover:bg-cyan-500 hover:border-cyan-300 px-4 py-2 rounded-3xl shadow-sm transition-all cursor-pointer flex items-center gap-1 scale-95 hover:scale-100 active:scale-95" > Tümünü Gör <ChevronRight size={14} /> </button>
                 </div>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 lg:gap-5">
@@ -337,9 +268,9 @@ const DashboardView = () => {
                             <div className="flex items-start justify-between w-full mb-4 z-10">
                                 <div className="flex items-center gap-3">
                                     <div className={cn("w-12 h-12 rounded-2xl p-2.5 flex items-center justify-center shadow-sm border transition-transform group-hover:scale-105 bg-white", sub.theme.border)}>
-                                        <img 
-                                            src={sub.image || SERVICE_LOGOS.DEFAULT} 
-                                            alt={sub.name} 
+                                        <img
+                                            src={sub.image || SERVICE_LOGOS.DEFAULT}
+                                            alt={sub.name}
                                             className="w-full h-full object-contain"
                                             onError={(e) => {
                                                 e.target.src = SERVICE_LOGOS.DEFAULT;
@@ -356,7 +287,10 @@ const DashboardView = () => {
                             <div className="w-full z-10 mt-auto">
                                 <div className="flex justify-between items-end mb-2">
                                     <span className="text-xs font-semibold text-slate-400">Yenilenme</span>
-                                    <span className={cn("text-xs font-bold", sub.theme.subtext)}>{sub.progress}% kaldı</span>
+                                
+                                    <span className={cn("text-xs font-bold", sub.theme.subtext)}>
+                                        {sub.daysLeft === 0 ? "Bugün" : `${sub.daysLeft} gün kaldı`}
+                                    </span>
                                 </div>
                                 <div className="h-2 w-full bg-slate-100 rounded-full overflow-hidden">
                                     <div
@@ -400,9 +334,9 @@ const DashboardView = () => {
                         {canceledSubs.map((sub) => (
                             <div key={sub.id} className="group flex items-center gap-4 bg-white p-3 pr-5 rounded-2xl border border-slate-100 shadow-sm opacity-60 hover:opacity-100 hover:shadow-md transition-all duration-300">
                                 <div className="w-10 h-10 rounded-lg bg-slate-50 border border-slate-100 p-1.5 shrink-0 grayscale group-hover:grayscale-0 transition-all">
-                                    <img 
-                                        src={sub.image || SERVICE_LOGOS.DEFAULT} 
-                                        alt={sub.name} 
+                                    <img
+                                        src={sub.image || SERVICE_LOGOS.DEFAULT}
+                                        alt={sub.name}
                                         className="w-full h-full object-contain"
                                         onError={(e) => {
                                             e.target.src = SERVICE_LOGOS.DEFAULT;

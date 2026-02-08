@@ -1,13 +1,13 @@
 import { useState, useMemo } from "react";
 import { Plus, Calendar, ArrowLeft, CheckCircle2, X, Loader2, Sparkles, Search, Filter, Trash2, XCircle, PenTool, Pencil, AlertTriangle } from "lucide-react";
 import Button from "../ui/Button";
-import { useGlobal } from "../../context/GlobalContext";
 import { cn } from "../../utils/helpers";
 import { AnimatePresence, motion } from "framer-motion";
 import toast from "react-hot-toast";
 import { SERVICE_LOGOS } from "../../utils/constants";
 import AddSubscriptionForm from "./AddSubscriptionForm";
 import Modal from "../ui/Modal";
+import { useData } from "../../context/DataContext"; 
 
 // Para birimi formatlayıcı 
 const formatMoneyClean = (amount) => {
@@ -176,7 +176,7 @@ const PLATFORMS = [
 
 const SubscriptionList = () => {
 
-    const { subscriptions, addSubscription, cancelSubscription, removeSubscription } = useGlobal();
+    const { subscriptions, addSubscription, cancelSubscription, removeSubscription } = useData();
     const [isAddingMode, setIsAddingMode] = useState(false);
 
     const [showCustomForm, setShowCustomForm] = useState(false);

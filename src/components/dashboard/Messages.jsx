@@ -3,10 +3,10 @@ import {  Send, Paperclip, CheckCheck, ShieldCheck, Headset } from "lucide-react
 import Button from "../ui/Button";
 import { cn } from "../../utils/helpers";
 import { motion } from "framer-motion";
-import { useGlobal } from "../../context/GlobalContext";
+import { useUI } from "../../context/UIContext"; 
 
 const Messages = () => {
-  const { messages, sendMessage } = useGlobal(); 
+  const { messages, sendMessage } = useUI(); 
   const [inputText, setInputText] = useState("");
   const messagesEndRef = useRef(null);
 
@@ -112,7 +112,7 @@ const Messages = () => {
                             <div className={cn(
                                 "max-w-[85%] md:max-w-[70%] p-4 rounded-2xl relative shadow-sm group transition-all hover:shadow-md",
                                 isMe 
-                                    ? "bg-blue-600 text-white rounded-tr-sm" 
+                                    ? "bg-cyan-800 text-white rounded-tr-sm" 
                                     : "bg-white text-zinc-700 border border-zinc-100 rounded-tl-sm"
                             )}>
                                 <p className="text-sm leading-relaxed">{msg.text}</p>

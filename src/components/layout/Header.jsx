@@ -1,13 +1,17 @@
 import { useState, useEffect, useRef } from "react";
 import { Bell, CheckCircle, Info, Clock, XCircle, Menu } from "lucide-react"; 
-import { useGlobal } from "../../context/GlobalContext";
+import { useUI } from "../../context/UIContext";
+import { useUser } from "../../context/UserContext"; 
 import { motion, AnimatePresence } from "framer-motion";
 import { cn } from "../../utils/helpers";
 import { useLocation, useNavigate } from "react-router-dom"; 
 
 const Header = ({ onOpenMobileMenu }) => {
 
-  const { notifications, userSettings } = useGlobal(); 
+ 
+  const { notifications } = useUI();
+  const { userSettings } = useUser();
+  
   const [showNotifications, setShowNotifications] = useState(false);
   const notificationRef = useRef(null);
   
@@ -78,11 +82,11 @@ const Header = ({ onOpenMobileMenu }) => {
       {/* Bildirim ve Profil */}
       <div className="flex items-center  gap-3 md:gap-4 pr-0 md:pr-2">
         
-        {/* Bildirim */}
+        {/* Bildirim */} 
         <div className="relative" ref={notificationRef}>
             <button 
                 onClick={() => setShowNotifications(!showNotifications)}
-                className="p-2.5 md:p-3 rounded-3xl bg-white border border-cyan-100 hover:bg-zinc-50 text-zinc-500 hover:text-zinc-900 transition-colors relative cursor-pointer shadow-sm"
+                className="p-2.5 md:p-3.5 rounded-3xl bg-gray-200  border border-cyan-100 hover:bg-zinc-50 text-zinc-500 hover:text-zinc-900 transition-colors relative cursor-pointer shadow-sm"
             >
                 <Bell size={22} className="md:w-6 md:h-6" />
                 {unreadCount > 0 && (
@@ -195,9 +199,9 @@ const Header = ({ onOpenMobileMenu }) => {
         {/* Profil Bölümü */}
         <button 
             onClick={() => navigate("/settings")} 
-            className="flex items-center gap-2 pl-1.5 md:pl-2.5 pr-1.5 md:pr-4 py-1.5 md:py-2 rounded-full bg-white border border-cyan-100 hover:bg-zinc-50 hover:border-zinc-300 transition-all group cursor-pointer shadow-sm"
+            className="flex items-center gap-2 pl-1.5 md:pl-2.5 pr-1.5 md:pr-4 py-1.5 md:py-2 rounded-full bg-gray-200 border border-gray-100 hover:bg-gray-400 hover:border-gray-100 transition-all group cursor-pointer shadow-sm"
         >
-            <div className="w-8 h-8 md:w-10 md:h-10 min-w-8 md:min-w-9 rounded-full bg-zinc-100 ring-2 ring-white flex items-center justify-center overflow-hidden">
+            <div className="w-8 h-8 md:w-10 md:h-10 min-w-8 md:min-w-9 rounded-full bg-zinc-100 flex items-center justify-center overflow-hidden">
                 <img 
                     src={userSettings.avatar} 
                     alt="User" 

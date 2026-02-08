@@ -3,11 +3,11 @@ import { User, Globe, Bell, Shield, Save, CreditCard, Mail, Lock, Smartphone, Wa
 import BentoCard from "../ui/BentoCard";
 import Button from "../ui/Button";
 import { cn } from "../../utils/helpers";
-import { useGlobal } from "../../context/GlobalContext";
 import toast from "react-hot-toast";
+import { useUser } from "../../context/UserContext"; 
 
 const Settings = () => {
-  const { userSettings, updateUserSettings } = useGlobal();
+  const { userSettings, updateUserSettings } = useUser(); 
   const [loading, setLoading] = useState(false);
   
   // Form verilerini Contextten gelen verilerle başlatıyoruz

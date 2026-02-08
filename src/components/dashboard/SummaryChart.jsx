@@ -1,15 +1,17 @@
-import { useGlobal } from "../../context/GlobalContext";
 import BentoCard from "../ui/BentoCard";
 import { formatCurrency, cn } from "../../utils/helpers";
 import { PieChart, Pie, Cell, ResponsiveContainer, BarChart, Bar, XAxis, YAxis, Tooltip } from 'recharts';
 import { Activity, Target, Wallet, TrendingDown, Sparkles, Layers,  Droplets } from "lucide-react";
-
+import { useData } from "../../context/DataContext"; 
+import { useUser } from "../../context/UserContext"; 
 
 const COLORS = ['#f97316', '#06b6d4', '#84cc16', '#eab308', '#ec4899', '#8b5cf6'];
 
 const SummaryChart = () => {
 
-  const { subscriptions, totalExpenses, userSettings } = useGlobal();
+ 
+  const { subscriptions, totalExpenses } = useData();
+  const { userSettings } = useUser();
 
   // Aylık Bütçe Limiti
   const monthlyLimit = parseInt(userSettings.budgetLimit) || 5000;
@@ -74,6 +76,7 @@ const SummaryChart = () => {
 
   return (
     <div className="space-y-6 pb-24 animate-in fade-in slide-in-from-bottom-4 duration-700">
+        
       {/* üst kısım */}
        <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
         
@@ -172,7 +175,7 @@ const SummaryChart = () => {
 
       </div>
 
-      {/*  grafikler */}
+      {/* grafikler */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-5">
           <BentoCard className="p-6 bg-white border border-zinc-100 shadow-[0_2px_15px_rgb(0,0,0,0.03)] min-h-100 flex flex-col">
             <h3 className="text-lg font-bold text-slate-800 flex items-center gap-2">
