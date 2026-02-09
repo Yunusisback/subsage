@@ -1,10 +1,21 @@
 import { createContext, useContext, useState, useEffect } from "react";
-import { INITIAL_SUBSCRIPTIONS, SERVICE_LOGOS } from "../utils/constants";
+import { supabase } from "../supabase"; 
+import { SERVICE_LOGOS } from "../utils/constants";
 import { useUI } from "./UIContext";
+import toast from "react-hot-toast";
 
 const DataContext = createContext();
 
 export const useData = () => useContext(DataContext);
+
+
+const DEMO_DATA = [
+  { id: 'demo-1', name: 'Netflix', price: 199.99, category: 'Eğlence', startDate: '2024-01-15', image: SERVICE_LOGOS.NETFLIX, status: 'active' },
+  { id: 'demo-2', name: 'Spotify', price: 59.99, category: 'Müzik', startDate: '2024-02-01', image: SERVICE_LOGOS.SPOTIFY, status: 'active' },
+  { id: 'demo-3', name: 'YouTube Premium', price: 79.99, category: 'Video', startDate: '2024-03-10', image: SERVICE_LOGOS.YOUTUBE, status: 'active' },
+  { id: 'demo-4', name: 'Amazon Prime', price: 39.00, category: 'Alışveriş', startDate: '2024-01-20', image: SERVICE_LOGOS.AMAZON, status: 'active' },
+  { id: 'demo-5', name: 'iCloud+', price: 12.99, category: 'Bulut', startDate: '2024-04-05', image: SERVICE_LOGOS.ICLOUD, status: 'active' },
+];
 
 const LOGO_MAPPINGS = [
   { keywords: ["netflix"], logo: SERVICE_LOGOS.NETFLIX },
@@ -27,146 +38,179 @@ const LOGO_MAPPINGS = [
   { keywords: ["duolingo"], logo: SERVICE_LOGOS.DUOLINGO }
 ];
 
-const safeJSONParse = (key, fallback) => {
-    try {
-        const item = localStorage.getItem(key);
-        return item ? JSON.parse(item) : fallback;
-    } catch (error) {
-        console.warn(`Error parsing ${key} from localStorage, using fallback.`, error);
-        return fallback;
-    }
-};
-
 export const DataProvider = ({ children }) => {
-    const { addNotification } = useUI(); 
+    const { addNotification } = useUI();
+    const [subscriptions, setSubscriptions] = useState([]); // Başlangıçta boş
+    const [loading, setLoading] = useState(true);
+    const [transactions, setTransactions] = useState([]);
 
-   
     const getLogoByName = (name) => {
         if (!name) return SERVICE_LOGOS.DEFAULT;
         const lowerName = name.toLowerCase();
-        
         const match = LOGO_MAPPINGS.find(item => 
-        item.keywords.some(keyword => lowerName.includes(keyword))
+            item.keywords.some(keyword => lowerName.includes(keyword))
         );
-
         return match ? match.logo : SERVICE_LOGOS.DEFAULT;
     };
 
-   
-    const [subscriptions, setSubscriptions] = useState(() => {
-        
-        let parsedSubs = safeJSONParse("subscriptions", INITIAL_SUBSCRIPTIONS);
-        
-        // eğer veri bozuksa veya array değilse fallbacke dön
-        if (!Array.isArray(parsedSubs)) parsedSubs = INITIAL_SUBSCRIPTIONS;
-
-        return parsedSubs.map(sub => ({ 
-            ...sub, 
-            status: sub.status || 'active',
-            image: getLogoByName(sub.name) 
-        }));
-    });
-
     
-    const [transactions, setTransactions] = useState(() => {
-        const savedTx = safeJSONParse("transactions", null);
-        if (savedTx && Array.isArray(savedTx)) {
-            return savedTx.map(tx => ({
-                ...tx,
-                icon: getLogoByName(tx.name)
+    const fetchSubscriptions = async () => {
+        try {
+            setLoading(true);
+            const { data, error } = await supabase
+                .from('subscriptions')
+                .select('*')
+                .order('created_at', { ascending: false });
+
+            if (error) throw error;
+
+           
+            if (!data || data.length === 0) {
+                setSubscriptions(DEMO_DATA);
+                
+                
+                const demoTransactions = DEMO_DATA.map(sub => ({
+                    id: `tx-${sub.id}`,
+                    name: sub.name,
+                    date: new Date().toLocaleDateString('tr-TR'), 
+                    amount: -parseFloat(sub.price),
+                    type: "subscription",
+                    category: sub.category,
+                    icon: sub.image
+                }));
+                setTransactions(demoTransactions);
+                return; 
+            }
+
+           
+            const formattedData = data.map(sub => ({
+                ...sub,
+                image: sub.image || getLogoByName(sub.name),
+                startDate: sub.start_date 
             }));
-        }
-        return INITIAL_SUBSCRIPTIONS.map((sub) => ({
-            id: `init-tx-${sub.id}`,
-            name: sub.name,
-            date: new Date().toLocaleDateString('tr-TR', { day: 'numeric', month: 'long', year: 'numeric' }),
-            amount: -parseFloat(sub.price),
-            type: "subscription",
-            category: sub.category,
-            icon: sub.image 
-        }));
-    });
 
-   
-    useEffect(() => { localStorage.setItem("subscriptions", JSON.stringify(subscriptions)); }, [subscriptions]);
-    useEffect(() => { localStorage.setItem("transactions", JSON.stringify(transactions)); }, [transactions]);
+            setSubscriptions(formattedData);
+            
+            const generatedTransactions = formattedData.map(sub => ({
+                id: `tx-${sub.id}`,
+                name: sub.name,
+                date: new Date(sub.created_at).toLocaleDateString('tr-TR'),
+                amount: -parseFloat(sub.price),
+                type: "subscription",
+                category: sub.category,
+                icon: sub.image
+            }));
+            setTransactions(generatedTransactions);
+
+        } catch (error) {
+            console.error("Hata:", error);
+            
+            setSubscriptions(DEMO_DATA);
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    useEffect(() => {
+        fetchSubscriptions();
+    }, []);
+
+  
+    const addSubscription = async (newSub) => {
+        try {
+          
+
+            const { data, error } = await supabase
+                .from('subscriptions')
+                .insert([{
+                    name: newSub.name,
+                    price: parseFloat(newSub.price),
+                    category: newSub.category,
+                    start_date: newSub.startDate,
+                    image: newSub.image,
+                    status: 'active'
+                }])
+                .select();
+
+            if (error) throw error;
+
+            const addedSub = {
+                ...data[0],
+                image: data[0].image || getLogoByName(data[0].name),
+                startDate: data[0].start_date
+            };
+
+          
+            setSubscriptions(prev => {
+                const isDemo = prev.some(item => item.id.toString().startsWith('demo-'));
+                if (isDemo) return [addedSub]; 
+                return [addedSub, ...prev]; 
+            });
+
+            addNotification("Başarılı", "Kayıt eklendi.");
+            
+        } catch (error) {
+            console.error("Ekleme hatası:", error);
+            toast.error("Kaydedilemedi.");
+        }
+    };
 
     
+    const removeSubscription = async (id) => {
+       
+        if (id.toString().startsWith('demo-')) {
+            setSubscriptions(prev => prev.filter(sub => sub.id !== id));
+            toast.success("Demo kayıt silindi.");
+            return;
+        }
+
+        try {
+            const { error } = await supabase.from('subscriptions').delete().eq('id', id);
+            if (error) throw error;
+            setSubscriptions(prev => prev.filter(sub => sub.id !== id));
+            toast.success("Kayıt silindi.");
+        } catch (error) {
+            console.error("Hata:", error);
+        }
+    };
+
+ 
+    const updateSubscription = async (updatedSub) => {};
+    
+    const cancelSubscription = async (id) => {
+      
+         if (id.toString().startsWith('demo-')) {
+            setSubscriptions(prev => prev.map(sub => sub.id === id ? { ...sub, status: 'canceled' } : sub));
+            return;
+         }
+
+         try {
+            const { error } = await supabase
+                .from('subscriptions')
+                .update({ status: 'canceled' })
+                .eq('id', id);
+            if (error) throw error;
+            setSubscriptions(prev => prev.map(sub => sub.id === id ? { ...sub, status: 'canceled' } : sub));
+        } catch (error) {
+            console.error(error);
+        }
+    };
+
     const totalExpenses = subscriptions
         .filter(sub => sub.status === 'active')
         .reduce((total, sub) => total + parseFloat(sub.price), 0);
-
-   
-    const addSubscription = (newSub) => {
-        const finalImage = newSub.image || getLogoByName(newSub.name);
-      
-        setSubscriptions([...subscriptions, { ...newSub, image: finalImage, id: crypto.randomUUID(), status: 'active' }]);
-        
-        const newTransaction = {
-            id: crypto.randomUUID(),
-            name: newSub.name,
-            date: "Bugün",
-            amount: -parseFloat(newSub.price),
-            type: "subscription",
-            category: newSub.category,
-            icon: finalImage
-        };
-        setTransactions(prev => [newTransaction, ...prev]);
-
-       
-        addNotification("Yeni Abonelik", `${newSub.name} başarıyla takibe alındı.`);
-    };
-
-    const updateSubscription = (updatedSub) => {
-        setSubscriptions(prev => prev.map(sub => {
-            if (sub.id === updatedSub.id) {
-                const finalImage = updatedSub.image || getLogoByName(updatedSub.name);
-                return { ...updatedSub, image: finalImage };
-            }
-            return sub;
-        }));
-    };
-
-
-    const removeSubscription = (id) => {
-        setSubscriptions(subscriptions.filter(sub => sub.id !== id));
-    };
-
-    
-    const cancelSubscription = (id) => {
-        const subToCancel = subscriptions.find(sub => sub.id === id);
-        if(!subToCancel) return;
-
-        setSubscriptions(prev => prev.map(sub => 
-            sub.id === id 
-                ? { ...sub, status: 'canceled', canceledDate: new Date().toLocaleDateString('tr-TR') } 
-                : sub
-        ));
-
-        addNotification("Abonelik İptal Edildi", `${subToCancel.name} aboneliği iptal edildi. Artık toplam gidere yansımayacak.`, "alert");
-
-        const cancelTx = {
-            id: crypto.randomUUID(),
-            name: subToCancel.name,
-            date: "Bugün",
-            amount: 0,
-            type: "cancellation",
-            category: "İptal İşlemi",
-            icon: subToCancel.image
-        };
-        setTransactions(prev => [cancelTx, ...prev]);
-    };
 
     return (
         <DataContext.Provider value={{
             subscriptions,
             addSubscription,
-            updateSubscription,
             removeSubscription,
+            updateSubscription,
             cancelSubscription,
             totalExpenses,
             transactions,
-            getLogoByName
+            getLogoByName,
+            loading
         }}>
             {children}
         </DataContext.Provider>

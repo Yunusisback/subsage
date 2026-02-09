@@ -34,7 +34,7 @@ function App() {
   return (
     <div className="min-h-screen flex text-zinc-900 font-sans bg-background overflow-hidden relative">
       
-      {/* Toast Bildirim Alanı*/}
+    
       <Toaster 
         position="top-right" 
         toastOptions={{
@@ -58,7 +58,7 @@ function App() {
         }}
       />
 
-      {/* mobil overlay */}
+   
       {isMobileMenuOpen && (
         <div 
           className="fixed inset-0 bg-black/50 z-40 lg:hidden backdrop-blur-sm transition-opacity"
@@ -66,7 +66,7 @@ function App() {
         />
       )}
 
-      {/* sidebar  */}
+     
       <Sidebar 
         isCollapsed={isCollapsed} 
         toggleSidebar={() => setIsCollapsed(!isCollapsed)} 
@@ -83,14 +83,14 @@ function App() {
         )}
       >
         
-        {/* header  */}
+       
         <Header 
       
             onOpenModal={() => setIsModalOpen(true)}
             onOpenMobileMenu={() => setIsMobileMenuOpen(true)}
         />
 
-        {/* dashboard- routes  */}
+    
         <Routes>
             <Route path="/" element={<DashboardView />} />
             <Route path="/subscriptions" element={<SubscriptionList />} />
@@ -100,11 +100,11 @@ function App() {
             <Route path="/notifications" element={<Notifications />} />
             <Route path="/settings" element={<Settings />} />
             
-            {/* Hatalı URL gelirse ana sayfaya at */}
+       
             <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
 
-        {/* global modal */}
+      
         <Modal 
             isOpen={isModalOpen} 
             onClose={() => setIsModalOpen(false)}
