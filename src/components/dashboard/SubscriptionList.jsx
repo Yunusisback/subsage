@@ -1,7 +1,7 @@
 import { useState, useMemo } from "react";
 import { Plus, Calendar, ArrowLeft, CheckCircle2, X, Loader2, Sparkles, Search, Filter, Trash2, XCircle, PenTool, Pencil, AlertTriangle } from "lucide-react";
 import Button from "../ui/Button";
-import { cn } from "../../utils/helpers";
+import { cn, formatDate } from "../../utils/helpers"; 
 import { AnimatePresence, motion } from "framer-motion";
 import toast from "react-hot-toast";
 import { SERVICE_LOGOS } from "../../utils/constants";
@@ -313,8 +313,8 @@ const SubscriptionList = () => {
                         className={cn(
                             "flex items-center gap-2 px-4 py-2.5 rounded-xl font-semibold transition-all cursor-pointer border shadow-sm shrink-0",
                             isAddingMode || showCustomForm
-                                ? "bg-white text-slate-700 hover:bg-slate-50 border-slate-200"
-                                : "bg-cyan-600 text-white hover:bg-cyan-700 border-transparent shadow-cyan-200 -shadow-md"
+                            ? "bg-white text-slate-700 hover:bg-slate-50 border-slate-200"
+                            : "bg-cyan-600 text-white hover:bg-cyan-700 border-transparent shadow-cyan-200 -shadow-md"
                         )}
                     >
                         {(isAddingMode || showCustomForm) ? <ArrowLeft size={18} /> : <Plus size={18} />}
@@ -357,7 +357,7 @@ const SubscriptionList = () => {
                 {isAddingMode ? (
                  
                     showCustomForm ? (
-                         <motion.div
+                          <motion.div
                             key="custom-form"
                             initial={{ opacity: 0, scale: 0.95 }}
                             animate={{ opacity: 1, scale: 1 }}
@@ -418,29 +418,29 @@ const SubscriptionList = () => {
                                     </span>
 
                                     <div className="mt-auto w-full pt-3 border-t border-slate-50 flex flex-col items-center justify-center gap-1">
-                                        <div className="flex items-baseline gap-1">
-                                            <span className="text-lg font-black text-slate-800 tracking-tight">{formatMoneyClean(platform.price)}</span>
-                                            <span className="text-[10px] font-bold text-slate-400">₺/ay</span>
-                                        </div>
+                                            <div className="flex items-baseline gap-1">
+                                                <span className="text-lg font-black text-slate-800 tracking-tight">{formatMoneyClean(platform.price)}</span>
+                                                <span className="text-[10px] font-bold text-slate-400">₺/ay</span>
+                                            </div>
 
-                                        {/* State göstergesi */}
-                                        <div className="h-6 flex items-center justify-center">
-                                            {status === "loading" ? (
-                                                <Loader2 size={16} className="animate-spin text-cyan-500" />
-                                            ) : status === "success" ? (
-                                                <div className="flex items-center gap-1 text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded-full border border-emerald-100 animate-in zoom-in">
-                                                    <CheckCircle2 size={12} /> <span className="text-[10px] font-bold">Eklendi</span>
-                                                </div>
-                                            ) : isSubscribed ? (
-                                                <span className="text-[10px] font-bold text-slate-400 flex items-center gap-1">
-                                                    <CheckCircle2 size={12} /> Mevcut
-                                                </span>
-                                            ) : (
-                                                <span className="text-[10px] font-bold text-cyan-600 opacity-0 group-hover:opacity-100 transition-opacity">
-                                                    Seçmek için tıkla
-                                                </span>
-                                            )}
-                                        </div>
+                                            {/* State göstergesi */}
+                                            <div className="h-6 flex items-center justify-center">
+                                                {status === "loading" ? (
+                                                    <Loader2 size={16} className="animate-spin text-cyan-500" />
+                                                ) : status === "success" ? (
+                                                    <div className="flex items-center gap-1 text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded-full border border-emerald-100 animate-in zoom-in">
+                                                        <CheckCircle2 size={12} /> <span className="text-[10px] font-bold">Eklendi</span>
+                                                    </div>
+                                                ) : isSubscribed ? (
+                                                    <span className="text-[10px] font-bold text-slate-400 flex items-center gap-1">
+                                                        <CheckCircle2 size={12} /> Mevcut
+                                                    </span>
+                                                ) : (
+                                                    <span className="text-[10px] font-bold text-cyan-600 opacity-0 group-hover:opacity-100 transition-opacity">
+                                                        Seçmek için tıkla
+                                                    </span>
+                                                )}
+                                            </div>
                                     </div>
 
                                     {/* seçili değilken hover ikonu */}
@@ -593,7 +593,7 @@ const SubscriptionList = () => {
                                         <div className="flex items-center gap-2 text-xs text-slate-400 font-medium mb-5">
                                             <Calendar size={12} />
                                             <span>
-                                                {isInactive ? `İptal: ${sub.canceledDate || 'Bilinmiyor'}` : `Başlangıç: ${sub.startDate}`}
+                                                {isInactive ? `İptal: ${formatDate(sub.canceledDate) || 'Bilinmiyor'}` : `Başlangıç: ${formatDate(sub.startDate)}`}
                                             </span>
                                         </div>
 

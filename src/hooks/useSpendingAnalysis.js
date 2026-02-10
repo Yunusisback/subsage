@@ -19,7 +19,7 @@ export const useSpendingAnalysis = (subscriptions, totalExpenses) => {
        
         const allDates = subscriptions
             .map(sub => new Date(sub.startDate))
-            .filter(date => !isNaN(date))
+            .filter(date => !isNaN(date.getTime())) 
             .sort((a, b) => a - b);
 
         if (allDates.length === 0) return [{ value: 0 }];
@@ -29,6 +29,7 @@ export const useSpendingAnalysis = (subscriptions, totalExpenses) => {
         const timeline = [];
         let current = new Date(start);
 
+      
         while (current <= end) {
             timeline.push(new Date(current));
             current.setMonth(current.getMonth() + 1);
@@ -43,13 +44,12 @@ export const useSpendingAnalysis = (subscriptions, totalExpenses) => {
             const subsActiveAtDate = subscriptions.filter(sub => {
                 const startDate = new Date(sub.startDate);
                 
-                
-               
+          
                 let cancelDateObj = null;
                 if (sub.status === 'canceled' && sub.canceledDate) {
-                     const parts = sub.canceledDate.split('.');
-                     if (parts.length === 3) {
-                         cancelDateObj = new Date(parts[2], parts[1] - 1, parts[0]);
+                     const parsedDate = new Date(sub.canceledDate);
+                     if (!isNaN(parsedDate.getTime())) {
+                         cancelDateObj = parsedDate;
                      }
                 }
 

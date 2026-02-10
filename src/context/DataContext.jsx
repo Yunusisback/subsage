@@ -2,6 +2,7 @@ import { createContext, useContext, useState, useEffect } from "react";
 import { supabase } from "../supabase"; 
 import { SERVICE_LOGOS } from "../utils/constants";
 import { useUI } from "./UIContext";
+import { useUser } from "./UserContext"; 
 import toast from "react-hot-toast";
 
 const DataContext = createContext();
@@ -40,7 +41,8 @@ const LOGO_MAPPINGS = [
 
 export const DataProvider = ({ children }) => {
     const { addNotification } = useUI();
-    const [subscriptions, setSubscriptions] = useState([]); // Başlangıçta boş
+    const { user } = useUser(); 
+    const [subscriptions, setSubscriptions] = useState([]); 
     const [loading, setLoading] = useState(true);
     const [transactions, setTransactions] = useState([]);
 
@@ -53,32 +55,49 @@ export const DataProvider = ({ children }) => {
         return match ? match.logo : SERVICE_LOGOS.DEFAULT;
     };
 
+    // abonelikleri işlem geçmişine dönüştürür
+    const generateTransactions = (subsData) => {
+        return subsData.map(sub => ({
+            id: `tx-${sub.id}`,
+            name: sub.name,
+            
+            date: sub.created_at 
+                ? new Date(sub.created_at).toLocaleDateString('tr-TR') 
+                : new Date().toLocaleDateString('tr-TR'),
+            amount: -parseFloat(sub.price),
+            type: "subscription",
+            category: sub.category,
+            icon: sub.image
+        }));
+    };
+
     
     const fetchSubscriptions = async () => {
         try {
             setLoading(true);
+
+        
+            if (!user) {
+                setSubscriptions(DEMO_DATA);
+                setTransactions(generateTransactions(DEMO_DATA));
+                setLoading(false);
+                return;
+            }
+
+          
             const { data, error } = await supabase
                 .from('subscriptions')
                 .select('*')
+                .eq('user_id', user.id) 
                 .order('created_at', { ascending: false });
 
             if (error) throw error;
 
            
             if (!data || data.length === 0) {
-                setSubscriptions(DEMO_DATA);
-                
-                
-                const demoTransactions = DEMO_DATA.map(sub => ({
-                    id: `tx-${sub.id}`,
-                    name: sub.name,
-                    date: new Date().toLocaleDateString('tr-TR'), 
-                    amount: -parseFloat(sub.price),
-                    type: "subscription",
-                    category: sub.category,
-                    icon: sub.image
-                }));
-                setTransactions(demoTransactions);
+             
+                setSubscriptions([]);
+                setTransactions([]);
                 return; 
             }
 
@@ -90,21 +109,12 @@ export const DataProvider = ({ children }) => {
             }));
 
             setSubscriptions(formattedData);
-            
-            const generatedTransactions = formattedData.map(sub => ({
-                id: `tx-${sub.id}`,
-                name: sub.name,
-                date: new Date(sub.created_at).toLocaleDateString('tr-TR'),
-                amount: -parseFloat(sub.price),
-                type: "subscription",
-                category: sub.category,
-                icon: sub.image
-            }));
-            setTransactions(generatedTransactions);
+            setTransactions(generateTransactions(formattedData));
 
         } catch (error) {
             console.error("Hata:", error);
-            
+            toast.error("Veriler yüklenirken hata oluştu.");
+         
             setSubscriptions(DEMO_DATA);
         } finally {
             setLoading(false);
@@ -113,20 +123,28 @@ export const DataProvider = ({ children }) => {
 
     useEffect(() => {
         fetchSubscriptions();
-    }, []);
+    }, [user]); 
 
   
     const addSubscription = async (newSub) => {
         try {
-          
+        
+            if (!user) {
+                toast.error("Kayıt eklemek için giriş yapmalısınız.");
+                return;
+            }
+
+        
+            const isoStartDate = new Date(newSub.startDate).toISOString();
 
             const { data, error } = await supabase
                 .from('subscriptions')
                 .insert([{
+                    user_id: user.id, 
                     name: newSub.name,
                     price: parseFloat(newSub.price),
                     category: newSub.category,
-                    start_date: newSub.startDate,
+                    start_date: isoStartDate,
                     image: newSub.image,
                     status: 'active'
                 }])
@@ -165,17 +183,58 @@ export const DataProvider = ({ children }) => {
         }
 
         try {
-            const { error } = await supabase.from('subscriptions').delete().eq('id', id);
+            const { error } = await supabase
+                .from('subscriptions')
+                .delete()
+                .eq('id', id)
+                .eq('user_id', user.id);  engelle
+
             if (error) throw error;
             setSubscriptions(prev => prev.filter(sub => sub.id !== id));
             toast.success("Kayıt silindi.");
         } catch (error) {
             console.error("Hata:", error);
+            toast.error("Silme işlemi başarısız.");
         }
     };
 
  
-    const updateSubscription = async (updatedSub) => {};
+    const updateSubscription = async (updatedSub) => {
+        if (!user) return;
+
+        try {
+        
+            if (updatedSub.id.toString().startsWith('demo-')) {
+                toast.error("Demo veriler düzenlenemez.");
+                return;
+            }
+
+            const { error } = await supabase
+                .from('subscriptions')
+                .update({
+                    name: updatedSub.name,
+                    price: parseFloat(updatedSub.price),
+                    category: updatedSub.category,
+                    start_date: new Date(updatedSub.startDate).toISOString(), 
+                    image: updatedSub.image
+                })
+                .eq('id', updatedSub.id)
+                .eq('user_id', user.id); 
+
+            if (error) throw error;
+
+         
+            setSubscriptions(prev => prev.map(sub => 
+                sub.id === updatedSub.id ? { ...sub, ...updatedSub } : sub
+            ));
+            
+            toast.success("Abonelik güncellendi.");
+
+        } catch (error) {
+            console.error("Güncelleme hatası:", error);
+            toast.error("Güncelleme başarısız.");
+        }
+    };
     
     const cancelSubscription = async (id) => {
       
@@ -188,11 +247,15 @@ export const DataProvider = ({ children }) => {
             const { error } = await supabase
                 .from('subscriptions')
                 .update({ status: 'canceled' })
-                .eq('id', id);
+                .eq('id', id)
+                .eq('user_id', user.id); 
+
             if (error) throw error;
             setSubscriptions(prev => prev.map(sub => sub.id === id ? { ...sub, status: 'canceled' } : sub));
+            toast.success("Abonelik iptal edildi.");
         } catch (error) {
             console.error(error);
+            toast.error("İşlem başarısız.");
         }
     };
 

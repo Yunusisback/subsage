@@ -11,7 +11,7 @@ import Button from "../ui/Button";
 import Modal from "../ui/Modal"; 
 import { formatCurrency, cn } from "../../utils/helpers";
 import { useUser } from "../../context/UserContext"; 
-import { useData } from "../../context/DataContext"; useData
+import { useData } from "../../context/DataContext"; 
 import { motion, AnimatePresence } from "framer-motion";
 
 const WalletView = () => {

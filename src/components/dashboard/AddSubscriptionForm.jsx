@@ -2,12 +2,11 @@ import { useState, useEffect } from "react";
 import Input from "../ui/Input";
 import Button from "../ui/Button";
 import { SERVICE_LOGOS } from "../../utils/constants";
-import toast from "react-hot-toast";
+
 import { useData } from "../../context/DataContext"; 
 
 const AddSubscriptionForm = ({ onSuccess, initialData }) => {
   
-
   const { addSubscription, updateSubscription } = useData();
   const [isLoading, setIsLoading] = useState(false);
   
@@ -23,14 +22,29 @@ const AddSubscriptionForm = ({ onSuccess, initialData }) => {
 
   useEffect(() => {
     if (initialData) {
+
+      let safeDate = new Date().toISOString().split("T")[0]; 
+
+      if (initialData.startDate) {
+          const dateObj = new Date(initialData.startDate);
+       
+          if (!isNaN(dateObj.getTime())) {
+              safeDate = dateObj.toISOString().split("T")[0];
+          }
+      }
+
       setFormData({
         ...initialData,
-        startDate: initialData.startDate || new Date().toISOString().split("T")[0]
+        startDate: safeDate,
+    
+        price: initialData.price ? initialData.price.toString() : "" 
       });
     }
   }, [initialData]);
 
+ 
   useEffect(() => {
+  
     if (initialData && initialData.image !== SERVICE_LOGOS.DEFAULT) return;
     
     if(!formData.name) return;
@@ -51,6 +65,11 @@ const AddSubscriptionForm = ({ onSuccess, initialData }) => {
     else if(lowerName.includes("tod")) matchedLogo = SERVICE_LOGOS.TOD;
     else if(lowerName.includes("discord")) matchedLogo = SERVICE_LOGOS.DISCORD;
     else if(lowerName.includes("mubi")) matchedLogo = SERVICE_LOGOS.MUBI;
+    else if(lowerName.includes("gain")) matchedLogo = SERVICE_LOGOS.GAIN;
+    else if(lowerName.includes("adobe")) matchedLogo = SERVICE_LOGOS.ADOBE;
+    else if(lowerName.includes("canva")) matchedLogo = SERVICE_LOGOS.CANVA;
+    else if(lowerName.includes("chatgpt")) matchedLogo = SERVICE_LOGOS.CHATGPT;
+    else if(lowerName.includes("duolingo")) matchedLogo = SERVICE_LOGOS.DUOLINGO;
     
     if (matchedLogo) {
         setFormData(prev => ({ ...prev, image: matchedLogo }));
@@ -71,7 +90,7 @@ const AddSubscriptionForm = ({ onSuccess, initialData }) => {
     const newErrors = {};
     if (!formData.name.trim()) newErrors.name = "Servis adı gereklidir";
     
- 
+    
     const cleanPrice = formData.price.toString().replace(',', '.');
     if (!formData.price) {
         newErrors.price = "Fiyat gereklidir";
@@ -83,7 +102,7 @@ const AddSubscriptionForm = ({ onSuccess, initialData }) => {
     return newErrors;
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     const validationErrors = validate();
     
@@ -94,38 +113,45 @@ const AddSubscriptionForm = ({ onSuccess, initialData }) => {
 
     setIsLoading(true);
 
-   
     const formattedData = {
         ...formData,
         price: formData.price.toString().replace(',', '.')
     };
 
-    setTimeout(() => {
+    try {
+      
+        await new Promise(resolve => setTimeout(resolve, 300));
+
         if (initialData) {
-            updateSubscription(formattedData);
-            toast.success("Abonelik güncellendi!");
+        
+            await updateSubscription(formattedData);
         } else {
+          
             const colors = ["bg-red-500", "bg-blue-500", "bg-green-500", "bg-purple-500", "bg-orange-500"];
             const randomColor = colors[Math.floor(Math.random() * colors.length)];
 
-            addSubscription({
+            await addSubscription({
                 ...formattedData,
                 color: randomColor,
             });
         }
 
-        setIsLoading(false);
         if (onSuccess) onSuccess();
-    }, 600);
+
+    } catch (error) {
+        console.error("İşlem hatası:", error);
+    } finally {
+        setIsLoading(false);
+    }
   };
 
   return (
     <form onSubmit={handleSubmit} className="space-y-4 mt-2">
       
-      
+     
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           
-        
+      
           <Input 
             label="Servis Adı" 
             name="name" 
@@ -136,7 +162,7 @@ const AddSubscriptionForm = ({ onSuccess, initialData }) => {
             className="focus:bg-cyan-50 focus:ring-cyan-100 focus:border-cyan-300 transition-colors"
           />
           
-          
+        
           <div className="grid grid-cols-2 gap-4">
              <Input 
                 label="Fiyat (₺)" 
@@ -170,7 +196,7 @@ const AddSubscriptionForm = ({ onSuccess, initialData }) => {
             className="focus:bg-cyan-50 focus:ring-cyan-100 focus:border-cyan-300 transition-colors"
           />
 
-        
+      
            <Input 
             label="Logo URL (Opsiyonel)" 
             name="image" 
