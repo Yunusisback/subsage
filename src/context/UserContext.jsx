@@ -1,4 +1,6 @@
 import { createContext, useContext, useState, useEffect } from "react";
+import { supabase } from "../supabase";
+import toast from "react-hot-toast";
 
 const UserContext = createContext();
 
@@ -9,30 +11,27 @@ const safeJSONParse = (key, fallback) => {
         const item = localStorage.getItem(key);
         return item ? JSON.parse(item) : fallback;
     } catch (error) {
-        console.warn(`Error parsing ${key} from localStorage, using fallback.`, error);
         return fallback;
     }
 };
 
 export const UserProvider = ({ children }) => {
-    
-    // kullanicı ayarları state
+  
+    const [user, setUser] = useState(null);
+    const [session, setSession] = useState(null);
+    const [loading, setLoading] = useState(true);
+    const [isGuest, setIsGuest] = useState(false);
+
     const [userSettings, setUserSettings] = useState(() => {
-        const defaultSettings = {
-            name: "Burak Y.",
-            email: "burak@example.com",
-            avatar: "https://thispersonnotexist.org/downloadimage/Ac3RhdGljL21hbi9zZWVkNTM1NTYuanBlZw==",
+        return safeJSONParse("userSettings", {
+            name: "Misafir",
+            email: "",
+            avatar: "",
             currency: "TRY",
             language: "tr",
             budgetLimit: 5000,
-            notificationPreferences: {
-                email: true,
-                push: true,
-                weeklyReport: false,
-                paymentAlert: true
-            }
-        };
-        return safeJSONParse("userSettings", defaultSettings);
+            notificationPreferences: { email: true, push: true }
+        });
     });
 
     const [spendingLimit, setSpendingLimit] = useState(() => {
@@ -40,24 +39,80 @@ export const UserProvider = ({ children }) => {
     });
 
    
+    useEffect(() => {
+        supabase.auth.getSession().then(({ data: { session } }) => {
+            setSession(session);
+            setUser(session?.user ?? null);
+            if (session?.user) {
+                updateUserSettings({ 
+                    email: session.user.email,
+                    name: session.user.user_metadata?.full_name || session.user.email.split('@')[0] 
+                });
+            }
+            setLoading(false);
+        });
+
+        const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
+            setSession(session);
+            setUser(session?.user ?? null);
+            if (session?.user) {
+                 updateUserSettings({ 
+                    email: session.user.email,
+                    name: session.user.user_metadata?.full_name || session.user.email.split('@')[0] 
+                });
+            }
+            setLoading(false);
+        });
+
+        return () => subscription.unsubscribe();
+    }, []);
+
     useEffect(() => { localStorage.setItem("userSettings", JSON.stringify(userSettings)); }, [userSettings]);
     useEffect(() => { localStorage.setItem("spendingLimit", JSON.stringify(spendingLimit)); }, [spendingLimit]);
 
-    
-    const updateUserSettings = (newSettings) => {
-        setUserSettings(prev => ({ ...prev, ...newSettings }));
+    const updateUserSettings = (newSettings) => setUserSettings(prev => ({ ...prev, ...newSettings }));
+    const updateSpendingLimit = (newLimit) => setSpendingLimit(newLimit);
+
+   
+    const login = async (email, password) => {
+        const { data, error } = await supabase.auth.signInWithPassword({ email, password });
+        if (error) throw error;
+        return data;
     };
 
-    const updateSpendingLimit = (newLimit) => {
-        setSpendingLimit(newLimit);
+    const signup = async (email, password, fullName) => {
+        const { data, error } = await supabase.auth.signUp({
+            email,
+            password,
+            options: { data: { full_name: fullName } },
+        });
+        if (error) throw error;
+        return data;
+    };
+
+    const loginAsGuest = () => {
+        setIsGuest(true);
+        setUser({ id: 'guest', email: 'misafir@demo.com', user_metadata: { full_name: 'Misafir' } });
+        updateUserSettings({ name: "Misafir Kullanıcı" });
+        toast.success("Misafir moduna geçildi.");
+    };
+
+    const logout = async () => {
+        if (isGuest) {
+            setIsGuest(false);
+            setUser(null);
+        } else {
+            await supabase.auth.signOut();
+        }
+        toast.success("Çıkış yapıldı");
     };
 
     return (
         <UserContext.Provider value={{
-            userSettings,
-            updateUserSettings,
-            spendingLimit,
-            updateSpendingLimit
+            user, session, loading, isGuest,
+            login, signup, loginAsGuest, logout,
+            userSettings, updateUserSettings,
+            spendingLimit, updateSpendingLimit
         }}>
             {children}
         </UserContext.Provider>

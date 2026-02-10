@@ -2,16 +2,15 @@ import { LayoutGrid, CreditCard, BarChart2, Settings, MessageSquare, Bell, LogOu
 import { cn } from "../../utils/helpers";
 import { NavLink } from "react-router-dom"; 
 import { useUI } from "../../context/UIContext"; 
+import { useUser } from "../../context/UserContext"; 
 
 const Sidebar = ({ isCollapsed, toggleSidebar, isMobileMenuOpen, closeMobileMenu }) => {
  
- 
   const { notifications } = useUI(); 
+  const { logout } = useUser(); 
 
-  // Okunmamış bildirim sayısını hesapla
   const unreadCount = notifications.filter(n => !n.read).length;
   
- 
   const menuItems = [
     { path: "/", icon: LayoutGrid, label: "Genel Bakış" },
     { path: "/subscriptions", icon: CreditCard, label: "Abonelikler", badge: 5 }, 
@@ -37,7 +36,6 @@ const Sidebar = ({ isCollapsed, toggleSidebar, isMobileMenuOpen, closeMobileMenu
     
     // masaüstü 
     "lg:my-4 lg:ml-4",
-    
     "bg-white/95 lg:bg-white/80 backdrop-blur-xl supports-backdrop-filter:bg-white/60",
     "flex flex-col shadow-2xl shadow-zinc-300/30 ring-1 ring-black/5",
   
@@ -48,18 +46,14 @@ const Sidebar = ({ isCollapsed, toggleSidebar, isMobileMenuOpen, closeMobileMenu
     isMobileMenuOpen ? "translate-x-0" : "-translate-x-full lg:translate-x-0"
   )}
 >
-      
       {/* Logo Alanı */}
       <div className="h-20 lg:h-28 flex items-center justify-center relative border-b border-zinc-100/50 mb-2 mt-4  lg:mt-0">
-        
         <div className={cn(
             "relative flex items-center gap-4 transition-all duration-500", 
             
             // mobilde her zaman sola dayalı masaüstünde collapse durumuna göre
             isCollapsed ? "lg:justify-center lg:pl-0 pl-4" : "justify-start pl-2"
         )}>
-            
-            {/* Glow */}
             <div className="absolute inset-0 w-10 h-10 bg-cyan-400/20 blur-2xl rounded-full -z-10"></div>
 
             {/* Logo İkonu  */}
@@ -73,27 +67,22 @@ const Sidebar = ({ isCollapsed, toggleSidebar, isMobileMenuOpen, closeMobileMenu
             <h1 className={cn(
                 "text-3xl font-black tracking-tighter overflow-hidden transition-all duration-500 mr-3 whitespace-nowrap relative z-10",
                 "text-cyan-500",
-              
                 isCollapsed ? "lg:w-0 lg:opacity-0 lg:hidden block w-auto opacity-100" : "w-auto opacity-100 block"
             )}>
                 SubSage
             </h1>
         </div>
-
-        {/* Desktop Toggle Butonu */}
         <button 
             onClick={toggleSidebar}
             className="hidden lg:flex absolute -right-3 top-1/1 -translate-y-1/2 w-7 h-7 bg-white border border-zinc-200 rounded-full items-center justify-center text-cyan-600 hover:text-zinc-900 hover:scale-110 transition-all shadow-sm cursor-pointer z-50"
         >
             {isCollapsed ? <ChevronRight size={15} /> : <ChevronLeft size={15} />}
         </button>
-
       </div>
 
       {/* Menü */}
       <nav className="flex-1 py-4 px-3 space-y-2 overflow-y-auto custom-scrollbar">
         {menuItems.map((item) => (
-        
             <NavLink
                 key={item.path}
                 to={item.path}
@@ -102,9 +91,8 @@ const Sidebar = ({ isCollapsed, toggleSidebar, isMobileMenuOpen, closeMobileMenu
                     "w-full flex items-center transition-all duration-300 group relative font-medium outline-none",
                     "hover:scale-[1.02] active:scale-[0.98]",
                   
-                    // masaüstü collapsed stil kontrolü
+                   
                     isCollapsed ? "lg:justify-center lg:px-0 lg:py-3 lg:rounded-2xl px-4 py-3.5 rounded-2xl justify-start gap-3.5" : "justify-start gap-3.5 px-4 py-3.5 rounded-2xl",
-                    
                     isActive 
                         ? "bg-zinc-900 text-white shadow-lg shadow-zinc-900/20" 
                         : "text-zinc-500 hover:bg-white hover:text-zinc-900 hover:shadow-md hover:shadow-zinc-200/50"
@@ -113,14 +101,12 @@ const Sidebar = ({ isCollapsed, toggleSidebar, isMobileMenuOpen, closeMobileMenu
             >
                 {({ isActive }) => (
                 <>
-                    {/* Aktif*/}
                     {isActive && (
                     <div className={cn(
                         "absolute left-0 top-1/2 -translate-y-1/2 w-1 h-6 bg-cyan-400 rounded-r-full",
                         !isCollapsed ? "" : "hidden lg:block" 
                     )}></div>
                     )}
-
                     <item.icon 
                         size={22} 
                         strokeWidth={isActive ? 2.5 : 2}
@@ -131,21 +117,15 @@ const Sidebar = ({ isCollapsed, toggleSidebar, isMobileMenuOpen, closeMobileMenu
                     <span className={cn("tracking-tight", isCollapsed ? "lg:hidden" : "block")}>
                         {item.label}
                     </span>
-
-                    {/* Badge */}
                     {item.badge && (
                         <span className={cn(
                             "ml-auto text-[10px] font-bold px-2 py-0.5 rounded-full",
-
-                            // collapsed mantığı
                             isCollapsed ? "lg:hidden" : "block",
                             isActive ? "bg-white/20 text-white" : "bg-zinc-100 text-zinc-600 group-hover:bg-white group-hover:shadow-sm"
                         )}>
                             {item.badge}
                         </span>
                     )}
-
-                    {/* Badge Dot ( sadece collapsed desktop için) */}
                     {item.badge && isCollapsed && (
                         <span className={cn(
                             "hidden lg:block absolute top-2 right-2 w-2.5 h-2.5 rounded-full shadow-sm animate-ping", 
@@ -162,6 +142,7 @@ const Sidebar = ({ isCollapsed, toggleSidebar, isMobileMenuOpen, closeMobileMenu
       <div className={cn("mt-auto pb-6 px-3 transition-all duration-300")}>
         <div className={cn("border-t border-zinc-100/50 mb-4", isCollapsed ? "lg:w-8 lg:mx-auto w-full" : "w-full")}></div>
         <button 
+            onClick={logout} 
             className={cn(
                 "w-full flex items-center transition-all cursor-pointer duration-300 group relative font-medium outline-none rounded-2xl overflow-hidden",
                 isCollapsed 
@@ -175,7 +156,6 @@ const Sidebar = ({ isCollapsed, toggleSidebar, isMobileMenuOpen, closeMobileMenu
                 strokeWidth={2}
                 className={cn("transition-all duration-300", "group-hover:text-red-600")} 
             />
-            
             <span className={cn(
                 "group-hover:translate-x-1 transition-transform",
                 isCollapsed ? "lg:hidden" : "block"
