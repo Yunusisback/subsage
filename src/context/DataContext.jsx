@@ -187,7 +187,7 @@ export const DataProvider = ({ children }) => {
                 .from('subscriptions')
                 .delete()
                 .eq('id', id)
-                .eq('user_id', user.id);  engelle
+                .eq('user_id', user.id);  
 
             if (error) throw error;
             setSubscriptions(prev => prev.filter(sub => sub.id !== id));
