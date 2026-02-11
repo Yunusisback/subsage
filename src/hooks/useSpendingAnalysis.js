@@ -1,13 +1,5 @@
 import { useMemo } from 'react';
-
-// para formatlama yardımcı fonksiyonu
-const formatMoneyClean = (amount) => {
-    return new Intl.NumberFormat('tr-TR', {
-        style: 'decimal',
-        minimumFractionDigits: 0,
-        maximumFractionDigits: 0
-    }).format(amount);
-};
+import { formatMoneyClean } from '../utils/helpers'; 
 
 export const useSpendingAnalysis = (subscriptions, totalExpenses) => {
     
@@ -55,7 +47,7 @@ export const useSpendingAnalysis = (subscriptions, totalExpenses) => {
 
                 const isStarted = startDate <= date;
                
-                // o tarihte iptal edilmemiş olması gerekir
+               
                 const isStillActiveAtThisDate = !cancelDateObj || cancelDateObj > date;
 
                 return isStarted && isStillActiveAtThisDate;

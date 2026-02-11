@@ -175,6 +175,7 @@ const Header = ({ onOpenMobileMenu }) => {
                         )}
                     </AnimatePresence>
                 </div>
+                
                 {/* Profil Bölümü */}
                 <button 
                     onClick={() => navigate("/settings")} 

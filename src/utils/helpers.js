@@ -33,3 +33,12 @@ export function formatCurrency(amount, options = {}) {
     maximumFractionDigits: decimals,
   }).format(numericAmount);
 }
+
+
+export const formatMoneyClean = (amount) => {
+  return new Intl.NumberFormat('tr-TR', {
+      style: 'decimal',
+      minimumFractionDigits: 0,
+      maximumFractionDigits: 0
+  }).format(amount);
+};

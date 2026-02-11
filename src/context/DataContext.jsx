@@ -1,6 +1,6 @@
 import { createContext, useContext, useState, useEffect } from "react";
 import { supabase } from "../supabase"; 
-import { SERVICE_LOGOS } from "../utils/constants";
+import { SERVICE_LOGOS, LOGO_MAPPINGS } from "../utils/constants";
 import { useUI } from "./UIContext";
 import { useUser } from "./UserContext"; 
 import toast from "react-hot-toast";
@@ -18,30 +18,9 @@ const DEMO_DATA = [
   { id: 'demo-5', name: 'iCloud+', price: 12.99, category: 'Bulut', startDate: '2024-04-05', image: SERVICE_LOGOS.ICLOUD, status: 'active' },
 ];
 
-const LOGO_MAPPINGS = [
-  { keywords: ["netflix"], logo: SERVICE_LOGOS.NETFLIX },
-  { keywords: ["spotify"], logo: SERVICE_LOGOS.SPOTIFY },
-  { keywords: ["youtube"], logo: SERVICE_LOGOS.YOUTUBE },
-  { keywords: ["prime", "amazon"], logo: SERVICE_LOGOS.AMAZON },
-  { keywords: ["disney"], logo: SERVICE_LOGOS.DISNEY },
-  { keywords: ["exxen"], logo: SERVICE_LOGOS.EXXEN },
-  { keywords: ["blutv"], logo: SERVICE_LOGOS.BLUTV },
-  { keywords: ["xbox"], logo: SERVICE_LOGOS.XBOX },
-  { keywords: ["playstation"], logo: SERVICE_LOGOS.PLAYSTATION },
-  { keywords: ["icloud", "apple"], logo: SERVICE_LOGOS.ICLOUD },
-  { keywords: ["tod"], logo: SERVICE_LOGOS.TOD },
-  { keywords: ["discord"], logo: SERVICE_LOGOS.DISCORD },
-  { keywords: ["mubi"], logo: SERVICE_LOGOS.MUBI },
-  { keywords: ["gain"], logo: SERVICE_LOGOS.GAIN },
-  { keywords: ["adobe"], logo: SERVICE_LOGOS.ADOBE },
-  { keywords: ["canva"], logo: SERVICE_LOGOS.CANVA },
-  { keywords: ["chatgpt"], logo: SERVICE_LOGOS.CHATGPT },
-  { keywords: ["duolingo"], logo: SERVICE_LOGOS.DUOLINGO }
-];
-
 export const DataProvider = ({ children }) => {
     const { addNotification } = useUI();
-    const { user } = useUser(); 
+    const { user, isGuest } = useUser(); 
     const [subscriptions, setSubscriptions] = useState([]); 
     const [loading, setLoading] = useState(true);
     const [transactions, setTransactions] = useState([]);
@@ -77,7 +56,7 @@ export const DataProvider = ({ children }) => {
             setLoading(true);
 
         
-            if (!user) {
+            if (!user || isGuest) {
                 setSubscriptions(DEMO_DATA);
                 setTransactions(generateTransactions(DEMO_DATA));
                 setLoading(false);
@@ -123,7 +102,7 @@ export const DataProvider = ({ children }) => {
 
     useEffect(() => {
         fetchSubscriptions();
-    }, [user]); 
+    }, [user, isGuest]); 
 
   
     const addSubscription = async (newSub) => {
@@ -131,6 +110,25 @@ export const DataProvider = ({ children }) => {
         
             if (!user) {
                 toast.error("Kayıt eklemek için giriş yapmalısınız.");
+                return;
+            }
+
+           
+            if (isGuest) {
+                const fakeId = `guest-${Date.now()}`;
+                const addedSub = {
+                    ...newSub,
+                    id: fakeId,
+                    user_id: 'guest',
+                    startDate: newSub.startDate,
+                    start_date: new Date(newSub.startDate).toISOString(),
+                    image: newSub.image || getLogoByName(newSub.name),
+                    status: 'active',
+                    created_at: new Date().toISOString()
+                };
+                
+                setSubscriptions(prev => [addedSub, ...prev]);
+                addNotification("Başarılı", "Misafir modunda kayıt eklendi.");
                 return;
             }
 
@@ -176,9 +174,9 @@ export const DataProvider = ({ children }) => {
     
     const removeSubscription = async (id) => {
        
-        if (id.toString().startsWith('demo-')) {
+        if (isGuest || id.toString().startsWith('demo-') || id.toString().startsWith('guest-')) {
             setSubscriptions(prev => prev.filter(sub => sub.id !== id));
-            toast.success("Demo kayıt silindi.");
+            toast.success("Kayıt silindi.");
             return;
         }
 
@@ -201,6 +199,15 @@ export const DataProvider = ({ children }) => {
  
     const updateSubscription = async (updatedSub) => {
         if (!user) return;
+
+         
+         if (isGuest) {
+            setSubscriptions(prev => prev.map(sub => 
+               sub.id === updatedSub.id ? { ...sub, ...updatedSub } : sub
+           ));
+           toast.success("Abonelik güncellendi.");
+           return;
+       }
 
         try {
         
@@ -238,8 +245,9 @@ export const DataProvider = ({ children }) => {
     
     const cancelSubscription = async (id) => {
       
-         if (id.toString().startsWith('demo-')) {
+         if (isGuest || id.toString().startsWith('demo-') || id.toString().startsWith('guest-')) {
             setSubscriptions(prev => prev.map(sub => sub.id === id ? { ...sub, status: 'canceled' } : sub));
+            toast.success("Abonelik iptal edildi.");
             return;
          }
 

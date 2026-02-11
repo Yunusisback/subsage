@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import Input from "../ui/Input";
 import Button from "../ui/Button";
-import { SERVICE_LOGOS } from "../../utils/constants";
+import { SERVICE_LOGOS, LOGO_MAPPINGS } from "../../utils/constants"; 
 
 import { useData } from "../../context/DataContext"; 
 
@@ -42,44 +42,34 @@ const AddSubscriptionForm = ({ onSuccess, initialData }) => {
     }
   }, [initialData]);
 
- 
-  useEffect(() => {
-  
-    if (initialData && initialData.image !== SERVICE_LOGOS.DEFAULT) return;
+
+  const findLogo = (name) => {
+    if (!name) return SERVICE_LOGOS.DEFAULT;
+    const lowerName = name.toLowerCase();
     
-    if(!formData.name) return;
+    const match = LOGO_MAPPINGS.find(item => 
+        item.keywords.some(keyword => lowerName.includes(keyword))
+    );
 
-    const lowerName = formData.name.toLowerCase();
-    let matchedLogo = null;
-
-    if(lowerName.includes("netflix")) matchedLogo = SERVICE_LOGOS.NETFLIX;
-    else if(lowerName.includes("spotify")) matchedLogo = SERVICE_LOGOS.SPOTIFY;
-    else if(lowerName.includes("youtube")) matchedLogo = SERVICE_LOGOS.YOUTUBE;
-    else if(lowerName.includes("prime") || lowerName.includes("amazon")) matchedLogo = SERVICE_LOGOS.AMAZON;
-    else if(lowerName.includes("disney")) matchedLogo = SERVICE_LOGOS.DISNEY;
-    else if(lowerName.includes("exxen")) matchedLogo = SERVICE_LOGOS.EXXEN;
-    else if(lowerName.includes("blutv")) matchedLogo = SERVICE_LOGOS.BLUTV;
-    else if(lowerName.includes("xbox")) matchedLogo = SERVICE_LOGOS.XBOX;
-    else if(lowerName.includes("playstation")) matchedLogo = SERVICE_LOGOS.PLAYSTATION;
-    else if(lowerName.includes("icloud") || lowerName.includes("apple")) matchedLogo = SERVICE_LOGOS.ICLOUD;
-    else if(lowerName.includes("tod")) matchedLogo = SERVICE_LOGOS.TOD;
-    else if(lowerName.includes("discord")) matchedLogo = SERVICE_LOGOS.DISCORD;
-    else if(lowerName.includes("mubi")) matchedLogo = SERVICE_LOGOS.MUBI;
-    else if(lowerName.includes("gain")) matchedLogo = SERVICE_LOGOS.GAIN;
-    else if(lowerName.includes("adobe")) matchedLogo = SERVICE_LOGOS.ADOBE;
-    else if(lowerName.includes("canva")) matchedLogo = SERVICE_LOGOS.CANVA;
-    else if(lowerName.includes("chatgpt")) matchedLogo = SERVICE_LOGOS.CHATGPT;
-    else if(lowerName.includes("duolingo")) matchedLogo = SERVICE_LOGOS.DUOLINGO;
-    
-    if (matchedLogo) {
-        setFormData(prev => ({ ...prev, image: matchedLogo }));
-    }
-
-  }, [formData.name, initialData]);
+    return match ? match.logo : SERVICE_LOGOS.DEFAULT;
+  };
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData(prev => ({ ...prev, [name]: value }));
+    
+    setFormData(prev => {
+        const newData = { ...prev, [name]: value };
+
+     
+        if (name === "name" && (!initialData || initialData.image === SERVICE_LOGOS.DEFAULT)) {
+             const detectedLogo = findLogo(value);
+           
+             if (detectedLogo !== prev.image) {
+                 newData.image = detectedLogo;
+             }
+        }
+        return newData;
+    });
    
     if (errors[name]) {
       setErrors(prev => ({ ...prev, [name]: null }));
@@ -120,6 +110,7 @@ const AddSubscriptionForm = ({ onSuccess, initialData }) => {
 
     try {
       
+     
         await new Promise(resolve => setTimeout(resolve, 300));
 
         if (initialData) {
