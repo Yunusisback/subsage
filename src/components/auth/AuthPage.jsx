@@ -6,7 +6,7 @@ import { motion, AnimatePresence } from "framer-motion";
 
 const InputField = ({ label, type, placeholder, value, onChange, required }) => (
   <div className="space-y-1.5 group">
-    <label className="text-xs font-bold text-zinc-500 uppercase tracking-wide ml-1 transition-colors group-focus-within:text-cyan-700">
+    <label className="text-xs font-bold text-cyan-600 uppercase tracking-wide ml-1 transition-colors group-focus-within:text-cyan-700">
       {label}
     </label>
     <div className="relative">
@@ -85,7 +85,7 @@ const AuthPage = () => {
                     <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className="text-cyan-500 drop-shadow-sm">
                         <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/>
                     </svg>
-                    <h1 className="text-4xl font-bold tracking-tight text-cyan-900">SubSage</h1>
+                    <h1 className="text-4xl font-bold tracking-tight text-cyan-800">SubSage</h1>
                 </div>
                 
                 <blockquote className="space-y-6">
@@ -108,14 +108,14 @@ const AuthPage = () => {
         {/* sağ taraf form alanı */}
         <div className="w-full lg:w-1/2 h-full overflow-y-auto bg-white">
             <div className="min-h-full flex flex-col justify-center lg:justify-start p-6 sm:p-12 lg:p-24 lg:pt-24">
-                <div className="max-w-[400px] w-full mx-auto">
+                <div className="max-w-100 w-full mx-auto">
                     
                     {/* başlık bolumu */}
                     <div className="text-center mb-8">
-                        <h2 className="text-3xl font-bold tracking-tight text-cyan-800">
-                            {isLogin ? " Hoş Geldin " : "Hesap Oluştur"}
+                        <h2 className="text-3xl font-bold tracking-tight text-cyan-600">
+                            {isLogin ? " Hoş Geldin! " : "Hesap Oluştur"}
                         </h2>
-                        <p className="text-zinc-500 mt-2 text-sm">
+                        <p className="text-zinc-400 mt-2 text-sm">
                             {isLogin ? "Kaldığın yerden devam etmek için giriş yap." : "Aboneliklerini yönetmeye hemen başla."}
                         </p>
                     </div>
@@ -169,18 +169,19 @@ const AuthPage = () => {
                             )}
 
                             <InputField 
-                                label="E-posta"
+                                label="E-Maİl"
                                 type="email"
                                 placeholder="ornek@email.com"
                                 value={formData.email}
                                 onChange={(e) => setFormData({...formData, email: e.target.value})}
                                 required
+                                
                             />
 
                             <div className="space-y-1.5">
                                 <div className="flex justify-between items-center px-1">
-                                    <label className="text-xs font-bold text-zinc-500 uppercase tracking-wide">Şifre</label>
-                                    {isLogin && <a href="#" className="text-xs font-semibold text-cyan-600 hover:text-cyan-700 transition-colors">Şifremi unuttum?</a>}
+                                    <label className="text-xs font-bold text-cyan-600 uppercase tracking-wide">Şİfre</label>
+                                    {isLogin && <a href="#" className="text-xs font-semibold text-cyan-500 hover:text-cyan-700 transition-colors">Şifremi unuttum?</a>}
                                 </div>
                                 <input 
                                     required
@@ -195,7 +196,7 @@ const AuthPage = () => {
                             <button 
                                 type="submit" 
                                 disabled={loading}
-                                className="w-full bg-cyan-600 hover:bg-cyan-700 text-white h-11 rounded-xl text-sm font-bold shadow-lg shadow-cyan-200/50 hover:shadow-cyan-300/50 transition-all active:scale-[0.98] mt-2 cursor-pointer flex items-center justify-center gap-2"
+                                className="w-full bg-cyan-600 hover:bg-cyan-700 text-white h-11 rounded-xl text-sm font-bold hover:shadow-cyan-300/50 transition-all active:scale-[0.98] mt-2 cursor-pointer flex items-center justify-center gap-2"
                             >
                                 {loading ? (
                                     <Loader2 size={18} className="animate-spin text-white/80" />
@@ -211,8 +212,8 @@ const AuthPage = () => {
                     
                     {/* ayrıcı çizgi */}
                     <div className="relative my-6">
-                        <div className="absolute inset-0 flex items-center"><div className="w-full border-t border-zinc-100"></div></div>
-                        <div className="relative flex justify-center text-[10px] uppercase tracking-widest font-bold text-zinc-400"><span className="bg-white px-2">veya</span></div>
+                        <div className="absolute inset-0 flex items-center"><div className="w-full border-t border-cyan-100"></div></div>
+                        <div className="relative flex justify-center text-[10px] uppercase tracking-widest font-bold text-cyan-600"><span className="bg-white px-2">veya</span></div>
                     </div>
 
                     {/* misafir girişi */}
@@ -220,14 +221,14 @@ const AuthPage = () => {
                             type="button"
                             onClick={handleGuestLogin}
                             disabled={loading}
-                            className="w-full group bg-white border border-zinc-200 hover:border-cyan-200 hover:bg-cyan-50/50 text-zinc-600 h-10 rounded-xl text-sm font-bold transition-all flex items-center justify-center gap-2 shadow-sm hover:shadow-md"
+                            className="w-full group bg-gray-100 border border-zinc-200 hover:border-cyan-200 hover:bg-cyan-50/50 text-cyan-800 h-10 rounded-xl text-sm font-bold transition-all flex items-center justify-center gap-2 shadow-sm hover:shadow-md cursor-pointer"
                         >
-                            {loading ? null : <CheckCircle2 size={16} className="text-cyan-500 group-hover:scale-110 transition-transform" />}
+                            {loading ? null : <CheckCircle2 size={20} className="text-cyan-500 group-hover:scale-110 transition-transform" />}
                             <span className="group-hover:text-cyan-700 transition-colors">Misafir Olarak Dene</span>
                     </button>
                     
                     <p className="text-center text-xs text-zinc-400 mt-8 font-medium">
-                        Devam ederek <a href="#" className="underline hover:text-zinc-600">Kullanım Koşulları</a>'nı kabul etmiş olursunuz.
+                        Devam ederek <a href="#" className="underline text-cyan-500 hover:text-cyan-800">Kullanım Koşulları</a>'nı kabul etmiş olursunuz.
                     </p>
                 </div>
             </div>
