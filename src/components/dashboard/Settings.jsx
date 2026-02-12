@@ -1,10 +1,76 @@
-import { useState, useEffect } from "react";
-import { User, Globe, Bell, Shield, Save, CreditCard, Mail, Lock, Smartphone, Wallet } from "lucide-react";
+import { useState, useEffect, useRef } from "react";
+import { User, Globe, Bell, Shield, Save, CreditCard, Mail, Lock, Smartphone, Wallet, ChevronDown, Check } from "lucide-react";
 import BentoCard from "../ui/BentoCard";
 import Button from "../ui/Button";
 import { cn } from "../../utils/helpers";
 import toast from "react-hot-toast";
 import { useUser } from "../../context/UserContext"; 
+
+
+const CustomSelect = ({ options, value, onChange, icon: Icon }) => {
+    const [isOpen, setIsOpen] = useState(false);
+    const dropdownRef = useRef(null);
+
+  
+    const selectedLabel = options.find(opt => opt.value === value)?.label || value;
+
+    
+    useEffect(() => {
+        const handleClickOutside = (event) => {
+            if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+                setIsOpen(false);
+            }
+        };
+        document.addEventListener("mousedown", handleClickOutside);
+        return () => document.removeEventListener("mousedown", handleClickOutside);
+    }, []);
+
+    return (
+        <div className="relative" ref={dropdownRef}>
+           
+            <div 
+                onClick={() => setIsOpen(!isOpen)}
+                className={cn(
+                    "w-full bg-white border rounded-xl py-2.5 px-4 text-sm flex items-center justify-between cursor-pointer transition-all duration-200 select-none",
+                    isOpen ? "border-cyan-500 ring-2 ring-cyan-100" : "border-zinc-200 hover:border-cyan-300"
+                )}
+            >
+                <span className="text-zinc-900 font-medium flex items-center gap-2">
+              
+                    {selectedLabel}
+                </span>
+                <ChevronDown size={16} className={cn("text-zinc-400 transition-transform duration-200", isOpen && "rotate-180")} />
+            </div>
+
+         
+            {isOpen && (
+                <div className="absolute z-50 w-full mt-1 bg-white border border-zinc-100 rounded-xl shadow-lg shadow-zinc-200/50 overflow-hidden animate-in fade-in zoom-in-95 duration-200">
+                    <ul className="py-1">
+                        {options.map((option) => (
+                            <li 
+                                key={option.value}
+                                onClick={() => {
+                                    onChange(option.value);
+                                    setIsOpen(false);
+                                }}
+                                className={cn(
+                                    "px-4 py-2.5 text-sm cursor-pointer flex items-center justify-between transition-colors",
+                                    value === option.value 
+                                        ? "bg-cyan-50 text-cyan-700 font-semibold" 
+                                        : "text-zinc-600 hover:bg-cyan-50/50 hover:text-cyan-600" 
+                                )}
+                            >
+                                {option.label}
+                                {value === option.value && <Check size={14} className="text-cyan-500" />}
+                            </li>
+                        ))}
+                    </ul>
+                </div>
+            )}
+        </div>
+    );
+};
+// -----------------------------------------------------------
 
 const Settings = () => {
   const { userSettings, updateUserSettings } = useUser(); 
@@ -22,10 +88,14 @@ const Settings = () => {
     }));
   }, [userSettings]);
 
-  // input değişimlerini yakala
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData(prev => ({ ...prev, [name]: value }));
+  };
+
+  const handleSelectChange = (name, value) => {
+      setFormData(prev => ({ ...prev, [name]: value }));
   };
 
   // Bildirim toggle değişimlerini yakala
@@ -43,7 +113,6 @@ const Settings = () => {
     setLoading(true);
    
     setTimeout(() => {
-
         // Global Context i güncelle
         updateUserSettings(formData);
         setLoading(false);
@@ -65,6 +134,20 @@ const Settings = () => {
         )} />
     </button>
   );
+
+ 
+  const languageOptions = [
+      { value: "tr", label: "Türkçe" },
+      { value: "en", label: "English" },
+      { value: "de", label: "Deutsch" }
+  ];
+
+  
+  const currencyOptions = [
+      { value: "TRY", label: "TRY (₺)" },
+      { value: "USD", label: "USD ($)" },
+      { value: "EUR", label: "EUR (€)" }
+  ];
 
   return (
     <div className="animate-in fade-in slide-in-from-bottom-4 duration-500 pb-10 max-w-5xl mx-auto">
@@ -154,7 +237,7 @@ const Settings = () => {
             </BentoCard>
 
             {/* genel tercihler */}
-            <BentoCard glowColor="zinc" className="p-8 flex flex-col h-full items-start text-left">
+            <BentoCard glowColor="zinc" className="p-8 flex flex-col h-full items-start text-left overflow-visible">
                 <div className="flex items-center gap-3 mb-6">
                     <div className="p-2.5 rounded-xl bg-purple-50 text-purple-600 border border-purple-100">
                         <Globe size={24} />
@@ -164,37 +247,29 @@ const Settings = () => {
 
                 <div className="space-y-5 w-full">
                     <div className="grid grid-cols-2 gap-4">
-                        <div className="space-y-1.5">
+                        
+                       
+                        <div className="space-y-1.5 z-20 relative">
                             <label className="text-xs font-bold text-zinc-500 ml-1">Uygulama Dili</label>
-                            <select 
-                                name="language"
+                            <CustomSelect 
+                                options={languageOptions}
                                 value={formData.language}
-                                onChange={handleChange}
-                                className="w-full bg-white border border-zinc-200 rounded-xl py-2.5 px-4 text-sm text-zinc-900 focus:border-purple-500 focus:outline-none transition-colors appearance-none cursor-pointer"
-                            >
-                                <option value="tr">Türkçe</option>
-                                <option value="en">English</option>
-                                <option value="de">Deutsch</option>
-                            </select>
+                                onChange={(val) => handleSelectChange('language', val)}
+                            />
                         </div>
 
-                        <div className="space-y-1.5">
+                        <div className="space-y-1.5 z-20 relative">
                             <label className="text-xs font-bold text-zinc-500 ml-1">Para Birimi</label>
-                            <select 
-                                name="currency"
+                            <CustomSelect 
+                                options={currencyOptions}
                                 value={formData.currency}
-                                onChange={handleChange}
-                                className="w-full bg-white border border-zinc-200 rounded-xl py-2.5 px-4 text-sm text-zinc-900 focus:border-purple-500 focus:outline-none transition-colors appearance-none cursor-pointer"
-                            >
-                                <option value="TRY">TRY (₺)</option>
-                                <option value="USD">USD ($)</option>
-                                <option value="EUR">EUR (€)</option>
-                            </select>
+                                onChange={(val) => handleSelectChange('currency', val)}
+                            />
                         </div>
                     </div>
 
                     {/* Bütçe Limiti */}
-                    <div className="space-y-1.5">
+                    <div className="space-y-1.5 z-10">
                         <label className="text-xs font-bold text-zinc-500 ml-1">Aylık Bütçe Hedefi</label>
                         <div className="relative">
                             <Wallet size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-zinc-400" />
@@ -204,7 +279,8 @@ const Settings = () => {
                                 value={formData.budgetLimit || 5000}
                                 onChange={handleChange}
                                 placeholder="5000"
-                                className="w-full bg-white border border-zinc-200 rounded-xl py-2.5 pl-10 pr-4 text-sm text-zinc-900 focus:border-purple-500 focus:outline-none transition-colors" 
+                            
+                                className="w-full bg-white border border-zinc-200 rounded-xl py-2.5 pl-10 pr-4 text-sm text-zinc-900 focus:border-purple-500 focus:outline-none transition-colors [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none" 
                             />
                             <span className="absolute right-4 top-1/2 -translate-y-1/2 text-xs font-bold text-zinc-400">₺</span>
                         </div>
@@ -280,7 +356,8 @@ const Settings = () => {
                     <div>
                         <h4 className="text-sm font-bold text-zinc-900 mb-2">Şifre Değiştir</h4>
                         <p className="text-xs text-zinc-500 mb-4">Hesabınızın güvenliği için güçlü bir şifre kullanın. Son değişiklik: 3 ay önce.</p>
-                        <Button variant="outline" size="sm" className="w-full md:w-auto cursor-pointer">
+                      
+                        <Button variant="outline" size="sm" className="w-full md:w-auto cursor-pointer border-cyan-200 text-cyan-600 hover:text-cyan-800 hover:bg-cyan-50 hover:border-cyan-300">
                             <Lock size={16} className="mr-2" />
                             Şifre Yenile
                         </Button>

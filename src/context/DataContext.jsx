@@ -81,11 +81,20 @@ export const DataProvider = ({ children }) => {
             }
 
            
-            const formattedData = data.map(sub => ({
-                ...sub,
-                image: sub.image || getLogoByName(sub.name),
-                startDate: sub.start_date 
-            }));
+            const formattedData = data.map(sub => {
+  
+                
+                const localLogo = getLogoByName(sub.name);
+                const finalImage = localLogo !== SERVICE_LOGOS.DEFAULT 
+                    ? localLogo 
+                    : (sub.image || SERVICE_LOGOS.DEFAULT);
+
+                return {
+                    ...sub,
+                    image: finalImage,
+                    startDate: sub.start_date 
+                };
+            });
 
             setSubscriptions(formattedData);
             setTransactions(generateTransactions(formattedData));
@@ -150,9 +159,15 @@ export const DataProvider = ({ children }) => {
 
             if (error) throw error;
 
+        
+            const localLogo = getLogoByName(data[0].name);
+            const finalImage = localLogo !== SERVICE_LOGOS.DEFAULT 
+                ? localLogo 
+                : (data[0].image || getLogoByName(data[0].name));
+
             const addedSub = {
                 ...data[0],
-                image: data[0].image || getLogoByName(data[0].name),
+                image: finalImage,
                 startDate: data[0].start_date
             };
 

@@ -69,10 +69,10 @@ const DashboardView = () => {
     const enhancedSubscriptions = useMemo(() => {
         return activeSubs.map(sub => {
 
-           
+            
             const daysLeft = calculateDaysLeft(sub.startDate);
 
-           
+            
             const progressValue = Math.min(100, Math.max(0, (daysLeft / 30) * 100));
 
             let themeKey = "dark";
@@ -104,7 +104,7 @@ const DashboardView = () => {
             <div className="grid grid-cols-1 md:grid-cols-3 gap-5 select-none">
 
                 {/* aktif servisler  */}
-                <StatCard className="bg-indigo-600 border-none text-white shadow-indigo-200">
+                <StatCard className="bg-linear-to-br from-indigo-500 to-purple-600 border-none text-white shadow-lg shadow-indigo-500/30">
 
                     {/* Arkaplan */}
                     <div className="absolute top-0 right-0 w-32 h-32 bg-white/10 rounded-bl-[4rem] transition-all group-hover:scale-110 z-0"></div>
@@ -130,7 +130,7 @@ const DashboardView = () => {
                             <div className="flex items-center">
                                 {activeSubs.slice(0, 5).map((sub, i) => (
                                     <div key={i}
-                                        className="w-11 h-11 rounded-full border-[3px] border-indigo-500 bg-white shadow-sm -ml-3 first:ml-0 relative z-0 hover:z-10 hover:scale-110 transition-transform cursor-pointer"
+                                        className="w-11 h-11 rounded-full   bg-white shadow-sm -ml-3 first:ml-0 relative z-0 hover:z-10 hover:scale-110 transition-transform cursor-pointer"
                                         style={{ zIndex: 10 - i }}
                                     >
                                         <img
@@ -152,7 +152,7 @@ const DashboardView = () => {
                 </StatCard>
 
                 {/* yıllık tahmini gider  */}
-                <StatCard className="bg-emerald-600 border-none text-white shadow-emerald-200">
+                <StatCard className="bg-linear-to-br from-emerald-400 to-teal-500 border-none text-white shadow-lg shadow-emerald-500/30">
 
                     {/* Arkaplan */}
                     <div className="absolute -bottom-8 -left-8 w-40 h-40 bg-white/10 rounded-full blur-2xl group-hover:bg-white/20 transition-colors"></div>
@@ -189,7 +189,7 @@ const DashboardView = () => {
 
                 {/* aylık toplam */}
                
-                <StatCard className="flex flex-col p-0 bg-rose-600 border-none text-white shadow-rose-200">
+                <StatCard className="flex flex-col p-0 bg-linear-to-br from-rose-500 to-pink-600 border-none text-white shadow-lg shadow-rose-500/30">
                     <div className="p-6 pb-0 relative z-20 flex justify-between items-start">
                         <div>
                             <h3 className="text-white font-bold text-xm tracking-wide mb-2"> AYLIK TOPLAM</h3>
@@ -224,9 +224,9 @@ const DashboardView = () => {
                     </div>
 
                     {/* Grafik */}
-                    <div className="absolute -bottom-2  left-2 right-0 h-25 w-full z-10 opacity-80 group-hover:opacity-100 transition-opacity duration-500">
+                    <div className="absolute -bottom-2 left-0 right-0 h-25 w-full z-10 opacity-80 group-hover:opacity-100 transition-opacity duration-500">
                         <ResponsiveContainer width="100%" height="100%">
-                            <AreaChart data={chartData}>
+                            <AreaChart data={chartData} margin={{ left: 0, right: 0, top: 0, bottom: 0 }}>
                                 <defs>
                                     <linearGradient id="colorSpendWhite" x1="0" y1="0" x2="0" y2="1">
                                         <stop offset="5%" stopColor="#ffffff" stopOpacity={0.8} />

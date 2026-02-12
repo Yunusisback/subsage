@@ -1,22 +1,23 @@
 import { useState, useEffect, useRef } from "react";
-import {  Send, Paperclip, CheckCheck, ShieldCheck, Headset } from "lucide-react";
+import { Send, Paperclip, CheckCheck, ShieldCheck, Headset, MoreVertical, Camera, Image as ImageIcon } from "lucide-react";
 import Button from "../ui/Button";
 import { cn } from "../../utils/helpers";
 import { motion } from "framer-motion";
-import { useUI } from "../../context/UIContext"; 
+import { useUI } from "../../context/UIContext";
+import toast from "react-hot-toast";
 
 const Messages = () => {
   const { messages, sendMessage } = useUI(); 
   const [inputText, setInputText] = useState("");
   const messagesEndRef = useRef(null);
 
-  // Sadece teknik destek ıd 1 aktif
+  // Sadece teknik destek id 1 aktif
   const activeContactId = 1;
   const activeMessages = messages[activeContactId] || [];
 
   const contactInfo = {
-    name: "Teknik Destek",
-    role: "7/24 Canlı Yardım",
+    name: "SubSage Destek",
+    role: "Çevrimiçi",
     status: "online"
   };
 
@@ -25,22 +26,30 @@ const Messages = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [activeMessages]);
 
+
+  const handleAttachment = () => {
+      toast.success("Dosya yöneticisi açıldı 📎");
+  };
+
+  const handleCamera = () => {
+      toast.success("Kamera başlatılıyor 📷");
+  };
+
   const handleSend = (e) => {
     e.preventDefault();
     if (!inputText.trim()) return;
 
     // 1. Bizim mesajımız
-    
     sendMessage(activeContactId, inputText, "me");
     setInputText("");
     
-    // 2.  oto cevap simülasyonu
+    // 2. oto cevap simülasyonu
     setTimeout(() => {
         const replies = [
-            "Talebiniz alınmıştır, ekiplerimiz kontrol ediyor.",
-            "Şu an sistemde yoğunluk var, lütfen bekleyiniz.",
-            "Bu konu hakkında kayıt oluşturuldu.",
-            "Size nasıl daha fazla yardımcı olabilirim?"
+            "Talebiniz alınmıştır, ekiplerimiz en kısa sürede kontrol sağlayacaktır.",
+            "Şu an sistemlerimizde kısa süreli bir bakım çalışması olabilir, lütfen bekleyiniz.",
+            "Konuyla ilgili destek kaydınız (Ticket #4921) başarıyla oluşturuldu.",
+            "Başka yardımcı olabileceğim bir konu var mı?"
         ];
         const randomReply = replies[Math.floor(Math.random() * replies.length)];
         sendMessage(activeContactId, randomReply, "them");
@@ -48,80 +57,93 @@ const Messages = () => {
   };
 
   return (
-    <div className="h-[calc(100vh-140px)] animate-in fade-in slide-in-from-bottom-4 duration-500 pb-4">
+    <div className="h-[calc(100vh-140px)] animate-in fade-in slide-in-from-bottom-4 duration-500 pb-4 max-w-5xl mx-auto">
       
       {/* Tek Sohbet Ekranı */}
-      <div className="h-full flex flex-col bg-cyan-600 rounded-4xl border border-zinc-200 shadow-sm overflow-hidden relative">
+      <div className="h-full flex flex-col bg-white rounded-4xl border border-zinc-200 shadow-xl shadow-zinc-200/50 overflow-hidden relative">
             
             {/* Sohbet Başlığı */}
             <div className="p-4 md:p-6 border-b border-cyan-200 flex justify-between items-center bg-zinc-50 backdrop-blur-md z-10 sticky top-0">
                 <div className="flex items-center gap-4">
                     
                     {/* profil logo */}
-                    <div className="w-12 h-12 bg-white border border-zinc-100 rounded-xl flex items-center justify-center shadow-sm shrink-0">
-                        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#139ED6" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-                            <path d="M12 2L2 7l10 5 10-5-10-5z" />
-                            <path d="M2 12l10 5 10-5" />
-                            <path d="M2 17l10 5 10-5" />
-                        </svg>
+                    <div className="relative">
+                        <div className="w-12 h-12 bg-cyan-50 rounded-full flex items-center justify-center border border-cyan-100 shadow-sm shrink-0 overflow-hidden">
+                             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#06b6d4" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                                <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/>
+                             </svg>
+                        </div>
+                       
+                        <div className="absolute bottom-0 right-0 w-3.5 h-3.5 bg-green-500 border-2 border-white rounded-full"></div>
                     </div>
 
                     <div>
-                        <h3 className="font-bold text-red-600 text-2xl">{contactInfo.name}</h3>
+                        <h3 className="font-bold text-zinc-900 text-lg leading-tight">{contactInfo.name}</h3>
                         <div className="flex items-center gap-1.5">
-                            <span className="w-3.5 h-3.5 rounded-full bg-green-500 animate-pulse border-2 border-white shadow-sm"></span>
-                            <span className="text-xs text-zinc-500 font-medium">{contactInfo.role}</span>
+                            <span className="text-xs text-cyan-600 font-medium bg-cyan-50 px-2 py-0.5 rounded-full border border-cyan-100">
+                                {contactInfo.role}
+                            </span>
                         </div>
                     </div>
                 </div>
 
-                <div className="flex gap-2">
-               
+                <div className="flex items-center gap-1">
+                    <Button variant="ghost" size="icon" className="text-zinc-400 hover:text-zinc-900 hover:bg-zinc-100 rounded-full cursor-pointer">
+                        <MoreVertical size={20} />
+                    </Button>
                 </div>
             </div>
 
-            {/* Mesaj Alanı */}
-            <div className="flex-1 overflow-y-auto p-6 space-y-6 bg-zinc-50/50 custom-scrollbar">
+          
+            <div className="flex-1 overflow-y-auto p-6 space-y-6 bg-slate-50 relative custom-scrollbar">
                 
+              
+                <div className="absolute inset-0 opacity-[0.03] pointer-events-none" style={{ backgroundImage: 'radial-gradient(#cbd5e1 1px, transparent 1px)', backgroundSize: '20px 20px' }}></div>
+
                 {/* Güvenlik Uyarısı */}
-                <div className="flex justify-center my-4">
-                    <div className="bg-cyan-50 text-cyan-800 px-4 py-2 rounded-full text-[10px] font-bold border border-cyan-300 flex items-center gap-2 shadow-sm">
-                        <ShieldCheck size={15} />
+                <div className="flex justify-center my-6 relative z-10">
+                    <div className="bg-white/80 backdrop-blur-sm text-zinc-500 px-4 py-1.5 rounded-full text-[10px] font-semibold border border-zinc-200 flex items-center gap-1.5 shadow-sm select-none">
+                        <ShieldCheck size={12} className="text-emerald-500" />
                         Bu sohbet uçtan uca şifrelenmektedir.
                     </div>
                 </div>
 
+             
                 {activeMessages.length === 0 && (
-                    <div className="flex flex-col items-center justify-center h-40 text-zinc-400">
-                         <div className="p-4 bg-zinc-100 rounded-full mb-2">
-                            <Headset size={32} className="opacity-50" />
+                    <div className="flex flex-col items-center justify-center h-64 text-zinc-400 relative z-10">
+                         <div className="w-20 h-20 bg-white rounded-full flex items-center justify-center mb-4 shadow-sm border border-zinc-100">
+                            <Headset size={40} className="text-cyan-200" />
                          </div>
-                         <p className="text-sm font-medium">Nasıl yardımcı olabiliriz?</p>
+                         <h4 className="text-zinc-900 font-bold text-lg mb-1">Size nasıl yardımcı olabiliriz?</h4>
+                         <p className="text-sm text-zinc-500 text-center max-w-xs">Abonelikleriniz, ödemeleriniz veya teknik sorunlarınız için buradayız.</p>
                     </div>
                 )}
 
+              
                 {activeMessages.map((msg) => {
                     const isMe = msg.sender === "me";
                     return (
                         <motion.div 
                             key={msg.id}
-                            initial={{ opacity: 0, y: 10, scale: 0.95 }}
+                            initial={{ opacity: 0, y: 10, scale: 0.98 }}
                             animate={{ opacity: 1, y: 0, scale: 1 }}
-                            className={cn("flex w-full", isMe ? "justify-end" : "justify-start")}
+                            transition={{ duration: 0.2 }}
+                            className={cn("flex w-full relative z-10", isMe ? "justify-end" : "justify-start")}
                         >
                             <div className={cn(
-                                "max-w-[85%] md:max-w-[70%] p-4 rounded-2xl relative shadow-sm group transition-all hover:shadow-md",
+                                "max-w-[80%] md:max-w-[65%] px-5 py-3.5 shadow-sm relative group",
                                 isMe 
-                                    ? "bg-cyan-800 text-white rounded-tr-sm" 
-                                    : "bg-white text-zinc-700 border border-zinc-100 rounded-tl-sm"
+                                    ? "bg-linear-to-br from-cyan-500 to-blue-600 text-white rounded-3xl rounded-tr-none" 
+                                    : "bg-white text-zinc-700 border border-zinc-100 rounded-3xl rounded-tl-none" 
                             )}>
-                                <p className="text-sm leading-relaxed">{msg.text}</p>
+                                <p className="text-[15px] leading-relaxed tracking-wide">{msg.text}</p>
+                                
                                 <div className={cn(
-                                    "flex items-center gap-1 justify-end mt-1 text-[10px] font-medium opacity-70",
-                                    isMe ? "text-blue-100" : "text-zinc-400"
+                                    "flex items-center gap-1 justify-end mt-1.5 text-[10px] font-medium opacity-80",
+                                    isMe ? "text-cyan-50" : "text-zinc-400"
                                 )}>
                                     <span>{msg.time}</span>
-                                    {isMe && <CheckCheck size={12} />}
+                                    {isMe && <CheckCheck size={14} className="opacity-90" />}
                                 </div>
                             </div>
                         </motion.div>
@@ -130,35 +152,62 @@ const Messages = () => {
                 <div ref={messagesEndRef} />
             </div>
 
-            {/* İnput Alanı */}
-            <div className="p-4 md:p-5 bg-white border-t border-zinc-300">
-                <form onSubmit={handleSend} className="flex items-center gap-3">
-                    <Button type="button" variant="ghost" size="icon" className="text-zinc-600 hover:text-zinc-600 hover:bg-zinc-100 rounded-xl shrink-0 cursor-pointer">
-                        <Paperclip size={20} />
-                    </Button>
+            {/* İnput alanı */}
+            <div className="p-3 md:p-4 bg-white border-t border-zinc-100 z-20">
+                <form onSubmit={handleSend} className="flex items-end gap-2 md:gap-3">
                     
-                    <div className="flex-1 relative">
+                    
+                    <div className="flex items-center gap-1 pb-1">
+                     
+                        <Button 
+                            type="button" 
+                            onClick={handleAttachment}
+                            variant="ghost" 
+                            size="icon" 
+                            className="w-10 h-10 text-zinc-400 hover:text-cyan-600 hover:bg-cyan-50 rounded-full transition-colors duration-200"
+                            title="Dosya Ekle"
+                        >
+                            <Paperclip size={22} className="rotate-45" />
+                        </Button>
+                        
+                      
+                        <Button 
+                            type="button" 
+                            onClick={handleCamera}
+                            variant="ghost" 
+                            size="icon" 
+                            className="w-10 h-10 text-zinc-400 hover:text-cyan-600 hover:bg-cyan-50 rounded-full transition-colors duration-200"
+                            title="Fotoğraf Çek"
+                        >
+                            <Camera size={22} />
+                        </Button>
+                    </div>
+                    
+                  
+                    <div className="flex-1 relative bg-slate-100 rounded-3xl flex items-center min-h-12.5 border border-transparent focus-within:border-cyan-200 focus-within:bg-white focus-within:ring-4 focus-within:ring-cyan-50/50 transition-all duration-300">
                         <input 
                             type="text" 
                             value={inputText}
                             onChange={(e) => setInputText(e.target.value)}
-                            placeholder="Mesajınızı buraya yazın..." 
-                            className="w-full bg-zinc-50 text-sm text-zinc-900 rounded-xl pl-5 pr-12 py-3.5 border border-zinc-200 focus:border-cyan-600 focus:bg-white focus:outline-none transition-all placeholder:text-zinc-400"
+                            placeholder="Bir mesaj yazın..." 
+                            className="w-full bg-transparent text-[15px] text-zinc-900 px-5 py-3 outline-none placeholder:text-zinc-400 font-medium"
                         />
-                       
                     </div>
                     
+              
                     <Button 
                         type="submit" 
                         variant="primary" 
                         size="icon" 
                         className={cn(
-                            "w-12 h-12 rounded-xl transition-all duration-300 cursor-pointer",
-                            !inputText.trim() ? "bg-cyan-900 text-white border-zinc-200 cursor-not-allowed" : "bg-cyan-600 hover:bg-cyan-500 text-white border-cyan-500 "
+                            "w-12 h-12 rounded-full shrink-0 transition-all duration-300 ease-out flex items-center justify-center",
+                            !inputText.trim() 
+                                ? "bg-zinc-100 text-zinc-300 cursor-not-allowed" 
+                                : "bg-cyan-600 hover:bg-cyan-500 text-white shadow-lg shadow-cyan-500/30 hover:shadow-cyan-500/40 hover:scale-105 active:scale-95" 
                         )}
                         disabled={!inputText.trim()}
                     >
-                        <Send size={20} className={cn("transition-transform duration-300", inputText.trim() && "group-hover:translate-x-0.5 group-hover:-translate-y-0.5")} />
+                        <Send size={22} className={cn("transition-transform duration-300", inputText.trim() && "ml-0.5")} />
                     </Button>
                 </form>
             </div>

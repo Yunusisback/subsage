@@ -1,6 +1,20 @@
 @import "tailwindcss";
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500&display=swap');
+
+@import url('https://fonts.googleapis.com/css2?family=Nunito+Sans:ital,opsz,wght@0,6..12,200..1000;1,6..12,200..1000&display=swap');
+
 @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&display=swap'); 
+
+
+@font-face {
+  font-family: 'SubSageDigits';
+  src: local('Inter'), local('Inter-Medium'), local('Inter-Regular');
+
+  unicode-range: U+0030-0039, U+002C, U+002E, U+20BA; 
+
+  font-weight: 400 500; 
+}
 
 @theme {
   --color-background: #fafafa;  
@@ -9,28 +23,36 @@
   --color-text-main: #09090b;  
   --color-text-muted: #71717a;  
   
-  --font-sans: 'Inter', sans-serif;
+  
+  --font-sans: 'SubSageDigits', 'Nunito Sans', sans-serif;
   --font-mono: 'JetBrains Mono', monospace;
 }
+
 
 body {
   background-color: var(--color-background);
   color: var(--color-text-main);
   font-family: var(--font-sans);
   
+ 
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
   
+ 
   background-image: 
     linear-gradient(to right, rgba(0,0,0,0.04) 1px, transparent 1px),
     linear-gradient(to bottom, rgba(0,0,0,0.04) 1px, transparent 1px);
   background-size: 40px 40px;
-  
-  
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
 
 
   user-select: none;
   -webkit-user-select: none;
+}
+
+
+span, div, p, h1, h2, h3, h4 {
+
+  font-variant-numeric: tabular-nums;
 }
 
 
@@ -55,10 +77,13 @@ input, textarea {
   background: #a1a1aa; 
 }
 
-.recharts-wrapper,
-.recharts-wrapper * {
-    outline: none !important;
+.recharts-cartesian-axis-tick-value,
+.recharts-text {
+  font-weight: 400 !important;
+  font-family: 'Inter', sans-serif !important;
+  font-size: 12px;
 }
+
 
 .glass {
   background: rgba(255, 255, 255, 0.7);
@@ -71,6 +96,11 @@ input, textarea {
 input:-webkit-autofill,
 input:-webkit-autofill:hover, 
 input:-webkit-autofill:focus, 
-input:-webkit-autofill:active{
+input:-webkit-autofill:active {
     -webkit-box-shadow: 0 0 0 30px white inset !important;
+}
+
+
+[class*="text-2xl"], [class*="text-3xl"], [class*="text-4xl"] {
+    letter-spacing: -0.015em;
 }

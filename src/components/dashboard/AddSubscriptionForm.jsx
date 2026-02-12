@@ -64,8 +64,19 @@ const AddSubscriptionForm = ({ onSuccess, initialData }) => {
         if (name === "name" && (!initialData || initialData.image === SERVICE_LOGOS.DEFAULT)) {
              const detectedLogo = findLogo(value);
            
-             if (detectedLogo !== prev.image) {
-                 newData.image = detectedLogo;
+            
+             if (detectedLogo !== SERVICE_LOGOS.DEFAULT) {
+                 if (detectedLogo !== prev.image) {
+                     newData.image = detectedLogo;
+                 }
+             } else {
+              
+                 const cleanName = value.trim().toLowerCase().replace(/\s+/g, '');
+                 if (cleanName.length > 2) {
+                     newData.image = `https://logo.clearbit.com/${cleanName}.com`;
+                 } else {
+                     newData.image = SERVICE_LOGOS.DEFAULT;
+                 }
              }
         }
         return newData;
@@ -201,14 +212,21 @@ const AddSubscriptionForm = ({ onSuccess, initialData }) => {
       {/* Logo Önizleme */}
       {formData.image && (
           <div className="flex items-center gap-2 text-xs text-zinc-500">
-              <div className="w-8 h-8 rounded border border-zinc-200 p-1 flex items-center justify-center">
-                   <img src={formData.image} alt="Logo Önizleme" className="w-full h-full object-contain" onError={(e) => e.target.style.opacity = 0.5} />
+              <div className="w-8 h-8 rounded border border-zinc-200 p-1 flex items-center justify-center overflow-hidden">
+                   <img 
+                    src={formData.image} 
+                    alt="Logo Önizleme" 
+                    className="w-full h-full object-contain" 
+                    onError={(e) => {
+                        e.target.onerror = null; 
+                        e.target.src = SERVICE_LOGOS.DEFAULT;
+                   
+                    }} 
+                   />
               </div>
               <span>Logo Önizleme</span>
           </div>
-      )}
-
-      <div className="pt-4">
+      )}    <div className="pt-4">
         <Button 
             type="submit" 
             className="w-full text-white bg-cyan-600 hover:bg-cyan-800 shadow-lg shadow-cyan-200 transition-all cursor-pointer "

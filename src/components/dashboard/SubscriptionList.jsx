@@ -1,13 +1,13 @@
 import { useState, useMemo } from "react";
 import { Plus, Calendar, ArrowLeft, CheckCircle2, X, Loader2, Sparkles, Search, Filter, Trash2, XCircle, PenTool, Pencil, AlertTriangle } from "lucide-react";
 import Button from "../ui/Button";
-import { cn, formatDate, formatMoneyClean } from "../../utils/helpers"; 
+import { cn, formatDate, formatMoneyClean } from "../../utils/helpers";
 import { AnimatePresence, motion } from "framer-motion";
 import toast from "react-hot-toast";
-import { SERVICE_LOGOS, PLATFORMS } from "../../utils/constants"; 
+import { SERVICE_LOGOS, PLATFORMS } from "../../utils/constants";
 import AddSubscriptionForm from "./AddSubscriptionForm";
 import Modal from "../ui/Modal";
-import { useData } from "../../context/DataContext"; 
+import { useData } from "../../context/DataContext";
 
 const SubscriptionList = () => {
 
@@ -21,7 +21,7 @@ const SubscriptionList = () => {
 
     const [searchQuery, setSearchQuery] = useState("");
     const [loadingStates, setLoadingStates] = useState({});
-    
+
     const [viewFilter, setViewFilter] = useState("active");
 
     // Görüntülenecek abonelikleri filtrele
@@ -81,7 +81,7 @@ const SubscriptionList = () => {
         }, 1000);
     };
 
-   
+
     const handleDeleteClick = (e, subId) => {
         e.stopPropagation();
         setDeletingId(subId);
@@ -102,8 +102,8 @@ const SubscriptionList = () => {
         setIsAddingMode(false);
         toast.success("Özel abonelik başarıyla oluşturuldu!");
     };
-    
-    
+
+
     const handleEditClick = (e, sub) => {
         e.stopPropagation();
         setEditingSub(sub);
@@ -123,14 +123,25 @@ const SubscriptionList = () => {
 
                     {/* Arama Kutusu */}
                     {!showCustomForm && (
-                        <div className="relative group w-full md:w-auto">
-                            <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 group-focus-within:text-cyan-500 transition-colors" size={18} />
+                        <div className="relative group w-full md:w-auto font-sans">
+                        
+                            <Search
+                                className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 
+               group-focus-within:text-cyan-600 
+               transition-colors duration-200 ease-in-out"
+                                size={18}
+                            />
                             <input
                                 type="text"
                                 placeholder={isAddingMode ? "Servis ara..." : "Abonelik ara..."}
                                 value={searchQuery}
                                 onChange={(e) => setSearchQuery(e.target.value)}
-                                className="pl-10 pr-4 py-2.5 bg-white border border-slate-200 rounded-xl text-sm focus:outline-hidden focus:ring-2 focus:ring-cyan-100 focus:border-cyan-300 w-full md:w-64 transition-all"
+                                className="pl-10 pr-4 py-2.5 w-full md:w-64 rounded-xl text-sm 
+               bg-white border border-gray-200 text-gray-700 placeholder-gray-400
+               outline-none ring-0
+               hover:border-cyan-300
+               focus:border-cyan-500 focus:bg-cyan-50/40 focus:text-cyan-950
+               transition-all duration-200 ease-in-out"
                             />
                         </div>
                     )}
@@ -148,8 +159,8 @@ const SubscriptionList = () => {
                         className={cn(
                             "flex items-center gap-2 px-4 py-2.5 rounded-xl font-semibold transition-all cursor-pointer border shadow-sm shrink-0",
                             isAddingMode || showCustomForm
-                            ? "bg-white text-slate-700 hover:bg-slate-50 border-slate-200"
-                            : "bg-cyan-600 text-white hover:bg-cyan-700 border-transparent shadow-cyan-200 -shadow-md"
+                                ? "bg-white text-slate-700 hover:bg-slate-50 border-slate-200"
+                                : "bg-cyan-600 text-white hover:bg-cyan-700 border-transparent shadow-cyan-200 -shadow-md"
                         )}
                     >
                         {(isAddingMode || showCustomForm) ? <ArrowLeft size={18} /> : <Plus size={18} />}
@@ -190,69 +201,69 @@ const SubscriptionList = () => {
             <AnimatePresence mode="wait">
 
                 {isAddingMode ? (
-                 
+
                     showCustomForm ? (
-                          <motion.div
+                        <motion.div
                             key="custom-form"
                             initial={{ opacity: 0, scale: 0.95 }}
                             animate={{ opacity: 1, scale: 1 }}
                             exit={{ opacity: 0, scale: 0.95 }}
                             className="max-w-xl mx-auto bg-white p-8 -mt-10 rounded-3xl border border-slate-200 shadow-lg"
                         >
-                             <div className="text-center mb-6">
+                            <div className="text-center mb-6">
                                 <div className="w-12 h-12 bg-cyan-100 text-cyan-600 rounded-full flex items-center justify-center mx-auto mb-3">
                                     <PenTool size={24} />
                                 </div>
                                 <h3 className="text-xl font-bold text-slate-900">Özel Abonelik Oluştur</h3>
                                 <p className="text-sm text-slate-500">Listede olmayan servisi kendin ekle.</p>
-                             </div>
+                            </div>
                             <AddSubscriptionForm onSuccess={handleCustomSuccess} />
                         </motion.div>
                     ) : (
-                    <motion.div
-                        key="add-mode"
-                        initial={{ opacity: 0, y: 10 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        exit={{ opacity: 0, y: -10 }}
-                        transition={{ duration: 0.3 }}
-                        className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4"
-                    >
-                        {filteredPlatforms.map((platform) => {
-                            const isSubscribed = subscriptions.some(sub => sub.name === platform.name && sub.status === 'active');
-                            const status = loadingStates[platform.id];
+                        <motion.div
+                            key="add-mode"
+                            initial={{ opacity: 0, y: 10 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            exit={{ opacity: 0, y: -10 }}
+                            transition={{ duration: 0.3 }}
+                            className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4"
+                        >
+                            {filteredPlatforms.map((platform) => {
+                                const isSubscribed = subscriptions.some(sub => sub.name === platform.name && sub.status === 'active');
+                                const status = loadingStates[platform.id];
 
-                            return (
-                                <div
-                                    key={platform.id}
-                                    className={cn(
-                                        "group relative bg-white border rounded-3xl p-5 flex flex-col items-center text-center transition-all duration-300",
-                                        isSubscribed && status !== "success"
-                                            ? "opacity-50 grayscale border-slate-100 bg-slate-50 cursor-default"
-                                            : "border-slate-200 hover:border-cyan-300 hover:shadow-[0_8px_30px_-6px_rgba(0,0,0,0.1)] hover:-translate-y-1 cursor-pointer"
-                                    )}
-                                    onClick={() => !isSubscribed && handleAddPlatform(platform)}
-                                >
-                                    {/* Platform Logo */}
-                                    <div className="w-14 h-14 mb-4 rounded-xl bg-white border border-slate-100 p-2.5 flex items-center justify-center shadow-sm group-hover:scale-105 transition-transform duration-300">
-                                        <img
-                                            src={platform.image}
-                                            alt={platform.name}
-                                            className="w-full h-full object-contain"
-                                            loading="lazy"
-                                            onError={(e) => {
+                                return (
+                                    <div
+                                        key={platform.id}
+                                        className={cn(
+                                            "group relative bg-white border rounded-3xl p-5 flex flex-col items-center text-center transition-all duration-300",
+                                            isSubscribed && status !== "success"
+                                                ? "opacity-50 grayscale border-slate-100 bg-slate-50 cursor-default"
+                                                : "border-slate-200 hover:border-cyan-300 hover:shadow-[0_8px_30px_-6px_rgba(0,0,0,0.1)] hover:-translate-y-1 cursor-pointer"
+                                        )}
+                                        onClick={() => !isSubscribed && handleAddPlatform(platform)}
+                                    >
+                                        {/* Platform Logo */}
+                                        <div className="w-14 h-14 mb-4 rounded-xl bg-white border border-slate-100 p-2.5 flex items-center justify-center shadow-sm group-hover:scale-105 transition-transform duration-300">
+                                            <img
+                                                src={platform.image}
+                                                alt={platform.name}
+                                                className="w-full h-full object-contain"
+                                                loading="lazy"
+                                                onError={(e) => {
 
-                                                // Eğer resim yüklenmezse varsayılan göster
-                                                e.target.src = SERVICE_LOGOS.DEFAULT;
-                                            }}
-                                        />
-                                    </div>
+                                                    // Eğer resim yüklenmezse varsayılan göster
+                                                    e.target.src = SERVICE_LOGOS.DEFAULT;
+                                                }}
+                                            />
+                                        </div>
 
-                                    <h3 className="font-bold text-slate-900 text-sm mb-1">{platform.name}</h3>
-                                    <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider bg-slate-50 px-2 py-0.5 rounded border border-slate-100 mb-3">
-                                        {platform.category}
-                                    </span>
+                                        <h3 className="font-bold text-slate-900 text-sm mb-1">{platform.name}</h3>
+                                        <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider bg-slate-50 px-2 py-0.5 rounded border border-slate-100 mb-3">
+                                            {platform.category}
+                                        </span>
 
-                                    <div className="mt-auto w-full pt-3 border-t border-slate-50 flex flex-col items-center justify-center gap-1">
+                                        <div className="mt-auto w-full pt-3 border-t border-slate-50 flex flex-col items-center justify-center gap-1">
                                             <div className="flex items-baseline gap-1">
                                                 <span className="text-lg font-black text-slate-800 tracking-tight">{formatMoneyClean(platform.price)}</span>
                                                 <span className="text-[10px] font-bold text-slate-400">₺/ay</span>
@@ -276,49 +287,49 @@ const SubscriptionList = () => {
                                                     </span>
                                                 )}
                                             </div>
-                                    </div>
-
-                                    {/* seçili değilken hover ikonu */}
-                                    {!isSubscribed && (
-                                        <div className="absolute top-3 right-3 w-6 h-6 rounded-full bg-cyan-50 text-cyan-600 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all scale-75 group-hover:scale-100">
-                                            <Plus size={14} strokeWidth={3} />
                                         </div>
-                                    )}
-                                </div>
-                            );
-                        })}
 
-                         {/* oluşturma kartı */}
-                        <div
-                            className="group relative bg-white border border-dashed border-slate-300 rounded-3xl p-5 flex flex-col items-center text-center transition-all duration-300 hover:border-cyan-400 hover:bg-cyan-50 cursor-pointer"
-                            onClick={() => setShowCustomForm(true)}
-                        >
-                             <div className="w-14 h-14 mb-4 rounded-xl bg-slate-50 border border-slate-100 text-slate-400 p-2.5 flex items-center justify-center shadow-sm group-hover:scale-105 group-hover:bg-white group-hover:text-cyan-500 transition-all duration-300">
-                                <Plus size={24} />
-                             </div>
-                             <h3 className="font-bold text-slate-900 text-sm mb-1">Özel Oluştur</h3>
-                             <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider bg-slate-50 px-2 py-0.5 rounded border border-slate-100 mb-3">
-                                Kişisel
-                             </span>
-                             <div className="mt-auto w-full pt-3 border-t border-slate-50 flex flex-col items-center justify-center gap-1">
-                                <div className="flex items-baseline gap-1">
-                                    <span className="text-lg font-black text-slate-300 group-hover:text-cyan-600">-</span>
+                                        {/* seçili değilken hover ikonu */}
+                                        {!isSubscribed && (
+                                            <div className="absolute top-3 right-3 w-6 h-6 rounded-full bg-cyan-50 text-cyan-600 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all scale-75 group-hover:scale-100">
+                                                <Plus size={14} strokeWidth={3} />
+                                            </div>
+                                        )}
+                                    </div>
+                                );
+                            })}
+
+                            {/* oluşturma kartı */}
+                            <div
+                                className="group relative bg-white border border-dashed border-slate-300 rounded-3xl p-5 flex flex-col items-center text-center transition-all duration-300 hover:border-cyan-400 hover:bg-cyan-50 cursor-pointer"
+                                onClick={() => setShowCustomForm(true)}
+                            >
+                                <div className="w-14 h-14 mb-4 rounded-xl bg-slate-50 border border-slate-100 text-slate-400 p-2.5 flex items-center justify-center shadow-sm group-hover:scale-105 group-hover:bg-white group-hover:text-cyan-500 transition-all duration-300">
+                                    <Plus size={24} />
                                 </div>
-                                <div className="h-6 flex items-center justify-center">
-                                    <span className="text-[10px] font-bold text-slate-400 group-hover:text-cyan-600">
-                                        Formu Aç
-                                    </span>
+                                <h3 className="font-bold text-slate-900 text-sm mb-1">Özel Oluştur</h3>
+                                <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider bg-slate-50 px-2 py-0.5 rounded border border-slate-100 mb-3">
+                                    Kişisel
+                                </span>
+                                <div className="mt-auto w-full pt-3 border-t border-slate-50 flex flex-col items-center justify-center gap-1">
+                                    <div className="flex items-baseline gap-1">
+                                        <span className="text-lg font-black text-slate-300 group-hover:text-cyan-600">-</span>
+                                    </div>
+                                    <div className="h-6 flex items-center justify-center">
+                                        <span className="text-[10px] font-bold text-slate-400 group-hover:text-cyan-600">
+                                            Formu Aç
+                                        </span>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
 
-                        {filteredPlatforms.length === 0 && (
-                            <div className="col-span-full py-20 text-center">
-                                <Filter className="mx-auto h-12 w-12 text-slate-200 mb-2" />
-                                <p className="text-slate-500">Aradığınız kriterlere uygun servis bulunamadı.</p>
-                            </div>
-                        )}
-                    </motion.div>
+                            {filteredPlatforms.length === 0 && (
+                                <div className="col-span-full py-20 text-center">
+                                    <Filter className="mx-auto h-12 w-12 text-slate-200 mb-2" />
+                                    <p className="text-slate-500">Aradığınız kriterlere uygun servis bulunamadı.</p>
+                                </div>
+                            )}
+                        </motion.div>
                     )
                 ) : (
 
@@ -367,9 +378,9 @@ const SubscriptionList = () => {
                                                 }}
                                             />
                                         </div>
-                                        
+
                                         <div className="flex gap-2">
-                                            
+
                                             {!isInactive && (
                                                 <button
                                                     className="w-8 h-8 flex cursor-pointer items-center justify-center rounded-full transition-all border bg-white border-slate-300 text-slate-500 hover:bg-cyan-800 hover:text-cyan-100 hover:border-cyan-700"
@@ -391,9 +402,9 @@ const SubscriptionList = () => {
                                                     <Trash2 size={16} />
                                                 </button>
                                             ) : (
-                                                
+
                                                 // İptal Butonu 
-                                                
+
                                                 <button
                                                     className={cn(
                                                         "w-8 h-8 flex cursor-pointer items-center justify-center rounded-full transition-all border",
@@ -485,7 +496,7 @@ const SubscriptionList = () => {
                 onClose={() => setEditingSub(null)}
                 title={<span className="text-cyan-700 font-bold">Aboneliği Düzenle</span>}
             >
-                <AddSubscriptionForm 
+                <AddSubscriptionForm
                     initialData={editingSub}
                     onSuccess={handleEditSuccess}
                 />
@@ -500,7 +511,7 @@ const SubscriptionList = () => {
                 <div className="p-1">
                     <div className="bg-red-50 border border-red-100 rounded-xl p-4 flex gap-4 mb-6">
                         <div className="bg-white p-2 rounded-full h-10 w-10 flex items-center justify-center shrink-0 shadow-sm text-red-500">
-                             <AlertTriangle size={20} />
+                            <AlertTriangle size={20} />
                         </div>
                         <div>
                             <h4 className="font-bold text-red-900 text-sm mb-1">Kalıcı İşlem</h4>
@@ -509,17 +520,17 @@ const SubscriptionList = () => {
                             </p>
                         </div>
                     </div>
-                    
+
                     <div className="flex justify-end gap-3">
-                        <Button 
-                            variant="ghost" 
+                        <Button
+                            variant="ghost"
                             onClick={() => setDeletingId(null)}
                             className="text-slate-500 hover:text-slate-900"
                         >
                             Vazgeç
                         </Button>
-                        <Button 
-                            variant="danger" 
+                        <Button
+                            variant="danger"
                             onClick={confirmDelete}
                             className="bg-red-600 hover:bg-red-700 text-white border-transparent shadow-red-200 shadow-lg"
                         >

@@ -6,6 +6,12 @@ export default defineConfig({
   plugins: [react(), tailwindcss()],
   build: {
     sourcemap: false, 
-    minify: 'esbuild', 
+    minify: 'terser', 
+    terserOptions: {
+        compress: {
+            drop_console: true, 
+            drop_debugger: true 
+        }
+    }
   }
 })
