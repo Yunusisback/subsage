@@ -16,7 +16,7 @@ const InputField = ({ label, type, placeholder, value, onChange, required }) => 
         value={value}
         onChange={onChange}
         placeholder={placeholder}
-        className="w-full bg-zinc-50 border border-transparent text-zinc-900 text-sm rounded-xl px-4 py-3 outline-none transition-all duration-300 placeholder:text-zinc-400 focus:bg-white focus:ring-2 focus:ring-cyan-100 focus:border-cyan-500 shadow-sm focus:shadow-md"
+        className="w-full bg-zinc-50  text-zinc-900 text-sm rounded-xl px-4 py-3 outline-none transition-all duration-300 placeholder:text-zinc-400 focus:bg-white focus:ring-2 focus:ring-cyan-200 focus:border-cyan-500 shadow-sm focus:shadow-md"
       />
     </div>
   </div>
@@ -98,7 +98,7 @@ const AuthPage = () => {
                          </div>
                         <div>
                             <cite className="not-italic font-bold block text-zinc-900">Zeynep Yılmaz</cite>
-                            <span className="text-zinc-500 text-sm font-medium">Serbest Tasarımcı</span>
+                            <span className="text-zinc-500 text-sm font-medium">Tasarım Müdürü</span>
                         </div>
                     </footer>
                 </blockquote>
@@ -161,7 +161,6 @@ const AuthPage = () => {
                                 <InputField 
                                     label="Ad Soyad"
                                     type="text"
-                                    placeholder="Örn: Ahmet Yılmaz"
                                     value={formData.fullName}
                                     onChange={(e) => setFormData({...formData, fullName: e.target.value})}
                                     required
@@ -171,7 +170,6 @@ const AuthPage = () => {
                             <InputField 
                                 label="E-Maİl"
                                 type="email"
-                                placeholder="ornek@email.com"
                                 value={formData.email}
                                 onChange={(e) => setFormData({...formData, email: e.target.value})}
                                 required
@@ -186,8 +184,7 @@ const AuthPage = () => {
                                 <input 
                                     required
                                     type="password" 
-                                    className="w-full bg-zinc-50 border border-transparent text-zinc-900 text-sm rounded-xl px-4 py-3 outline-none transition-all duration-300 placeholder:text-zinc-400 focus:bg-white focus:ring-2 focus:ring-cyan-100 focus:border-cyan-500 shadow-sm focus:shadow-md"
-                                    placeholder="••••••••"
+                                    className="w-full bg-zinc-50  text-zinc-900 text-sm rounded-xl px-4 py-3 outline-none transition-all duration-300 placeholder:text-zinc-400 focus:bg-white focus:ring-2 focus:ring-cyan-200 focus:border-cyan-500 shadow-sm focus:shadow-md"
                                     value={formData.password}
                                     onChange={(e) => setFormData({...formData, password: e.target.value})}
                                 />

@@ -83,8 +83,8 @@ const Sidebar = ({ isCollapsed, toggleSidebar, isMobileMenuOpen, closeMobileMenu
                         to={item.path}
                         onClick={closeMobileMenu}
                         className={({ isActive }) => cn(
-                            "w-full flex items-center transition-all duration-300 group relative font-medium outline-none",
-                            "hover:scale-[1.02] active:scale-[0.98]",
+                            "w-full flex items-center transition-all duration-200 group relative font-medium outline-none",
+                            "hover:scale-[1.04] active:scale-[0.98]",
 
 
                             isCollapsed ? "lg:justify-center lg:px-0 lg:py-4 lg:rounded-2xl px-4 py-3.5 rounded-2xl justify-start gap-3.5" : "justify-start gap-3.5 px-4 py-3.5 rounded-2xl",
@@ -105,7 +105,7 @@ const Sidebar = ({ isCollapsed, toggleSidebar, isMobileMenuOpen, closeMobileMenu
                                 <item.icon
                                     size={22}
                                     strokeWidth={isActive ? 2.0 : 2}
-                                    className={cn("transition-colors", isActive ? "text-cyan-100" : "group-hover:text-zinc-900")}
+                                    className={cn("transition-colors", isActive ? "text-cyan-100" : "group-hover:text-cyan-500")}
                                 />
 
 

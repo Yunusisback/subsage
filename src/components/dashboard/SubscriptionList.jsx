@@ -137,8 +137,8 @@ const SubscriptionList = () => {
                                 value={searchQuery}
                                 onChange={(e) => setSearchQuery(e.target.value)}
                                 className="pl-10 pr-4 py-2.5 w-full md:w-64 rounded-xl text-sm 
-               bg-white border border-gray-200 text-gray-700 placeholder-gray-400
-               outline-none ring-0
+               bg-white  text-gray-700 placeholder-gray-400
+               outline-none ring-2 ring-cyan-100 hover:ring-cyan-300
                hover:border-cyan-300
                focus:border-cyan-500 focus:bg-cyan-50/40 focus:text-cyan-950
                transition-all duration-200 ease-in-out"
@@ -157,10 +157,10 @@ const SubscriptionList = () => {
                             }
                         }}
                         className={cn(
-                            "flex items-center gap-2 px-4 py-2.5 rounded-xl font-semibold transition-all cursor-pointer border shadow-sm shrink-0",
+                            "flex items-center gap-2 px-4 py-2.5 rounded-3xl font-semibold transition-all cursor-pointer border shadow-sm shrink-0",
                             isAddingMode || showCustomForm
-                                ? "bg-white text-slate-700 hover:bg-slate-50 border-slate-200"
-                                : "bg-cyan-600 text-white hover:bg-cyan-700 border-transparent shadow-cyan-200 -shadow-md"
+                                ? "bg-cyan-600 text-white hover:bg-cyan-800 border-slate-200"
+                                : "bg-cyan-600 text-white hover:bg-cyan-800 border-transparent shadow-cyan-200 -shadow-md"
                         )}
                     >
                         {(isAddingMode || showCustomForm) ? <ArrowLeft size={18} /> : <Plus size={18} />}
@@ -250,7 +250,7 @@ const SubscriptionList = () => {
                                                 alt={platform.name}
                                                 className="w-full h-full object-contain"
                                                 loading="lazy"
-                                                onError={(e) => {
+                                                 onError={(e) => {
 
                                                     // Eğer resim yüklenmezse varsayılan göster
                                                     e.target.src = SERVICE_LOGOS.DEFAULT;
@@ -466,11 +466,11 @@ const SubscriptionList = () => {
                         {/* empty state */}
                         {displayedSubscriptions.length === 0 && (
                             <div className="col-span-full py-24 text-center border-2 border-dashed border-slate-200 rounded-[2.5rem] bg-slate-50/50">
-                                <Sparkles className="mx-auto h-12 w-12 text-slate-300 mb-4 animate-pulse" />
+                                <Sparkles className="mx-auto h-12 w-12 text-cyan-300 mb-4 animate-pulse" />
                                 <h3 className="text-slate-700 font-bold text-lg">
                                     {viewFilter === 'active' ? 'Aktif abonelik bulunamadı' : 'Geçmiş abonelik bulunamadı'}
                                 </h3>
-                                <p className="text-slate-500 text-sm mb-6 max-w-xs mx-auto">
+                                <p className="text-cyan-500 text-sm mb-6 max-w-xs mx-auto">
                                     {viewFilter === 'active'
                                         ? "Giderlerinizi takip etmeye başlamak için ilk aboneliğinizi ekleyin."
                                         : "İptal ettiğiniz abonelikler burada listelenir."}

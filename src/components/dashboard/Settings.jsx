@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from "react";
-import { User, Globe, Bell, Shield, Save, CreditCard, Mail, Lock, Smartphone, Wallet, ChevronDown, Check } from "lucide-react";
+import { User, Earth, Bell, ShieldUser, Save, CreditCard, Mail, Lock, Smartphone, Wallet, ChevronDown, Check } from "lucide-react";
 import BentoCard from "../ui/BentoCard";
 import Button from "../ui/Button";
 import { cn } from "../../utils/helpers";
@@ -32,7 +32,7 @@ const CustomSelect = ({ options, value, onChange, icon: Icon }) => {
                 onClick={() => setIsOpen(!isOpen)}
                 className={cn(
                     "w-full bg-white border rounded-xl py-2.5 px-4 text-sm flex items-center justify-between cursor-pointer transition-all duration-200 select-none",
-                    isOpen ? "border-cyan-500 ring-2 ring-cyan-100" : "border-zinc-200 hover:border-cyan-300"
+                    isOpen ? "border-purple-100 ring-2 ring-purple-100" : "border-zinc-200 hover:border-purple-300"
                 )}
             >
                 <span className="text-zinc-900 font-medium flex items-center gap-2">
@@ -70,7 +70,7 @@ const CustomSelect = ({ options, value, onChange, icon: Icon }) => {
         </div>
     );
 };
-// -----------------------------------------------------------
+
 
 const Settings = () => {
   const { userSettings, updateUserSettings } = useUser(); 
@@ -83,7 +83,7 @@ const Settings = () => {
     setFormData(prev => ({
         ...userSettings,
 
-        // Eğer budgetLimit yoksa varsayılan 5000 ekle
+       
         budgetLimit: userSettings.budgetLimit || 5000 
     }));
   }, [userSettings]);
@@ -98,7 +98,7 @@ const Settings = () => {
       setFormData(prev => ({ ...prev, [name]: value }));
   };
 
-  // Bildirim toggle değişimlerini yakala
+  
   const handleToggle = (key) => {
       setFormData(prev => ({
           ...prev,
@@ -113,6 +113,7 @@ const Settings = () => {
     setLoading(true);
    
     setTimeout(() => {
+
         // Global Context i güncelle
         updateUserSettings(formData);
         setLoading(false);
@@ -239,8 +240,8 @@ const Settings = () => {
             {/* genel tercihler */}
             <BentoCard glowColor="zinc" className="p-8 flex flex-col h-full items-start text-left overflow-visible">
                 <div className="flex items-center gap-3 mb-6">
-                    <div className="p-2.5 rounded-xl bg-purple-50 text-purple-600 border border-purple-100">
-                        <Globe size={24} />
+                    <div className="p-2.5 rounded-xl bg-purple-100 text-purple-600 ">
+                        <Earth size={24} />
                     </div>
                     <h3 className="text-lg font-bold text-zinc-900">Bölge ve Bütçe</h3>
                 </div>
@@ -292,7 +293,7 @@ const Settings = () => {
             {/* bildirimler */}
             <BentoCard glowColor="zinc" className="p-8 flex flex-col h-full items-start text-left">
                 <div className="flex items-center gap-3 mb-6">
-                    <div className="p-2.5 rounded-xl bg-orange-50 text-orange-600 border border-orange-100">
+                    <div className="p-2.5 rounded-xl bg-orange-100 text-orange-600 ">
                         <Bell size={24} />
                     </div>
                     <h3 className="text-lg font-bold text-zinc-900">Bildirimler</h3>
@@ -346,8 +347,8 @@ const Settings = () => {
             {/* güvenlik */}
             <BentoCard glowColor="zinc" className="md:col-span-2 p-8 items-start text-left">
                  <div className="flex items-center gap-3 mb-6">
-                    <div className="p-2.5 rounded-xl bg-green-50 text-green-600 border border-green-100">
-                        <Shield size={24} />
+                    <div className="p-2.5 rounded-xl bg-green-100 text-green-600 ">
+                        <ShieldUser size={24} />
                     </div>
                     <h3 className="text-lg font-bold text-zinc-900">Güvenlik</h3>
                 </div>

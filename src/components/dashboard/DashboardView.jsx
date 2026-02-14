@@ -224,12 +224,12 @@ const DashboardView = () => {
                     </div>
 
                     {/* Grafik */}
-                    <div className="absolute -bottom-2 left-0 right-0 h-25 w-full z-10 opacity-80 group-hover:opacity-100 transition-opacity duration-500">
+                    <div className="absolute -bottom-2 left-0 right-0 h-20 w-full z-10 opacity-80 group-hover:opacity-100 transition-opacity duration-500">
                         <ResponsiveContainer width="100%" height="100%">
                             <AreaChart data={chartData} margin={{ left: 0, right: 0, top: 0, bottom: 0 }}>
                                 <defs>
                                     <linearGradient id="colorSpendWhite" x1="0" y1="0" x2="0" y2="1">
-                                        <stop offset="5%" stopColor="#ffffff" stopOpacity={0.8} />
+                                        <stop offset="5%" stopColor="#ffffff" stopOpacity={0.4} />
                                         <stop offset="95%" stopColor="#ffffff" stopOpacity={1} />
                                     </linearGradient>
                                 </defs>
@@ -239,7 +239,7 @@ const DashboardView = () => {
                                     stroke="#ffffff"
                                     strokeWidth={3}
                                     fill="url(#colorSpendWhite)"
-                                    fillOpacity={1}
+                                    fillOpacity={0.8}
                                 />
                             </AreaChart>
                         </ResponsiveContainer>

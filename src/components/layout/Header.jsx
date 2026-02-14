@@ -1,10 +1,10 @@
 import { useState, useEffect, useRef } from "react";
-import { Bell, CheckCircle, Info, Clock, XCircle, Menu } from "lucide-react"; 
+import { Bell, CheckCircle, Info, Clock, XCircle, Menu } from "lucide-react";
 import { useUI } from "../../context/UIContext";
-import { useUser } from "../../context/UserContext"; 
+import { useUser } from "../../context/UserContext";
 import { motion, AnimatePresence } from "framer-motion";
 import { cn } from "../../utils/helpers";
-import { useLocation, useNavigate } from "react-router-dom"; 
+import { useLocation, useNavigate } from "react-router-dom";
 const Header = ({ onOpenMobileMenu }) => {
 
     const { notifications } = useUI();
@@ -29,9 +29,9 @@ const Header = ({ onOpenMobileMenu }) => {
         return () => document.removeEventListener("mousedown", handleClickOutside);
     }, []);
 
- 
+
     const getPageTitle = (path) => {
-        switch(path) {
+        switch (path) {
             case "/": return "Yönetim Paneli";
             case "/subscriptions": return "Abonelikler";
             case "/wallet": return "Cüzdanım";
@@ -43,7 +43,7 @@ const Header = ({ onOpenMobileMenu }) => {
         }
     };
 
-   
+
     const currentTitle = getPageTitle(location.pathname);
 
     // Bildirim tipi stilleri
@@ -51,9 +51,9 @@ const Header = ({ onOpenMobileMenu }) => {
         switch (type) {
             case "success": return { bg: "bg-emerald-50", border: "border-emerald-100", icon: "text-emerald-600", dot: "bg-emerald-500" };
             case "warning": return { bg: "bg-amber-50", border: "border-amber-100", icon: "text-amber-600", dot: "bg-amber-500" };
-            case "alert":   return { bg: "bg-red-50", border: "border-red-100", icon: "text-red-600", dot: "bg-red-500" };
-            case "info":    return { bg: "bg-blue-50", border: "border-blue-100", icon: "text-blue-600", dot: "bg-blue-500" };
-            default:        return { bg: "bg-zinc-50", border: "border-zinc-100", icon: "text-zinc-500", dot: "bg-zinc-400" };
+            case "alert": return { bg: "bg-red-50", border: "border-red-100", icon: "text-red-600", dot: "bg-red-500" };
+            case "info": return { bg: "bg-blue-50", border: "border-blue-100", icon: "text-blue-600", dot: "bg-blue-500" };
+            default: return { bg: "bg-zinc-50", border: "border-zinc-100", icon: "text-zinc-500", dot: "bg-zinc-400" };
         }
     };
 
@@ -61,7 +61,7 @@ const Header = ({ onOpenMobileMenu }) => {
         <header className="relative z-30 mb-6 md:mb-8 flex justify-between items-center h-16 animate-in fade-in slide-in-from-top-4 duration-500">
             {/* Başlık ve Mobil Menü */}
             <div className="flex items-center gap-3">
-                <button 
+                <button
                     onClick={onOpenMobileMenu}
                     className="p-2 -ml-2 rounded-xl text-zinc-500 hover:bg-zinc-100 lg:hidden"
                 >
@@ -74,9 +74,9 @@ const Header = ({ onOpenMobileMenu }) => {
 
             {/* Bildirim ve Profil */}
             <div className="flex items-center  gap-3 md:gap-4 pr-0 md:pr-2">
-                {/* Bildirim */} 
+                {/* Bildirim */}
                 <div className="relative" ref={notificationRef}>
-                    <button 
+                    <button
                         onClick={() => setShowNotifications(!showNotifications)}
                         className="p-2.5 ring-2 ring-gray-300 md:p-3.5 rounded-3xl bg-gray-200 hover:bg-zinc-50 text-cyan-600 hover:text-cyan-800 transition-colors relative cursor-pointer shadow-sm"
                     >
@@ -88,7 +88,7 @@ const Header = ({ onOpenMobileMenu }) => {
                     {/* Menü */}
                     <AnimatePresence>
                         {showNotifications && (
-                            <motion.div 
+                            <motion.div
                                 initial={{ opacity: 0, y: 10, scale: 0.95 }}
                                 animate={{ opacity: 1, y: 0, scale: 1 }}
                                 exit={{ opacity: 0, y: 10, scale: 0.95 }}
@@ -108,19 +108,19 @@ const Header = ({ onOpenMobileMenu }) => {
                                         const styles = getTypeStyles(note.type);
                                         const isUnread = !note.read;
                                         return (
-                                            <button 
+                                            <button
                                                 key={note.id}
-                                                onClick={() => { 
-                                                    navigate("/notifications"); 
-                                                    setShowNotifications(false); 
-                                                }} 
+                                                onClick={() => {
+                                                    navigate("/notifications");
+                                                    setShowNotifications(false);
+                                                }}
                                                 className={cn(
                                                     "w-full text-left px-4 py-3 transition-all flex gap-3 group border-b border-zinc-50 last:border-0 relative overflow-hidden",
-                                                    isUnread 
-                                                        ? cn(styles.bg, "hover:brightness-95") 
+                                                    isUnread
+                                                        ? cn(styles.bg, "hover:brightness-95")
                                                         : "bg-white hover:bg-zinc-50"
                                                 )}
-                                            >    
+                                            >
                                                 {isUnread && (
                                                     <div className={cn("absolute left-0 top-0 bottom-0 w-1", styles.dot)} />
                                                 )}
@@ -136,7 +136,7 @@ const Header = ({ onOpenMobileMenu }) => {
                                                 <div className="flex-1 min-w-0">
                                                     <div className="flex justify-between items-start mb-0.5">
                                                         <p className={cn(
-                                                            "text-xs font-bold truncate pr-2", 
+                                                            "text-xs font-bold truncate pr-2",
                                                             isUnread ? "text-zinc-900" : "text-zinc-500"
                                                         )}>
                                                             {note.title}
@@ -160,10 +160,10 @@ const Header = ({ onOpenMobileMenu }) => {
                                     )}
                                 </div>
                                 <div className="p-2 border-t border-zinc-100 bg-zinc-50/50">
-                                    <button 
-                                        onClick={() => { 
-                                            navigate("/notifications"); 
-                                            setShowNotifications(false); 
+                                    <button
+                                        onClick={() => {
+                                            navigate("/notifications");
+                                            setShowNotifications(false);
                                         }}
                                         className="w-full py-2 text-xs text-center text-zinc-500 hover:text-zinc-900 font-bold transition-colors cursor-pointer flex items-center justify-center gap-1"
                                     >
@@ -175,17 +175,17 @@ const Header = ({ onOpenMobileMenu }) => {
                         )}
                     </AnimatePresence>
                 </div>
-                
+
                 {/* Profil Bölümü */}
-                <button 
-                    onClick={() => navigate("/settings")} 
+                <button
+                    onClick={() => navigate("/settings")}
                     className="flex items-center gap-2 pl-1.5 md:pl-2.5 pr-1.5 md:pr-4 py-1.5 md:py-2 rounded-full ring-2 ring-gray-300 bg-gray-200 border border-gray-100 hover:bg-gray-100 hover:border-gray-100 transition-all group cursor-pointer shadow-sm"
                 >
                     <div className="w-8 h-8 md:w-10 md:h-10 min-w-8 md:min-w-9 rounded-full bg-zinc-100 flex items-center justify-center overflow-hidden">
-                        <img 
-                            src={userSettings.avatar} 
-                            alt="User" 
-                            className="w-full h-full object-cover opacity-100 group-hover:opacity-100 transition-opacity" 
+                        <img
+                            src={userSettings.avatar}
+                            alt="User"
+                            className="w-full h-full object-cover opacity-100 group-hover:opacity-100 transition-opacity"
                         />
                     </div>
                     <div className="text-left hidden md:block">
