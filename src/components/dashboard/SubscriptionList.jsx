@@ -1,5 +1,5 @@
 import { useState, useMemo } from "react";
-import { Plus, Calendar, ArrowLeft, CheckCircle2, X, Loader2, Sparkles, Search, Filter, Trash2, XCircle, PenTool, Pencil, AlertTriangle } from "lucide-react";
+import { Plus, Calendar, ArrowLeft, CheckCircle2, X, Loader2,  Search, Filter, Trash2, XCircle, PenTool, Pencil, AlertTriangle } from "lucide-react";
 import Button from "../ui/Button";
 import { cn, formatDate, formatMoneyClean } from "../../utils/helpers";
 import { AnimatePresence, motion } from "framer-motion";
@@ -36,7 +36,7 @@ const SubscriptionList = () => {
 
     const activeSubscriptionsCount = subscriptions.filter(sub => sub.status === 'active').length;
 
-    // Arama Filtresi 
+    // platform listesini arama sorgusuna göre filtrele
     const filteredPlatforms = useMemo(() => {
         return PLATFORMS.filter(p =>
             p.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -87,7 +87,7 @@ const SubscriptionList = () => {
         setDeletingId(subId);
     }
 
-    // Modal Onaylayınca Sil
+  
     const confirmDelete = () => {
         if (deletingId) {
             removeSubscription(deletingId);
@@ -96,7 +96,7 @@ const SubscriptionList = () => {
         }
     };
 
-    // handle custom 
+   
     const handleCustomSuccess = () => {
         setShowCustomForm(false);
         setIsAddingMode(false);
@@ -138,7 +138,7 @@ const SubscriptionList = () => {
                                 onChange={(e) => setSearchQuery(e.target.value)}
                                 className="pl-10 pr-4 py-2.5 w-full md:w-64 rounded-xl text-sm 
                bg-white  text-gray-700 placeholder-gray-400
-               outline-none ring-2 ring-cyan-100 hover:ring-cyan-300
+               outline-none ring-1 ring-zinc-200 hover:ring-cyan-300
                hover:border-cyan-300
                focus:border-cyan-500 focus:bg-cyan-50/40 focus:text-cyan-950
                transition-all duration-200 ease-in-out"
@@ -269,7 +269,7 @@ const SubscriptionList = () => {
                                                 <span className="text-[10px] font-bold text-slate-400">₺/ay</span>
                                             </div>
 
-                                            {/* State göstergesi */}
+                                            {/* durum göstergesi */}
                                             <div className="h-6 flex items-center justify-center">
                                                 {status === "loading" ? (
                                                     <Loader2 size={16} className="animate-spin text-cyan-500" />
@@ -466,11 +466,13 @@ const SubscriptionList = () => {
                         {/* empty state */}
                         {displayedSubscriptions.length === 0 && (
                             <div className="col-span-full py-24 text-center border-2 border-dashed border-slate-200 rounded-[2.5rem] bg-slate-50/50">
-                                <Sparkles className="mx-auto h-12 w-12 text-cyan-300 mb-4 animate-pulse" />
-                                <h3 className="text-slate-700 font-bold text-lg">
+                            <svg className="mx-auto h-15 w-15 text-red-900/40 mb-4 animate-pulse drop-shadow-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
++     <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" />
++ </svg>
+                                <h3 className="text-red-700 font-bold text-lg">
                                     {viewFilter === 'active' ? 'Aktif abonelik bulunamadı' : 'Geçmiş abonelik bulunamadı'}
                                 </h3>
-                                <p className="text-cyan-500 text-sm mb-6 max-w-xs mx-auto">
+                                <p className="text-red-900 text-sm mb-6 max-w-xs mx-auto">
                                     {viewFilter === 'active'
                                         ? "Giderlerinizi takip etmeye başlamak için ilk aboneliğinizi ekleyin."
                                         : "İptal ettiğiniz abonelikler burada listelenir."}

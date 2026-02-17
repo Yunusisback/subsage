@@ -141,8 +141,8 @@ const WalletView = () => {
                 transition={{ type: "spring", stiffness: 300, damping: 20 }}
             >
                 {/* Arka Plan */}
-                <div className="absolute inset-0 bg-[#0f172a]">
-                    <div className="absolute top-0 right-0 w-[80%] h-[80%] bg-purple-600/30 rounded-full blur-[80px] group-hover:bg-purple-500/40 transition-colors duration-500"></div>
+                <div className="absolute inset-0 bg-[#071129]">
+                    <div className="absolute top-0 right-0 w-[80%] h-[80%] bg-cyan-800 rounded-full blur-[80px] group-hover:bg-cyan-500/40 transition-colors duration-500"></div>
                     <div className="absolute bottom-0 left-0 w-[60%] h-[60%] bg-blue-600/20 rounded-full blur-[60px] group-hover:bg-blue-500/30 transition-colors duration-500"></div>
                     
                 
@@ -154,10 +154,10 @@ const WalletView = () => {
                 <div className="relative h-full w-full p-6 sm:p-8 flex flex-col justify-between text-white z-10">
                     <div className="flex justify-between items-start">
                         <div className="flex flex-col gap-1">
-                            <span className="font-bold text-lg tracking-[0.2em] text-white/90">VAULT</span>
+                            <span className="text-3xl text-white/90">VAULT</span>
                         </div>
                         <div className="flex items-center gap-3">
-                            <Wifi size={24} className="rotate-90 text-white/60" strokeWidth={2} />
+                            <Wifi size={33} className="rotate-90 text-white/60" strokeWidth={2} />
                         </div>
                     </div>
                     
@@ -197,7 +197,7 @@ const WalletView = () => {
             </motion.div>
             
             {/* Limit Kontrolü */}
-            <BentoCard glowColor="purple" className="p-6 sm:p-7 border border-slate-100/50 shadow-lg shadow-purple-500/5">
+            <BentoCard glowColor="red" className="p-6 sm:p-7 border border-slate-100/50 shadow-lg shadow-red-500/5">
                 <div className="flex justify-between items-end mb-2">
                     <div>
                         <h3 className="text-xm font-bold text-red-600 uppercase tracking-wider mb-1.5 flex items-center gap-1.5">
@@ -205,11 +205,11 @@ const WalletView = () => {
                         </h3>
                         <div className="flex items-baseline gap-1">
                             <span className="text-3xl mt-2 font-black text-slate-900 tracking-tight">{formatCurrency(localLimit)}</span>
-                            <span className="text-sm font-semibold text-slate-400">/ay</span>
+                            <span className="text-sm font-semibold text-red-600">/ay</span>
                         </div>
                     </div>
-                    <div className="bg-purple-100/50 text-purple-700 px-3 py-1.5 rounded-full text-[10px] font-bold border border-purple-100 flex items-center gap-1.5">
-                        <span className="w-1.5 h-1.5 rounded-full bg-purple-500 animate-pulse"></span>
+                    <div className="bg-red-100/50 text-red-700 px-3 py-1.5 rounded-full text-[10px] font-bold border border-red-100 flex items-center gap-1.5">
+                        <span className="w-1.5 h-1.5 rounded-full bg-red-600 animate-ping"></span>
                         Aktif
                     </div>
                 </div>
@@ -219,7 +219,7 @@ const WalletView = () => {
                    
                     <div className="absolute w-full h-3 bg-slate-100 rounded-full overflow-hidden">
                         <motion.div 
-                            className="h-full bg-linear-to-r from-purple-500 to-indigo-600"
+                            className="h-full bg-linear-to-r from-red-500 to-red-600"
                             style={{ width: `${(localLimit / 50000) * 100}%` }}
                         />
                     </div>
@@ -239,16 +239,16 @@ const WalletView = () => {
 
                  
                     <motion.div 
-                        className="absolute h-7 w-7 bg-white rounded-full shadow-md border-4 border-purple-500 z-10 pointer-events-none flex items-center justify-center"
+                        className="absolute h-7 w-7 bg-white rounded-full shadow-md border-4 border-red-500 z-10 pointer-events-none flex items-center justify-center"
                         style={{ left: `calc(${(localLimit / 50000) * 100}% - 14px)` }}
                         whileHover={{ scale: 1.2 }}
                         whileTap={{ scale: 0.9 }}
                     >
-                        <div className="w-1.5 h-1.5 bg-purple-500 rounded-full"></div>
+                        <div className="w-1.5 h-1.5 bg-red-600 rounded-full"></div>
                     </motion.div>
                 </div>
                 
-                <div className="flex justify-between mt-2 text-[10px] font-bold text-slate-400 font-mono">
+                <div className="flex justify-between mt-2 text-[13px] font-bold text-red-800 font-mono">
                     <span>1K</span>
                     <span>25K</span>
                     <span>50K</span>
@@ -296,7 +296,7 @@ const WalletView = () => {
                         
                         {/* Arama Kutusu */}
                         <div className={cn(
-                            "flex items-center bg-slate-50 border border-slate-200 rounded-2xl transition-all duration-300 ease-out overflow-hidden",
+                            "flex items-center bg-slate-50 border border-slate-200 rounded-2xl transition-all duration-200 ease-out overflow-hidden",
                             isSearchOpen ? "w-full sm:w-64 pl-3 pr-1 shadow-inner" : "w-10 h-10 justify-center border-transparent bg-transparent"
                         )}>
                             {isSearchOpen && (
@@ -342,7 +342,7 @@ const WalletView = () => {
                 {/* Tablo */}
                 <div className="flex-1 overflow-x-auto custom-scrollbar p-2">
                     <table className="w-full text-left border-collapse">
-                        <thead className="bg-slate-50/80 text-slate-400 text-[10px] uppercase tracking-wider font-bold border-b border-slate-100">
+                        <thead className="bg-slate-50/80 text-cyan-900 text-[10px] uppercase tracking-wider font-bold border-b border-slate-100">
                             <tr>
                                 <th className="px-6 py-4 pl-8 first:rounded-tl-2xl">İşlem Detayı</th>
                                 <th className="px-6 py-4 hidden sm:table-cell">Kategori</th>
@@ -371,7 +371,7 @@ const WalletView = () => {
                                                         )}
                                                     </div>
                                                     <div>
-                                                        <p className="text-sm font-bold text-slate-900 group-hover:text-cyan-600 transition-colors">{tx.name}</p>
+                                                        <p className="text-sm font-bold text-slate-900  transition-colors">{tx.name}</p>
                                                         <p className="text-[10px] font-medium text-slate-400 sm:hidden">{tx.date}</p>
                                                     </div>
                                                 </div>
@@ -390,7 +390,7 @@ const WalletView = () => {
                                             
                                             <td className="px-6 py-4 text-right pr-8">
                                                 <div className="flex flex-col items-end">
-                                                    <span className="text-sm font-black tracking-tight text-slate-900 group-hover:text-indigo-900 transition-colors">
+                                                    <span className="text-sm font-black tracking-tight text-red-600 group-hover:text-cyan-900 transition-colors">
                                                         {formatCurrency(tx.amount)}
                                                     </span>
                                                     <span className="text-[10px] font-bold text-emerald-500 bg-emerald-50 px-1.5 py-0.5 rounded flex items-center gap-0.5 mt-0.5">
@@ -453,25 +453,25 @@ const WalletView = () => {
             
             {limitStep === 'confirm' && (
                 <div className="animate-in fade-in zoom-in-95 duration-300">
-                    <div className="bg-linear-to-br from-indigo-50 to-purple-50 border border-indigo-100/50 rounded-3xl p-6 flex flex-col items-center text-center gap-4 mb-8">
-                        <div className="bg-white p-4 rounded-full shadow-lg shadow-indigo-100 ring-4 ring-indigo-50 text-indigo-600">
+                    <div className="bg-linear-to-br from-red-500 to-red-900 border border-red-100/50 rounded-3xl p-6 flex flex-col items-center text-center gap-4 mb-8">
+                        <div className="bg-white p-4 rounded-full shadow-lg shadow-red-100 ring-4 ring-red-50 text-red-600">
                                 <Shield size={32} />
                         </div>
                         <div>
-                            <h4 className="font-bold text-red-500 text-lg mb-2">Limit Güncelleme</h4>
+                            <h4 className="font-bold text-white text-lg mb-2">Limit Güncelleme</h4>
                             <div className="flex items-center justify-center gap-3 text-2xl font-black text-slate-900 tracking-tight my-2">
-                                <span className="text-slate-400 line-through text-lg">{formatCurrency(spendingLimit)}</span>
+                                <span className="text-slate-200 line-through text-lg">{formatCurrency(spendingLimit)}</span>
                                 <span className="text-slate-300">→</span>
-                                <span className="text-indigo-600">{formatCurrency(localLimit)}</span>
+                                <span className="text-yellow-300">{formatCurrency(localLimit)}</span>
                             </div>
-                            <p className="text-sm text-slate-500 leading-relaxed max-w-xs mx-auto">
+                            <p className="text-sm text-white leading-relaxed max-w-xs mx-auto">
                                 Bu işlem banka onayı gerektirir ve aylık harcama limitinizi kalıcı olarak değiştirir.
                             </p>
                         </div>
                     </div>
                     <div className="grid grid-cols-2 gap-3">
-                        <Button variant="ghost" onClick={cancelLimitUpdate} className="rounded-xl h-12 font-bold text-indigo-500 hover:bg-indigo-500 cursor-pointer hover:scale-90">Vazgeç</Button>
-                        <Button onClick={startLimitUpdateProcess} className="bg-indigo-600 hover:bg-indigo-700 text-white shadow-xl shadow-indigo-200 rounded-xl h-12 cursor-pointer hover:scale-90">
+                        <Button variant="ghost" onClick={cancelLimitUpdate} className="rounded-3xl h-12 font-bold text-white hover:bg-red-500 bg-zinc-500 cursor-pointer hover:scale-90">Vazgeç</Button>
+                        <Button onClick={startLimitUpdateProcess} className="bg-red-600 hover:bg-red-700 text-white  shadow-red-500 rounded-3xl h-12 cursor-pointer hover:scale-90">
                             Onayla ve Güncelle
                         </Button>
                     </div>
@@ -481,13 +481,13 @@ const WalletView = () => {
             {limitStep === 'loading' && (
                 <div className="py-12 flex flex-col items-center justify-center text-center animate-in fade-in zoom-in-95 duration-300">
                     <div className="relative mb-6">
-                        <div className="absolute inset-0 bg-indigo-400 rounded-full blur-2xl opacity-20 animate-pulse"></div>
-                        <div className="relative bg-white p-5 rounded-full shadow-xl shadow-indigo-100 border border-indigo-50">
-                            <Loader2 size={40} className="text-indigo-600 animate-spin" />
+                        <div className="absolute inset-0 bg-red-400 rounded-full blur-2xl opacity-20 animate-pulse"></div>
+                        <div className="relative bg-white p-5 rounded-full shadow-xl shadow-red-100 border border-red-50">
+                            <Loader2 size={40} className="text-red-600 animate-spin" />
                         </div>
                     </div>
-                    <h3 className="text-xl font-bold text-slate-900 mb-2">Banka ile İletişim Kuruluyor</h3>
-                    <p className="text-sm text-slate-500 max-w-xs mx-auto">Güvenli bağlantı üzerinden limit sorgulaması yapılıyor, lütfen bekleyiniz...</p>
+                    <h3 className="text-xl font-bold text-white mb-2">Banka ile İletişim Kuruluyor</h3>
+                    <p className="text-sm text-red-500 max-w-xs mx-auto">Güvenli bağlantı üzerinden limit sorgulaması yapılıyor, lütfen bekleyiniz...</p>
                 </div>
             )}
 
@@ -499,8 +499,8 @@ const WalletView = () => {
                             <CheckCircle2 size={40} className="text-emerald-500" />
                         </div>
                     </div>
-                    <h3 className="text-xl font-bold text-slate-900 mb-2">Limit Başarıyla Güncellendi!</h3>
-                    <p className="text-sm text-slate-500">Yeni harcama limitiniz hesabınıza anında tanımlandı.</p>
+                    <h3 className="text-xl font-bold text-white mb-2">Limit Başarıyla Güncellendi!</h3>
+                    <p className="text-sm text-white">Yeni harcama limitiniz hesabınıza anında tanımlandı.</p>
                 </div>
             )}
         </div>

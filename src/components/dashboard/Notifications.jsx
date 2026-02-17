@@ -9,7 +9,7 @@ const Notifications = () => {
   return (
     <div className="animate-in fade-in slide-in-from-bottom-4 duration-500 max-w-4xl mr-auto pb-15 -mt-4">
       
-      {/* Üst Kısım */}
+      {/*  başlık ve tümünü okundu işaretle butonu */} 
       <div className="flex justify-end mb-6">
         <button 
             onClick={markAllNotificationsAsRead}
@@ -22,7 +22,7 @@ const Notifications = () => {
         </button>
       </div>
 
-      {/* Liste */}
+       {/* bildirim listesi */}
       <div className="space-y-4 w-full">
           {notifications.length === 0 ? (
                 <div className="flex flex-col items-center justify-center py-16 bg-white rounded-3xl border border-dashed border-zinc-200 text-center">
@@ -106,7 +106,7 @@ const Notifications = () => {
                           </p>
                       </div>
 
-                      {/* Okunmamış Noktası  */}
+                       {/* Okunmamış bildirim noktası */}
                       {isUnread && (
                           <div className="absolute top-5 right-5 flex h-2.5 w-2.5">
                               <span className={cn("animate-ping absolute inline-flex h-full w-full rounded-full opacity-75", style.highlight)}></span>

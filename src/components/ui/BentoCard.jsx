@@ -41,7 +41,7 @@ const BentoCard = ({ children, className, glowColor = "zinc", ...props }) => {
         )}
       />
       
-      {/* İçerik */}
+       {/* içerik */}
       <div className="relative z-10 w-full h-full flex flex-col">
           {children}
       </div>

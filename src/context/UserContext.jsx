@@ -38,7 +38,7 @@ export const UserProvider = ({ children }) => {
         return safeJSONParse("spendingLimit", 15000);
     });
 
-   
+   // Supabase Auth Listener
     useEffect(() => {
         supabase.auth.getSession().then(({ data: { session } }) => {
             setSession(session);
@@ -52,6 +52,7 @@ export const UserProvider = ({ children }) => {
             setLoading(false);
         });
 
+          // Auth state change listener
         const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
             setSession(session);
             setUser(session?.user ?? null);
@@ -73,7 +74,7 @@ export const UserProvider = ({ children }) => {
     const updateUserSettings = (newSettings) => setUserSettings(prev => ({ ...prev, ...newSettings }));
     const updateSpendingLimit = (newLimit) => setSpendingLimit(newLimit);
 
-   
+
     const login = async (email, password) => {
         const { data, error } = await supabase.auth.signInWithPassword({ email, password });
         if (error) throw error;

@@ -42,7 +42,7 @@ const Sidebar = ({ isCollapsed, toggleSidebar, isMobileMenuOpen, closeMobileMenu
                 isMobileMenuOpen ? "translate-x-0" : "-translate-x-full lg:translate-x-0"
             )}
         >
-            {/* Logo Alanı */}
+            {/*  logo ve başlık */}
             <div className="h-20 lg:h-28 flex items-center justify-center relative border-b border-zinc-100/50 mb-2 mt-4  lg:mt-0">
                 <div className={cn(
                     "relative flex items-center gap-4 transition-all duration-500",
@@ -51,14 +51,14 @@ const Sidebar = ({ isCollapsed, toggleSidebar, isMobileMenuOpen, closeMobileMenu
                 )}>
                     <div className="absolute inset-0 w-10 h-10 bg-cyan-400/20 blur-2xl rounded-full -z-10"></div>
 
-                    {/* Logo İkonu  */}
+                    {/* logo */}
                     <div className="relative z-10 flex items-center justify-center">
                         <svg width="46" height="46" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className="text-cyan-500 drop-shadow-sm">
                             <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" />
                         </svg>
                     </div>
 
-                    {/* Yazı */}
+                    {/* logo text*/}
                     <h1 className={cn(
                         "text-3xl font-black tracking-tighter overflow-hidden transition-all duration-500 mr-3 whitespace-nowrap relative z-10",
                         "text-cyan-500",
@@ -74,8 +74,8 @@ const Sidebar = ({ isCollapsed, toggleSidebar, isMobileMenuOpen, closeMobileMenu
                     {isCollapsed ? <ChevronRight size={15} /> : <ChevronLeft size={15} />}
                 </button>
             </div>
-
-            {/* Menü */}
+             
+                {/* menü öğeleri */}
             <nav className="flex-1 py-4 px-3 space-y-2 overflow-y-auto custom-scrollbar">
                 {menuItems.map((item) => (
                     <NavLink
@@ -133,7 +133,7 @@ const Sidebar = ({ isCollapsed, toggleSidebar, isMobileMenuOpen, closeMobileMenu
                 ))}
             </nav>
 
-            {/* Footer ve  Çıkış */}
+             {/* çıkış yap butonu */}
             <div className={cn("mt-auto pb-6 px-3 transition-all duration-300")}>
                 <div className={cn("border-t border-zinc-100/50 mb-4", isCollapsed ? "lg:w-8 lg:mx-auto w-full" : "w-full")}></div>
                 <button

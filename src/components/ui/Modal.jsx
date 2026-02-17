@@ -30,29 +30,29 @@ const Modal = ({ isOpen, onClose, title, children }) => {
             className="fixed inset-0 z-60 bg-black/20 backdrop-blur-sm" 
           />
 
-          {/* Modal İçeriği */}
+            {/* Modal içeriği */}
           <div className="fixed inset-0 z-70 flex items-center justify-center p-4 pointer-events-none">
             <motion.div
               initial={{ opacity: 0, scale: 0.95, y: 20 }}
               animate={{ opacity: 1, scale: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.95, y: 20 }}
               className={cn(
-                "w-full max-w-md bg-white border border-zinc-200 rounded-3xl shadow-2xl overflow-hidden pointer-events-auto", 
+                "w-full max-w-md bg-white  border-zinc-200 rounded-3xl shadow-2xl overflow-hidden pointer-events-auto", 
                 "flex flex-col max-h-[90vh]"
               )}
             >
-              {/* Header */}
-              <div className="flex items-center justify-between p-6 border-b border-zinc-100 bg-white">
-                <h3 className="text-xl font-bold text-indigo-500 tracking-tight">{title}</h3>
+              {/* header */}
+              <div className="flex items-center justify-between p-6 border-b border-red-200 bg-white">
+                <h3 className="text-xl font-bold text-red-800 tracking-tight">{title}</h3>
                 <button 
                     onClick={onClose}
-                    className="p-2 rounded-full  bg-red-100 hover:bg-red-500 text-red-600 hover:text-red-100  transition-colors cursor-pointer" 
+                    className="p-2 rounded-full  bg-red-100 hover:scale-90 hover:bg-red-500 text-red-600 hover:text-red-100  transition-colors cursor-pointer" 
                 >
                     <X size={20} />
                 </button>
               </div>
 
-              {/* body */}
+                {/* içerik */}
               <div className="p-6 overflow-y-auto custom-scrollbar">
                 {children}
               </div>

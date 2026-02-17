@@ -26,12 +26,16 @@ import { cn } from "./utils/helpers";
 import AuthPage from "./components/auth/AuthPage"; 
 import { useUser } from "./context/UserContext"; 
 import { Loader2 } from "lucide-react"; 
+import { useNotificationService } from "./hooks/useNotificationService";
 
 function App() {
   const { user, loading } = useUser(); 
   const [isCollapsed, setIsCollapsed] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+
+ 
+  useNotificationService();
 
  
   if (loading) {

@@ -21,14 +21,13 @@ const SummaryChart = () => {
   const { subscriptions, totalExpenses } = useData();
   const { userSettings } = useUser();
 
-  // Aylık Bütçe Limiti
+
   const monthlyLimit = parseInt(userSettings.budgetLimit) || 5000;
-  
-    // Limit Yüzdesi ve Kalan Bütçe
+
   const limitPercentage = Math.min((totalExpenses / monthlyLimit) * 100, 100);
   const remainingBudget = Math.max(monthlyLimit - totalExpenses, 0);
 
-  // Limit Durum Metinleri 
+ 
   let statusInfo = {
       text: "Durum Stabil",
       icon: Droplets
@@ -40,7 +39,7 @@ const SummaryChart = () => {
       statusInfo = { text: "Dikkatli Ol", icon: Target };
   }
 
-  // Veri Hazırlama
+   // Abonelik yoksa gösterilecek placeholder
   if (subscriptions.length === 0) {
     return (
         <div className="flex flex-col items-center justify-center h-96 border border-dashed border-zinc-200 rounded-3xl bg-zinc-50/50 text-zinc-400">
@@ -49,7 +48,8 @@ const SummaryChart = () => {
         </div>
     )
   }
-  // Kategori Verisi hazırlama
+
+  // kategori bazlı veri
   const categoryData = subscriptions.reduce((acc, sub) => {
     if(sub.status !== 'active') return acc;
     const found = acc.find(c => c.name === sub.category);
@@ -62,7 +62,7 @@ const SummaryChart = () => {
     return acc;
   }, []);
 
-// Servis Bazlı Veri 
+// servis bazlı veri
   const subscriptionData = subscriptions
     .filter(sub => sub.status === 'active')
     .map(sub => ({ name: sub.name, price: parseFloat(sub.price) }))

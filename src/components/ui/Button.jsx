@@ -24,6 +24,7 @@ const Button = ({
     icon: "h-10 w-10 p-0 flex items-center justify-center"
   };
 
+   // loading durumunda butonun içeriği yerine spinner göstermek için
   return (
     <button 
       className={cn(

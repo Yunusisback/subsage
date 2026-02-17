@@ -6,7 +6,7 @@ export const useSpendingAnalysis = (subscriptions, totalExpenses) => {
     const activeSubs = useMemo(() => subscriptions.filter(sub => sub.status === 'active'), [subscriptions]);
     const canceledSubs = useMemo(() => subscriptions.filter(sub => sub.status === 'canceled'), [subscriptions]);
 
-    // grafik verisi hesaplama
+ 
     const chartData = useMemo(() => {
        
         const allDates = subscriptions
@@ -86,7 +86,7 @@ export const useSpendingAnalysis = (subscriptions, totalExpenses) => {
         }, activeSubs[0]);
     }, [activeSubs]);
 
-   
+  
     const yearlyProjection = totalExpenses * 12;
     const yearlySavingsTip = mostExpensive.price > 0 
         ? `${mostExpensive.name} iptal edilirse yılda ${formatMoneyClean(mostExpensive.price * 12)}₺ cepte.`

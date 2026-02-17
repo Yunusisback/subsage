@@ -33,6 +33,7 @@ const AddSubscriptionForm = ({ onSuccess, initialData }) => {
           }
       }
 
+       
       setFormData({
         ...initialData,
         startDate: safeDate,
@@ -54,13 +55,14 @@ const AddSubscriptionForm = ({ onSuccess, initialData }) => {
     return match ? match.logo : SERVICE_LOGOS.DEFAULT;
   };
 
+  
   const handleChange = (e) => {
     const { name, value } = e.target;
     
     setFormData(prev => {
         const newData = { ...prev, [name]: value };
 
-     
+       
         if (name === "name" && (!initialData || initialData.image === SERVICE_LOGOS.DEFAULT)) {
              const detectedLogo = findLogo(value);
            
@@ -209,7 +211,7 @@ const AddSubscriptionForm = ({ onSuccess, initialData }) => {
           />
       </div>
 
-      {/* Logo Önizleme */}
+     
       {formData.image && (
           <div className="flex items-center gap-2 text-xs text-zinc-500">
               <div className="w-8 h-8 rounded border border-zinc-200 p-1 flex items-center justify-center overflow-hidden">

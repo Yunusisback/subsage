@@ -122,7 +122,7 @@ export const DataProvider = ({ children }) => {
                 return;
             }
 
-           
+        
             if (isGuest) {
                 const fakeId = `guest-${Date.now()}`;
                 const addedSub = {
@@ -159,7 +159,7 @@ export const DataProvider = ({ children }) => {
 
             if (error) throw error;
 
-        
+       
             const localLogo = getLogoByName(data[0].name);
             const finalImage = localLogo !== SERVICE_LOGOS.DEFAULT 
                 ? localLogo 
@@ -171,7 +171,7 @@ export const DataProvider = ({ children }) => {
                 startDate: data[0].start_date
             };
 
-          
+           // Demo verilerle karışmaması için yeni kaydı listenin başına ekliyoruz
             setSubscriptions(prev => {
                 const isDemo = prev.some(item => item.id.toString().startsWith('demo-'));
                 if (isDemo) return [addedSub]; 

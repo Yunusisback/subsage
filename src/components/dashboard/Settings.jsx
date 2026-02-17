@@ -237,7 +237,7 @@ const Settings = () => {
                 </div>
             </BentoCard>
 
-            {/* genel tercihler */}
+            {/* bölge ve bütçe ayarları */}
             <BentoCard glowColor="zinc" className="p-8 flex flex-col h-full items-start text-left overflow-visible">
                 <div className="flex items-center gap-3 mb-6">
                     <div className="p-2.5 rounded-xl bg-purple-100 text-purple-600 ">
@@ -269,7 +269,7 @@ const Settings = () => {
                         </div>
                     </div>
 
-                    {/* Bütçe Limiti */}
+                     {/*  aylık bütçe hedefi */}
                     <div className="space-y-1.5 z-10">
                         <label className="text-xs font-bold text-zinc-500 ml-1">Aylık Bütçe Hedefi</label>
                         <div className="relative">

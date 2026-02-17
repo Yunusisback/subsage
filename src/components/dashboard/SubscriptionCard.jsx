@@ -12,7 +12,7 @@ const SubscriptionCard = ({ sub, formatMoney }) => {
             sub.theme.border
         )}
     >
-        {/* Logo ve İsim */}
+        {/* logo ve isim */}
         <div className="flex items-start justify-between w-full mb-4 z-10">
             <div className="flex items-center gap-3">
                 <div className={cn("w-12 h-12 rounded-2xl p-2.5 flex items-center justify-center shadow-sm border transition-transform group-hover:scale-105 bg-white", sub.theme.border)}>
@@ -31,7 +31,7 @@ const SubscriptionCard = ({ sub, formatMoney }) => {
             </div>
         </div>
 
-        {/* Tarih ve Progress */}
+            {/* yenilenme barı */}           
         <div className="w-full z-10 mt-auto">
             <div className="flex justify-between items-end mb-2">
                 <span className="text-xs font-semibold text-slate-400">Yenilenme</span>

@@ -100,13 +100,13 @@ const DashboardView = () => {
     return (
         <div className="animate-in fade-in zoom-in-95 duration-500 pb-20 space-y-8 p-1">
 
-            {/* üst kısım dinamik grafikler */}
+             {/* istatistik kartları */}
             <div className="grid grid-cols-1 md:grid-cols-3 gap-5 select-none">
 
                 {/* aktif servisler  */}
                 <StatCard className="bg-linear-to-br from-indigo-500 to-purple-600 border-none text-white shadow-lg shadow-indigo-500/30">
 
-                    {/* Arkaplan */}
+                    {/* arkaplan */}
                     <div className="absolute top-0 right-0 w-32 h-32 bg-white/10 rounded-bl-[4rem] transition-all group-hover:scale-110 z-0"></div>
 
                     <div className="relative z-10 flex flex-col justify-between h-full">
@@ -125,7 +125,7 @@ const DashboardView = () => {
                             </div>
                         </div>
 
-                        {/* Avatarlar */}
+                        {/* küçük servis logoları */}
                         <div className="mt-4">
                             <div className="flex items-center">
                                 {activeSubs.slice(0, 5).map((sub, i) => (
@@ -154,7 +154,7 @@ const DashboardView = () => {
                 {/* yıllık tahmini gider  */}
                 <StatCard className="bg-linear-to-br from-emerald-400 to-teal-500 border-none text-white shadow-lg shadow-emerald-500/30">
 
-                    {/* Arkaplan */}
+                    {/* arkaplan */}
                     <div className="absolute -bottom-8 -left-8 w-40 h-40 bg-white/10 rounded-full blur-2xl group-hover:bg-white/20 transition-colors"></div>
 
                     <div className="relative z-10 flex flex-col justify-between h-full">
@@ -175,7 +175,7 @@ const DashboardView = () => {
                             </div>
                         </div>
 
-                        {/* Tasarruf İpucu */}
+                        {/* yıllık tasarruf */}
                         <div className="mt-auto bg-black/10 border border-white/10 rounded-xl p-3 flex items-start gap-3 backdrop-blur-sm">
                             <div className="mt-0.5 p-1 bg-white rounded-full text-emerald-600 shrink-0 shadow-xs">
                                 <TrendingDown size={12} strokeWidth={3} />
@@ -223,7 +223,7 @@ const DashboardView = () => {
                         </div>
                     </div>
 
-                    {/* Grafik */}
+                        {/* aylık gider grafiği */}
                     <div className="absolute -bottom-2 left-0 right-0 h-20 w-full z-10 opacity-80 group-hover:opacity-100 transition-opacity duration-500">
                         <ResponsiveContainer width="100%" height="100%">
                             <AreaChart data={chartData} margin={{ left: 0, right: 0, top: 0, bottom: 0 }}>
@@ -270,7 +270,7 @@ const DashboardView = () => {
                 </div>
             </div>
 
-            {/* İptal Edilenler */}
+            {/* iptal edilmiş abonelikler listesi  */}
             {canceledSubs.length > 0 && (
                 <div className="mt-8 lg:mt-12 bg-slate-50/50 border border-slate-200 rounded-3xl p-4 lg:p-6">
                     <div className="flex items-center gap-3 mb-6 opacity-70">
