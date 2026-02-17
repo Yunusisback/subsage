@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useUser } from "../../context/UserContext";
 import { toast } from "react-hot-toast";
-import { ArrowRight, Loader2, CheckCircle2 } from "lucide-react";
+import { ArrowRight, Loader2, Zap } from "lucide-react"; 
 import { motion, AnimatePresence } from "framer-motion";
 
 const InputField = ({ label, type, value, onChange, required, id }) => (
@@ -77,7 +77,7 @@ const AuthForm = () => {
           {/* başlık bolumu */}
           <div className="text-center mb-6">
             <h2 className="text-3xl font-bold tracking-tight text-cyan-600">
-              {isLogin ? " Hoş Geldin! " : "Hesap Oluştur"}
+              {isLogin ? "Hoş Geldin!" : "Hesap Oluştur"}
             </h2>
             <p className="text-zinc-400 mt-2 text-sm">
               {isLogin ? "Kaldığın yerden devam etmek için giriş yap." : "Aboneliklerini yönetmeye hemen başla."}
@@ -241,10 +241,46 @@ const AuthForm = () => {
             <div className="relative flex justify-center text-[10px] uppercase tracking-widest font-bold text-cyan-600"><span className="bg-white px-2">veya</span></div>
           </div>
 
-          {/* google ve apple girişi  */}
+     
+          <motion.button 
+            type="button"
+            onClick={handleGuestLogin}
+            disabled={loading}
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ 
+              opacity: 1, 
+              y: 0,
+              boxShadow: ["0 0 0px rgba(6,182,212,0)", "0 0 15px rgba(6,182,212,0.4)", "0 0 0px rgba(6,182,212,0)"]
+            }}
+            transition={{ 
+              opacity: { delay: 0.2 },
+              boxShadow: { duration: 3, repeat: Infinity, ease: "easeInOut" }
+            }}
+            whileHover={{ scale: 1.02 }}
+            whileTap={{ scale: 0.98 }}
+            className="w-full relative group mb-3 h-12 rounded-3xl text-sm font-bold flex items-center justify-center gap-3 cursor-pointer overflow-hidden border border-cyan-400/30 bg-linear-to-r from-cyan-500/5 via-cyan-400/10 to-cyan-500/5 backdrop-blur-sm"
+          >
+        
+            <div className="absolute inset-0 -translate-x-full group-hover:animate-[shimmer_1.5s_infinite] bg-linear-to-r from-transparent via-white/20 to-transparent z-0" />
+            
+            {loading ? (
+               <Loader2 size={20} className="animate-spin text-cyan-600 relative z-10" /> 
+            ) : (
+               <>
+                 <div className="p-1.5 rounded-full bg-cyan-100/50 group-hover:bg-cyan-100 transition-colors relative z-10">
+                    <Zap size={16} className="text-cyan-600 fill-cyan-600" />
+                 </div>
+                 <span className="relative z-10 text-cyan-700 group-hover:text-cyan-900 transition-colors">
+                    Misafir Modu ile Keşfet
+                 </span>
+               </>
+            )}
+          </motion.button>
+
+    
           {isLogin && (
             <motion.div 
-              className="space-y-3 mb-3"
+              className="space-y-3"
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.3 }}
@@ -275,20 +311,6 @@ const AuthForm = () => {
               </button>
             </motion.div>
           )}
-
-          {/* misafir girişi */}
-          <motion.button 
-            type="button"
-            onClick={handleGuestLogin}
-            disabled={loading}
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: isLogin ? 0.35 : 0.25 }}
-            className="w-full group bg-gray-100 border border-zinc-200 hover:border-cyan-200 hover:bg-cyan-50/50 text-cyan-800 h-10 rounded-3xl text-sm font-bold transition-all flex items-center justify-center gap-2 shadow-sm hover:shadow-md cursor-pointer"
-          >
-            {loading ? null : <CheckCircle2 size={20} className="text-cyan-500 group-hover:scale-110 transition-transform" />}
-            <span className="group-hover:text-cyan-700 transition-colors">Misafir Olarak Dene</span>
-          </motion.button>
           
           <p className="text-center text-xs text-zinc-400 mt-6 mb-4 font-medium">
             Devam ederek <a href="#" className="underline text-cyan-500 hover:text-cyan-800">Kullanım Koşulları</a>'nı kabul etmiş olursunuz.
