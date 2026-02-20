@@ -94,22 +94,22 @@ const SummaryChart = () => {
        <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
         
          {/* Toplam gider */}
-        <BentoCard className="relative overflow-hidden p-6 bg-linear-to-br from-orange-500 to-amber-600 text-white shadow-xl shadow-orange-500/20 border border-orange-400/50 group hover:shadow-orange-500/40 transition-all duration-500">
+        <BentoCard className="relative overflow-hidden p-6 bg-linear-to-br from-orange-500 to-amber-600 text-white shadow-xl  group hover:shadow-orange-300 duration-500">
             <div className="absolute top-0 right-0 w-32 h-32 bg-white/10 blur-[60px] -mr-10 -mt-10 rounded-full group-hover:bg-white/20 transition-all" />
             <div className="absolute bottom-0 left-0 w-24 h-24 bg-yellow-300/20 blur-[50px] -ml-10 -mb-10 rounded-full mix-blend-overlay" />
             
+            {/* buyuk saydam ikon */}
+            <Wallet className="absolute -right-9 top-0 w-28 h-28 text-orange-200 opacity-50  rotate-0 pointer-events-none" />
+            
             <div className="relative z-10 flex flex-col justify-between h-full">
-                <div className="flex items-center justify-between mb-4">
-                    <div className="p-2 bg-white/20 rounded-lg text-white backdrop-blur-sm border border-white/20">
-                        <Wallet size={20} />
-                    </div>
-                    <span className="text-xs font-bold text-white bg-white/20 px-2 py-1 rounded-md border border-white/20 backdrop-blur-sm">
+                <div className="flex items-center justify-end mb-4">
+                    <span className="text-xs font-bold text-white bg-orange-900 rounded-xl px-2 py-1 -mb-4 backdrop-blur-sm left-0 absolute">
                         Bu Ay
                     </span>
                 </div>
                 <div>
-                    <p className="text-sm font-bold text-orange-100 mb-1 drop-shadow-sm">Toplam Gider</p>
-                    <h3 className="text-4xl font-black text-white tracking-tight tabular-nums drop-shadow-md">
+                    <p className="text-xl font-bold text-white mb-3 drop-shadow-sm  tracking-wide">Toplam Gider</p>
+                    <h3 className="text-4xl font-black text-zinc-100/95 tracking-tight tabular-nums drop-shadow-md -mb-2">
                         {formatCurrency(totalExpenses)}
                     </h3>
                 </div>
@@ -118,41 +118,42 @@ const SummaryChart = () => {
 
 
         {/* Kart limit kullanımı */}
-        <BentoCard className="relative overflow-hidden p-6 bg-linear-to-br from-cyan-500 to-blue-600 text-white shadow-xl shadow-cyan-500/20 border border-cyan-400/50 group transition-all duration-500">
+        <BentoCard className="relative overflow-hidden p-6 bg-linear-to-br from-cyan-500 to-blue-600 text-white shadow-xl shadow-cyan-500/20  group transition-all duration-500">
 
              {/* Arka Plan  */}
              <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-40 h-40 bg-white/10 blur-[60px] rounded-full" />
              <div className="absolute top-0 right-0 w-20 h-20 bg-teal-300/20 blur-[30px] rounded-full mix-blend-overlay" />
 
+             {/* buyuk saydam ikon */}
+             <statusInfo.icon className="absolute -left-10 -top-8 w-28 h-28 text-white opacity-30 -rotate-12 pointer-events-none" />
+
              <div className="relative z-10 flex flex-col justify-between h-full">
-                <div className="flex items-center justify-between mb-4">
-                     <div className="p-2 rounded-lg bg-white/20 backdrop-blur-md shadow-inner text-white border border-white/20">
-                        <statusInfo.icon size={20} />
-                    </div>
+                <div className="flex items-center justify-end mb-4">
+
                     {/* Status */}
-                    <span className="text-xs font-bold px-2 py-1 rounded-md border bg-white/20 backdrop-blur-md border-white/20 text-white">
+                    <span className="text-xs font-bold px-2 py-1 rounded-xl bg-blue-400 backdrop-blur-md border-white/20 text-white">
                         {statusInfo.text}
                     </span>
                 </div>
 
                 <div className="w-full">
                     <div className="flex justify-between items-end mb-2">
-                        <p className="text-sm font-bold text-cyan-100 drop-shadow-sm">Limit Kullanımı</p>
-                        <p className="text-lg font-black text-white drop-shadow-md">{Math.round(limitPercentage)}%</p>
+                        <p className="text-xl font-bold text-white drop-shadow-sm tracking-wide">Limit Kullanımı</p>
+                        <p className="text-xl text-white drop-shadow-md">{Math.round(limitPercentage)}%</p>
                     </div>
                     
                     {/* progress bar */}
                     <div className="h-3 w-full bg-black/20 rounded-full p-0.5 border border-white/10">
                         <div 
-                            className="h-full rounded-full bg-white shadow-[0_0_10px_rgba(255,255,255,0.5)] relative transition-all duration-1000 ease-out"
+                            className="h-full rounded-full bg-white shadow-[0_0_20px_7px_rgba(255,255,255,1)] relative transition-all duration-1000 ease-out"
                             style={{ width: `${limitPercentage}%` }}
                         >
                              {/* Işıltı efekti */}
-                             <div className="absolute inset-0 bg-white/50 animate-pulse" />
+                             <div className="absolute inset-0 bg-white/50 animate-ping" />
                         </div>
                     </div>
                     
-                    <div className="flex justify-between mt-2 text-[10px] font-bold text-cyan-100/70">
+                    <div className="flex justify-between mt-2 text-[16px] font-bold text-white">
                         <span>0₺</span>
                         <span>{formatCurrency(monthlyLimit)}</span>
                     </div>
@@ -162,23 +163,23 @@ const SummaryChart = () => {
 
 
          {/* Kalan Bütçe */}
-        <BentoCard className="relative overflow-hidden p-6 bg-linear-to-br from-lime-400 to-emerald-500 text-white shadow-xl shadow-lime-500/20 border border-lime-300/50">
+        <BentoCard className="relative overflow-hidden p-6 bg-linear-to-br to-lime-500 from-emerald-800 text-white shadow-xl shadow-lime-500/20 border border-lime-300/50">
              <div className="absolute top-0 right-0 w-64 h-64 bg-yellow-300/30 blur-[70px] rounded-full mix-blend-overlay" />
              <div className="absolute bottom-0 left-0 w-40 h-40 bg-teal-100/20 blur-[50px] rounded-full mix-blend-overlay" />
-             <Sparkles className="absolute top-4 right-4 text-lime-100 opacity-50" size={24} />
+            
+
+             {/* buyuk saydam ikon */}
+             <Activity className="absolute -right-11 -top-3 w-45 h-40 text-white opacity-30 -rotate-12 pointer-events-none" />
 
              <div className="relative z-10 flex flex-col justify-between h-full">
-                <div className="flex items-center justify-between mb-4">
-                    <div className="p-2 bg-white/20 rounded-lg text-white border border-white/20 backdrop-blur-sm shadow-inner">
-                        <Activity size={20} />
-                    </div>
-                    <div className={cn("flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-bold border backdrop-blur-md shadow-sm", remainingBudget > 0 ? "bg-white/20 border-white/20 text-white" : "bg-red-500/40 border-red-200/40 text-white")}>
-                         {remainingBudget > 0 ? "Güvendesin" : "Eksi Bakiye"}
+                <div className="flex items-center justify-end mb-4 mr-62">
+                    <div className={cn("flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-bold backdrop-blur-md shadow-sm", remainingBudget > 0 ? "bg-green-900 text-white" : "bg-red-500/40 border-red-200/40 text-white")}>
+                         {remainingBudget > 0 ? "Güvendesin" : "Eksi Bakiye"} 
                     </div>
                 </div>
                 
                 <div>
-                    <p className="text-sm font-bold text-lime-100 mb-1 drop-shadow-sm">Kalan Bütçe</p>
+                    <p className="text-xm font-bold text-white mb-4 drop-shadow-sm tracking-wider">Kalan Bütçe</p>
                     <h3 className="text-4xl font-black text-white tracking-tight tabular-nums drop-shadow-md">
                         {formatCurrency(remainingBudget)}
                     </h3>

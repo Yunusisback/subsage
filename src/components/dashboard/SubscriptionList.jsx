@@ -383,7 +383,7 @@ const SubscriptionList = () => {
 
                                             {!isInactive && (
                                                 <button
-                                                    className="w-8 h-8 flex cursor-pointer items-center justify-center rounded-full transition-all border bg-white border-slate-300 text-slate-500 hover:bg-cyan-800 hover:text-cyan-100 hover:border-cyan-700"
+                                                    className="w-8 h-8 flex cursor-pointer items-center justify-center rounded-full transition-all border bg-emerald-500 hover:scale-110 border-slate-300 text-white hover:bg-emerald-800 hover:text-cyan-100 hover:border-cyan-700"
                                                     onClick={(e) => handleEditClick(e, sub)}
                                                     title="Düzenle"
                                                 >
@@ -407,9 +407,9 @@ const SubscriptionList = () => {
 
                                                 <button
                                                     className={cn(
-                                                        "w-8 h-8 flex cursor-pointer items-center justify-center rounded-full transition-all border",
-                                                        "bg-white border-slate-300 text-slate-500",
-                                                        "hover:bg-red-500 hover:text-red-100 hover:border-red-200",
+                                                        "w-8 h-8 flex cursor-pointer hover:scale-110 items-center justify-center rounded-full transition-all ",
+                                                        "bg-red-600 border-slate-300 text-white",
+                                                        "hover:bg-red-800 hover:text-red-100 hover:border-red-900",
                                                         isCanceling && "opacity-70 cursor-not-allowed"
                                                     )}
                                                     onClick={(e) => !isCanceling && handleCancel(e, sub.id)}
@@ -470,7 +470,7 @@ const SubscriptionList = () => {
 +     <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" />
 + </svg>
                                 <h3 className="text-red-700 font-bold text-lg">
-                                    {viewFilter === 'active' ? 'Aktif abonelik bulunamadı' : 'Geçmiş abonelik bulunamadı'}
+                                         {viewFilter === 'active' ? 'Aktif abonelik bulunamadı' : 'Geçmiş abonelik bulunamadı'}
                                 </h3>
                                 <p className="text-red-900 text-sm mb-6 max-w-xs mx-auto">
                                     {viewFilter === 'active'
@@ -509,6 +509,7 @@ const SubscriptionList = () => {
                 isOpen={!!deletingId}
                 onClose={() => setDeletingId(null)}
                 title="Kaydı Sil"
+                variant="danger"
             >
                 <div className="p-1">
                     <div className="bg-red-50 border border-red-100 rounded-xl p-4 flex gap-4 mb-6">

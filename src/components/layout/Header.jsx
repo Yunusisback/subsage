@@ -5,6 +5,7 @@ import { useUser } from "../../context/UserContext";
 import { motion, AnimatePresence } from "framer-motion";
 import { cn } from "../../utils/helpers";
 import { useLocation, useNavigate } from "react-router-dom";
+
 const Header = ({ onOpenMobileMenu }) => {
 
     const { notifications } = useUI();
@@ -18,6 +19,10 @@ const Header = ({ onOpenMobileMenu }) => {
 
     // Okunmamış bildirim sayısı
     const unreadCount = notifications.filter(n => !n.read).length;
+
+ 
+    const avatarInitial = userSettings.name?.charAt(0)?.toUpperCase() || "?";
+    const hasAvatar = !!userSettings.avatar;
 
     useEffect(() => {
         function handleClickOutside(event) {
@@ -67,13 +72,14 @@ const Header = ({ onOpenMobileMenu }) => {
                 >
                     <Menu size={24} />
                 </button>
-                <h1 className="text-2xl md:text-3xl pl-1 md:pl-3 font-bold tracking-tight text-cyan-700 truncate">
-                    {currentTitle}
-                </h1>
+ <h1 className="text-2xl md:text-3xl pl-1 md:pl-3 font-bold tracking-[0.055em]! text-cyan-700 truncate">
+    {currentTitle}
+</h1>
             </div>
 
             {/* Bildirim ve Profil */}
             <div className="flex items-center  gap-3 md:gap-4 pr-0 md:pr-2">
+                
                 {/* Bildirim */}
                 <div className="relative" ref={notificationRef}>
                     <button
@@ -182,11 +188,25 @@ const Header = ({ onOpenMobileMenu }) => {
                     className="flex items-center gap-2 pl-1.5 md:pl-2.5 pr-1.5 md:pr-4 py-1.5 md:py-2 rounded-full ring-2 ring-gray-300 bg-gray-200 border border-gray-100 hover:bg-gray-100 hover:border-gray-100 transition-all group cursor-pointer shadow-sm"
                 >
                     <div className="w-8 h-8 md:w-10 md:h-10 min-w-8 md:min-w-9 rounded-full bg-zinc-100 flex items-center justify-center overflow-hidden">
-                        <img
-                            src={userSettings.avatar}
-                            alt="User"
-                            className="w-full h-full object-cover opacity-100 group-hover:opacity-100 transition-opacity"
-                        />
+                        {hasAvatar ? (
+                            <img
+                                src={userSettings.avatar}
+                                alt="User"
+                                className="w-full h-full object-cover opacity-100 group-hover:opacity-100 transition-opacity"
+                                onError={(e) => {
+                                 
+                                    e.target.style.display = "none";
+                                    e.target.nextSibling.style.display = "flex";
+                                }}
+                            />
+                        ) : null}
+                   
+                        <span
+                            className="w-full h-full flex items-center justify-center text-sm font-bold text-cyan-700 bg-cyan-100"
+                            style={{ display: hasAvatar ? "none" : "flex" }}
+                        >
+                            {avatarInitial}
+                        </span>
                     </div>
                     <div className="text-left hidden md:block">
                         <h4 className="text-m font-bold text-cyan-600 group-hover:text-cyan-800 transition-colors">

@@ -4,8 +4,9 @@ import { toast } from "react-hot-toast";
 import { ArrowRight, Loader2, Zap } from "lucide-react"; 
 import { motion, AnimatePresence } from "framer-motion";
 
+
 const InputField = ({ label, type, value, onChange, required, id }) => (
-  <div className="relative z-0 w-full mb-3 group">
+  <div className="relative w-full mb-3 group">
     <input
       required={required}
       type={type}
@@ -13,12 +14,14 @@ const InputField = ({ label, type, value, onChange, required, id }) => (
       name={id}
       value={value}
       onChange={onChange}
-      className="block py-2.5 px-0 w-full text-sm text-zinc-900 bg-transparent border-0 border-b-2 border-zinc-300 appearance-none focus:outline-none focus:ring-0 focus:border-cyan-600 peer transition-colors"
+      className="block w-full px-4 pt-4 pb-2 text-sm text-zinc-900 bg-white rounded-xl border-2 border-zinc-200 appearance-none focus:outline-none focus:border-cyan-500 group-hover:border-zinc-300 peer transition-all duration-200"
       placeholder=" "
     />
     <label
       htmlFor={id}
-      className="absolute text-sm text-zinc-500 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-left peer-focus:start-0 peer-focus:text-cyan-600 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
+      className="absolute left-3 px-1 text-sm text-zinc-400 bg-white duration-200 transform -translate-y-3 scale-75 top-0 origin-left z-10
+                 peer-focus:-translate-y-3 peer-focus:scale-75 peer-focus:text-cyan-600 peer-focus:top-0
+                 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-placeholder-shown:top-3.5"
     >
       {label}
     </label>
@@ -143,7 +146,7 @@ const AuthForm = () => {
                 transition={{ delay: isLogin ? 0.1 : 0.15 }}
               >
                 <InputField 
-                  label="E-mail Adresi"
+                  label="E-mail"
                   type="email"
                   id="floating_email"
                   value={formData.email}
@@ -152,8 +155,9 @@ const AuthForm = () => {
                 />
               </motion.div>
 
+            
               <motion.div 
-                className="relative z-0 w-full mb-3 group"
+                className="relative w-full mb-3 group"
                 initial={{ opacity: 0, y: -10 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: isLogin ? 0.15 : 0.2 }}
@@ -165,17 +169,19 @@ const AuthForm = () => {
                   name="floating_password"
                   value={formData.password}
                   onChange={(e) => setFormData({...formData, password: e.target.value})}
-                  className="block py-2.5 px-0 w-full text-sm text-zinc-900 bg-transparent border-0 border-b-2 border-zinc-300 appearance-none focus:outline-none focus:ring-0 focus:border-cyan-600 peer transition-colors"
+                  className="block w-full px-4 pt-4 pb-2 text-sm text-zinc-900 bg-white rounded-xl border-2 border-zinc-200 appearance-none focus:outline-none focus:border-cyan-500 group-hover:border-zinc-300 peer transition-all duration-200"
                   placeholder=" "
                 />
                 <label 
                   htmlFor="floating_password"
-                  className="absolute text-sm text-zinc-500 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-left peer-focus:start-0 peer-focus:text-cyan-600 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
+                  className="absolute left-3 px-1 text-sm text-zinc-400 bg-white duration-200 transform -translate-y-3 scale-75 top-0 origin-left z-10
+                             peer-focus:-translate-y-3 peer-focus:scale-75 peer-focus:text-cyan-600 peer-focus:top-0
+                             peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-placeholder-shown:top-3.5"
                 >
                   Şifre
                 </label>
                 {isLogin && (
-                  <a href="#" className="absolute right-0 top-0 text-xs font-semibold text-cyan-500 hover:text-cyan-700 transition-colors">
+                  <a href="#" className="absolute right-3 top-3.5 text-xs font-semibold text-cyan-500 hover:text-cyan-700 transition-colors z-10">
                     Şifremi unuttum?
                   </a>
                 )}
@@ -267,10 +273,10 @@ const AuthForm = () => {
                <Loader2 size={20} className="animate-spin text-cyan-600 relative z-10" /> 
             ) : (
                <>
-                 <div className="p-1.5 rounded-full bg-cyan-100/50 group-hover:bg-cyan-100 transition-colors relative z-10">
-                    <Zap size={16} className="text-cyan-600 fill-cyan-600" />
+                 <div className="p-1.5 rounded-full  transition-colors relative z-10">
+                    <Zap size={20} className="text-cyan-700 fill-cyan-700" />
                  </div>
-                 <span className="relative z-10 text-cyan-700 group-hover:text-cyan-900 transition-colors">
+                 <span className="relative z-10 text-cyan-800 group-hover:text-cyan-900 transition-colors">
                     Misafir Modu ile Keşfet
                  </span>
                </>

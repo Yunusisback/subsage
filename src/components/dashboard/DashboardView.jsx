@@ -252,7 +252,7 @@ const DashboardView = () => {
             <div>
                 <div className="flex items-center justify-between mb-4 lg:mb-6 px-1">
                     <div>
-                        <h2 className="text-xl lg:text-2xl font-bold text-cyan-700 flex items-center gap-2 select-none">
+                        <h2 className="text-xl lg:text-2xl font-bold text-cyan-700 flex items-center gap-2 select-none tracking-[0.055em]!">
                             Aboneliklerim
                         </h2>
                     </div>

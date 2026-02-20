@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useMemo } from "react";
 import { 
     Plus, Wifi, 
     Lock, FileText, Shield, Settings, 
@@ -14,10 +14,20 @@ import { useUser } from "../../context/UserContext";
 import { useData } from "../../context/DataContext"; 
 import { motion, AnimatePresence } from "framer-motion";
 
+const CHART_COLORS = ['#f97316', '#06b6d4', '#84cc16', '#eab308', '#ec4899', '#8b5cf6'];
+
+
+const hexToRgba = (hex, alpha) => {
+    const r = parseInt(hex.slice(1, 3), 16);
+    const g = parseInt(hex.slice(3, 5), 16);
+    const b = parseInt(hex.slice(5, 7), 16);
+    return `rgba(${r}, ${g}, ${b}, ${alpha})`;
+};
+
 const WalletView = () => {
   
   
-  const { transactions } = useData();
+  const { transactions, subscriptions } = useData();
   const { userSettings, spendingLimit, updateSpendingLimit } = useUser();
   
   const [isExpanded, setIsExpanded] = useState(false);
@@ -114,6 +124,30 @@ const WalletView = () => {
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
+  };
+
+  const categoryData = useMemo(() => {
+    if (!subscriptions) return [];
+    return subscriptions.reduce((acc, sub) => {
+      if(sub.status !== 'active') return acc;
+      const found = acc.find(c => c.name === sub.category);
+      if (found) {
+        found.value += parseFloat(sub.price);
+        found.count += 1;
+      } else {
+        acc.push({ name: sub.category, value: parseFloat(sub.price), count: 1 });
+      }
+      return acc;
+    }, []);
+  }, [subscriptions]);
+
+  const getCategoryColor = (categoryName) => {
+    if (!categoryName) return '#94a3b8'; 
+    const index = categoryData.findIndex(c => c.name === categoryName);
+    if (index !== -1) {
+        return CHART_COLORS[index % CHART_COLORS.length];
+    }
+    return '#94a3b8'; 
   };
 
   return (
@@ -378,10 +412,24 @@ const WalletView = () => {
                                             </td>
                                             
                                             <td className="px-6 py-4 hidden sm:table-cell">
-                                                <span className="inline-flex items-center gap-1.5 text-[11px] font-bold px-3 py-1.5 rounded-full border bg-white border-slate-200 text-slate-600 shadow-sm group-hover:border-cyan-100 group-hover:bg-cyan-50/50 group-hover:text-cyan-600 transition-colors">
-                                                    <span className="w-1.5 h-1.5 rounded-full bg-slate-300 group-hover:bg-cyan-400 transition-colors"></span>
-                                                    {tx.category || "Genel"}
-                                                </span>
+                                                {(() => {
+                                                    const colorHex = getCategoryColor(tx.category);
+                                                    return (
+                                                        <span 
+                                                            className="inline-flex items-center gap-1.5 text-[11px] font-bold px-3 py-1.5 rounded-full shadow-sm"
+                                                            style={{ 
+                                                                backgroundColor: hexToRgba(colorHex, 0.9),
+                                                                color: '#ffffff'
+                                                            }}
+                                                        >
+                                                            <span 
+                                                                className="w-1.5 h-1.5 rounded-full shadow-xs" 
+                                                                style={{ backgroundColor: '#ffffff' }}
+                                                            ></span>
+                                                            {tx.category || "Genel"}
+                                                        </span>
+                                                    );
+                                                })()}
                                             </td>
 
                                             <td className="px-6 py-4 text-xs font-semibold text-slate-500 hidden md:table-cell">
