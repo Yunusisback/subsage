@@ -20,13 +20,13 @@ const formatMoneyClean = (amount) => {
 
 // Kalan gün hesaplama fonksiyonu
 const calculateDaysLeft = (startDateStr) => {
-    if (!startDateStr) return 30; 
+    if (!startDateStr) return 30;
 
     const today = new Date();
     const start = new Date(startDateStr);
-    const billingDay = start.getDate(); 
+    const billingDay = start.getDate();
 
-   
+
     let nextBilling = new Date(today.getFullYear(), today.getMonth(), billingDay);
 
     // Eğer bu ayın fatura günü geçtiyse bir sonraki aya geç
@@ -34,7 +34,7 @@ const calculateDaysLeft = (startDateStr) => {
         nextBilling.setMonth(nextBilling.getMonth() + 1);
     }
 
-    
+
     const diffTime = Math.abs(nextBilling - today);
     const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
 
@@ -42,11 +42,11 @@ const calculateDaysLeft = (startDateStr) => {
 };
 
 const DashboardView = () => {
-   
+
     const { totalExpenses, subscriptions } = useData();
     const navigate = useNavigate();
 
-   
+
     const {
         activeSubs,
         canceledSubs,
@@ -69,10 +69,10 @@ const DashboardView = () => {
     const enhancedSubscriptions = useMemo(() => {
         return activeSubs.map(sub => {
 
-            
+
             const daysLeft = calculateDaysLeft(sub.startDate);
 
-            
+
             const progressValue = Math.min(100, Math.max(0, (daysLeft / 30) * 100));
 
             let themeKey = "dark";
@@ -90,7 +90,7 @@ const DashboardView = () => {
 
             return {
                 ...sub,
-                daysLeft: daysLeft, 
+                daysLeft: daysLeft,
                 progress: progressValue,
                 theme: THEMES[themeKey] || THEMES.dark
             };
@@ -98,13 +98,13 @@ const DashboardView = () => {
     }, [activeSubs]);
 
     return (
-        <div className="animate-in fade-in zoom-in-95 duration-500 pb-20 space-y-8 p-1">
+        <div className="animate-in fade-in zoom-in-95 duration-300 pb-20 space-y-8 p-1">
 
-             {/* istatistik kartları */}
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-5 select-none">
+            {/* istatistik kartları */}
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-5 select-none ">
 
                 {/* aktif servisler  */}
-                <StatCard className="bg-linear-to-br from-indigo-500 to-purple-600 border-none text-white shadow-lg shadow-indigo-500/30">
+                <StatCard className="bg-linear-to-br from-zinc-900 to-fuchsia-600 text-white">
 
                     {/* arkaplan */}
                     <div className="absolute top-0 right-0 w-32 h-32 bg-white/10 rounded-bl-[4rem] transition-all group-hover:scale-110 z-0"></div>
@@ -112,16 +112,16 @@ const DashboardView = () => {
                     <div className="relative z-10 flex flex-col justify-between h-full">
                         <div className="flex justify-between items-start">
                             <div>
-                                <h3 className="text-white font-bold text-xm tracking-wide mb-2">AKTİF SERVİSLER</h3>
+                                <h3 className="text-white font-bold text-xm tracking-widest mb-2">AKTİF SERVİSLER</h3>
                                 <div className="flex items-baseline gap-1.5">
                                     <span className="text-5xl font-black text-white tracking-tighter">
                                         {activeSubs.length}
                                     </span>
-                                    <span className="text-lg font-semibold text-indigo-200">adet</span>
+                                    <span className="text-lg font-semibold text-fuchsia-200">adet</span>
                                 </div>
                             </div>
-                            <div className="p-3 bg-white/20 text-white rounded-2xl shadow-sm border border-white/10 group-hover:bg-white group-hover:text-indigo-600 transition-colors duration-300">
-                                <Layers size={22} strokeWidth={2} />
+                            <div className="p-3 bg-white/20 text-white rounded-3xl shadow-sm group-hover:bg-white group-hover:text-fuchsia-600 transition-colors duration-300">
+                                <Layers size={25} strokeWidth={2} />
                             </div>
                         </div>
 
@@ -130,7 +130,7 @@ const DashboardView = () => {
                             <div className="flex items-center">
                                 {activeSubs.slice(0, 5).map((sub, i) => (
                                     <div key={i}
-                                        className="w-11 h-11 rounded-full   bg-white shadow-sm -ml-3 first:ml-0 relative z-0 hover:z-10 hover:scale-110 transition-transform cursor-pointer"
+                                        className="w-11 h-11 rounded-full bg-white shadow-sm -ml-3 first:ml-0 relative z-0 hover:z-10 hover:scale-110 transition-transform cursor-pointer"
                                         style={{ zIndex: 10 - i }}
                                     >
                                         <img
@@ -142,7 +142,7 @@ const DashboardView = () => {
                                     </div>
                                 ))}
                                 {activeSubs.length > 5 && (
-                                    <div className="w-11 h-11 rounded-full border-[3px] border-indigo-500 bg-indigo-800 -ml-3 z-0 flex items-center justify-center text-xs font-bold text-white">
+                                    <div className="w-11 h-11 rounded-full border-[3px] border-fuchsia-500 bg-fuchsia-800 -ml-3 z-0 flex items-center justify-center text-xs font-bold text-white">
                                         +{activeSubs.length - 5}
                                     </div>
                                 )}
@@ -152,35 +152,35 @@ const DashboardView = () => {
                 </StatCard>
 
                 {/* yıllık tahmini gider  */}
-                <StatCard className="bg-linear-to-br from-emerald-400 to-teal-500 border-none text-white shadow-lg shadow-emerald-500/30">
+                <StatCard className="bg-linear-to-br from-zinc-800 to-cyan-400 border-none text-white shadow-lg shadow-cyan-500/20">
 
                     {/* arkaplan */}
-                    <div className="absolute -bottom-8 -left-8 w-40 h-40 bg-white/10 rounded-full blur-2xl group-hover:bg-white/20 transition-colors"></div>
+                    <div className="absolute top-0 right-0 w-30 h-29 bg-white/10 rounded-bl-[4rem] transition-all group-hover:scale-110 z-0"></div>
 
                     <div className="relative z-10 flex flex-col justify-between h-full">
                         <div className="flex justify-between items-start">
                             <div>
-                                <h3 className="text-white font-bold text-Xm tracking-wide mb-2 flex items-center gap-1">
+                                <h3 className="text-white font-bold text-Xm tracking-widest mb-2 flex items-center gap-1">
                                     YILLIK TAHMİNİ GİDER
                                 </h3>
                                 <div className="flex items-baseline gap-1">
                                     <span className="text-4xl lg:text-5xl font-black text-white tracking-tighter">
                                         {formatMoneyClean(yearlyProjection)}
                                     </span>
-                                    <span className="text-xl font-bold text-emerald-200">₺</span>
+                                    <span className="text-2xl font-bold text-cyan-200">₺</span>
                                 </div>
                             </div>
-                            <div className="p-3 bg-white/20 text-white rounded-2xl shadow-sm border border-white/10 group-hover:bg-white group-hover:text-emerald-600 transition-colors duration-300">
-                                <CalendarClock size={22} strokeWidth={2} />
+                            <div className="p-3 bg-white/20 text-white rounded-3xl shadow-sm border border-white/10 group-hover:bg-white group-hover:text-cyan-500 transition-colors duration-300">
+                                <CalendarClock size={23} strokeWidth={2} />
                             </div>
                         </div>
 
                         {/* yıllık tasarruf */}
-                        <div className="mt-auto bg-black/10 border border-white/10 rounded-xl p-3 flex items-start gap-3 backdrop-blur-sm">
-                            <div className="mt-0.5 p-1 bg-white rounded-full text-emerald-600 shrink-0 shadow-xs">
-                                <TrendingDown size={12} strokeWidth={3} />
+                        <div className="mt-auto bg-zinc-700/60 border border-white/10 rounded-3xl p-3 flex items-start gap-3 backdrop-blur-sm">
+                            <div className="mt-0.5 p-1 bg-white rounded-full text-cyan-600 shrink-0 shadow-xs">
+                                <TrendingDown size={15} strokeWidth={3} />
                             </div>
-                            <p className="text-xs font-semibold text-emerald-50 leading-relaxed line-clamp-2">
+                            <p className="text-xs font-semibold text-white leading-relaxed line-clamp-2 tracking-wide">
                                 {yearlySavingsTip}
                             </p>
                         </div>
@@ -188,18 +188,22 @@ const DashboardView = () => {
                 </StatCard>
 
                 {/* aylık toplam */}
-               
-                <StatCard className="flex flex-col p-0 bg-linear-to-br from-rose-500 to-pink-600 border-none text-white shadow-lg shadow-rose-500/30">
+
+                <StatCard className="flex flex-col p-0 bg-linear-to-br from-zinc-900 to-red-400 border-none text-white shadow-lg shadow-red-500/20">
                     <div className="p-6 pb-0 relative z-20 flex justify-between items-start">
+
+
+                        <div className="absolute top-0 right-0 w-30 h-28 bg-white/10 rounded-bl-[4rem] transition-all group-hover:scale-110 z-0"></div>
+
                         <div>
-                            <h3 className="text-white font-bold text-xm tracking-wide mb-2"> AYLIK TOPLAM</h3>
-                            
+                            <h3 className="text-white font-bold text-xm tracking-widest mb-2"> AYLIK TOPLAM</h3>
+
                             <div className="flex items-center gap-3">
                                 <div className="flex items-baseline gap-1">
                                     <span className="text-4xl lg:text-5xl font-black text-white tracking-tighter">
                                         {formatMoneyClean(totalExpenses)}
                                     </span>
-                                    <span className="text-xl font-bold text-rose-200">₺</span>
+                                    <span className="text-2xl font-bold text-red-300">₺</span>
                                 </div>
 
                                 {/* büyüme yüzdesi */}
@@ -208,7 +212,7 @@ const DashboardView = () => {
                                         "inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-bold border",
                                         growthPercentage > 0
                                             ? "bg-white/20 text-white border-white/20"
-                                            : "bg-gray-100 text-green-600 border-green-200"
+                                            : "bg-white/20 text-white border-white/20"
                                     )}>
                                         {growthPercentage > 0 ? <TrendingUp size={12} /> : <TrendingDown size={12} />}
                                         <span>{Math.abs(growthPercentage)}%</span>
@@ -218,28 +222,31 @@ const DashboardView = () => {
                             </div>
                         </div>
 
-                        <div className="p-3 bg-white/20 text-white rounded-2xl shadow-sm border border-white/10 group-hover:bg-white group-hover:text-rose-600 transition-colors duration-300">
-                            <Wallet size={22} strokeWidth={2} />
+                        <div className="p-3 bg-white/20 text-white rounded-3xl shadow-sm border border-white/10 group-hover:bg-white group-hover:text-red-500 transition-colors duration-300">
+                            <Wallet size={24} strokeWidth={2} />
                         </div>
                     </div>
 
-                        {/* aylık gider grafiği */}
+                    {/* aylık gider grafiği */}
                     <div className="absolute -bottom-2 left-0 right-0 h-20 w-full z-10 opacity-80 group-hover:opacity-100 transition-opacity duration-500">
                         <ResponsiveContainer width="100%" height="100%">
                             <AreaChart data={chartData} margin={{ left: 0, right: 0, top: 0, bottom: 0 }}>
                                 <defs>
                                     <linearGradient id="colorSpendWhite" x1="0" y1="0" x2="0" y2="1">
-                                        <stop offset="5%" stopColor="#ffffff" stopOpacity={0.4} />
-                                        <stop offset="95%" stopColor="#ffffff" stopOpacity={1} />
+                                        <stop offset="0%" stopColor="#ffffff" stopOpacity={1} />
+                                        <stop offset="100%" stopColor="#ef4444" stopOpacity={0} />
                                     </linearGradient>
                                 </defs>
                                 <Area
-                                    type="linear"
+                                    type="monotone"
                                     dataKey="displayValue"
                                     stroke="#ffffff"
-                                    strokeWidth={3}
+                                    strokeWidth={2.5}
                                     fill="url(#colorSpendWhite)"
-                                    fillOpacity={0.8}
+                                    fillOpacity={1}
+                                    style={{
+                                        filter: "drop-shadow(0 0 4px rgba(255, 255, 255, 1.8))",
+                                    }}
                                 />
                             </AreaChart>
                         </ResponsiveContainer>
@@ -261,10 +268,10 @@ const DashboardView = () => {
 
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 lg:gap-5">
                     {enhancedSubscriptions.map((sub) => (
-                        <SubscriptionCard 
-                            key={sub.id} 
-                            sub={sub} 
-                            formatMoney={formatMoneyClean} 
+                        <SubscriptionCard
+                            key={sub.id}
+                            sub={sub}
+                            formatMoney={formatMoneyClean}
                         />
                     ))}
                 </div>

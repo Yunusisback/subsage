@@ -20,7 +20,7 @@ const Header = ({ onOpenMobileMenu }) => {
     // Okunmamış bildirim sayısı
     const unreadCount = notifications.filter(n => !n.read).length;
 
- 
+
     const avatarInitial = userSettings.name?.charAt(0)?.toUpperCase() || "?";
     const hasAvatar = !!userSettings.avatar;
 
@@ -64,33 +64,35 @@ const Header = ({ onOpenMobileMenu }) => {
 
     return (
         <header className="relative z-30 mb-6 md:mb-8 flex justify-between items-center h-16 animate-in fade-in slide-in-from-top-4 duration-500">
+
             {/* Başlık ve Mobil Menü */}
             <div className="flex items-center gap-3">
                 <button
                     onClick={onOpenMobileMenu}
-                    className="p-2 -ml-2 rounded-xl text-zinc-500 hover:bg-zinc-100 lg:hidden"
+                    className="p-2 -ml-2 rounded-xl text-cyan-800 hover:bg-cyan-700 hover:text-cyan-50 lg:hidden transition-colors"
                 >
                     <Menu size={24} />
                 </button>
- <h1 className="text-2xl md:text-3xl pl-1 md:pl-3 font-bold tracking-[0.055em]! text-cyan-700 truncate">
-    {currentTitle}
-</h1>
+                <h1 className="text-2xl md:text-3xl pl-1 md:pl-3 font-bold tracking-[0.055em]! text-cyan-800 truncate">
+                    {currentTitle}
+                </h1>
             </div>
 
             {/* Bildirim ve Profil */}
-            <div className="flex items-center  gap-3 md:gap-4 pr-0 md:pr-2">
-                
+            <div className="flex items-center  gap-3 md:gap-4 pr-0 md:pr-2 ">
+
                 {/* Bildirim */}
                 <div className="relative" ref={notificationRef}>
                     <button
                         onClick={() => setShowNotifications(!showNotifications)}
-                        className="p-2.5 ring-2 ring-gray-300 md:p-3.5 rounded-3xl bg-gray-200 hover:bg-zinc-50 text-cyan-600 hover:text-cyan-800 transition-colors relative cursor-pointer shadow-sm"
+                        className="p-2.5 ring-2 ring-cyan-600 md:p-3.5 rounded-3xl bg-cyan-700 hover:bg-cyan-600 text-cyan-50 transition-colors relative cursor-pointer shadow-sm "
                     >
                         <Bell size={22} className="md:w-6 md:h-6" />
                         {unreadCount > 0 && (
-                            <span className="absolute top-1.5 right-2.5 w-3 h-3 rounded-full bg-red-500 border-2 border-white animate-ping"></span>
+                            <span className="absolute -top-2 right-1.5 w-3 h-3 rounded-full bg-red-500 border-2 border-white animate-ping"></span>
                         )}
                     </button>
+                    
                     {/* Menü */}
                     <AnimatePresence>
                         {showNotifications && (
@@ -104,7 +106,7 @@ const Header = ({ onOpenMobileMenu }) => {
                                 <div className="p-4 border-b border-zinc-100 flex justify-between items-center bg-zinc-50/30 backdrop-blur-md">
                                     <span className="text-sm font-bold text-zinc-900">Bildirimler</span>
                                     {unreadCount > 0 ? (
-                                        <span className="text-[10px] bg-cyan-100 text-cyan-700 px-2 py-0.5 rounded-full font-bold border border-cyan-200 shadow-sm">{unreadCount} Yeni</span>
+                                        <span className="text-[10px] bg-cyan-700 text-cyan-50 px-2 py-0.5 rounded-full font-bold border border-cyan-800 shadow-sm">{unreadCount} Yeni</span>
                                     ) : (
                                         <span className="text-[10px] bg-zinc-100 text-zinc-500 px-2 py-0.5 rounded-full font-bold">Hepsi Okundu</span>
                                     )}
@@ -185,31 +187,31 @@ const Header = ({ onOpenMobileMenu }) => {
                 {/* Profil Bölümü */}
                 <button
                     onClick={() => navigate("/settings")}
-                    className="flex items-center gap-2 pl-1.5 md:pl-2.5 pr-1.5 md:pr-4 py-1.5 md:py-2 rounded-full ring-2 ring-gray-300 bg-gray-200 border border-gray-100 hover:bg-gray-100 hover:border-gray-100 transition-all group cursor-pointer shadow-sm"
+                    className="flex items-center gap-2 pl-1.5 md:pl-2.5 pr-1.5 md:pr-4 py-1.5 md:py-2 rounded-full ring-1 ring-cyan-600 bg-cyan-700 hover:bg-cyan-600 transition-all group cursor-pointer shadow-sm"
                 >
-                    <div className="w-8 h-8 md:w-10 md:h-10 min-w-8 md:min-w-9 rounded-full bg-zinc-100 flex items-center justify-center overflow-hidden">
+                    <div className="w-8 h-8 md:w-10 md:h-10 min-w-8 md:min-w-9 rounded-full bg-zinc-100 flex items-center justify-center overflow-hidden border border-cyan-600 cyan-300 ring ring-cyan-600">
                         {hasAvatar ? (
                             <img
                                 src={userSettings.avatar}
                                 alt="User"
                                 className="w-full h-full object-cover opacity-100 group-hover:opacity-100 transition-opacity"
                                 onError={(e) => {
-                                 
+
                                     e.target.style.display = "none";
                                     e.target.nextSibling.style.display = "flex";
                                 }}
                             />
                         ) : null}
-                   
+
                         <span
-                            className="w-full h-full flex items-center justify-center text-sm font-bold text-cyan-700 bg-cyan-100"
+                            className="w-full h-full flex items-center justify-center text-sm font-bold text-white bg-cyan-600"
                             style={{ display: hasAvatar ? "none" : "flex" }}
                         >
                             {avatarInitial}
                         </span>
                     </div>
                     <div className="text-left hidden md:block">
-                        <h4 className="text-m font-bold text-cyan-600 group-hover:text-cyan-800 transition-colors">
+                        <h4 className="text-m font-bold text-cyan-50 group-hover:text-white transition-colors">
                             {userSettings.name}
                         </h4>
                     </div>

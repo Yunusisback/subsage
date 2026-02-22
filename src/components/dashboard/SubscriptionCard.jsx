@@ -13,7 +13,7 @@ const SubscriptionCard = ({ sub, formatMoney }) => {
         )}
     >
         {/* logo ve isim */}
-        <div className="flex items-start justify-between w-full mb-4 z-10">
+        <div className="flex items-start justify-between w-full mb-4 z-10 tracking-wide">
             <div className="flex items-center gap-3">
                 <div className={cn("w-12 h-12 rounded-2xl p-2.5 flex items-center justify-center shadow-sm border transition-transform group-hover:scale-105 bg-white", sub.theme.border)}>
                     <img
@@ -34,7 +34,7 @@ const SubscriptionCard = ({ sub, formatMoney }) => {
             {/* yenilenme barı */}           
         <div className="w-full z-10 mt-auto">
             <div className="flex justify-between items-end mb-2">
-                <span className="text-xs font-semibold text-slate-400">Yenilenme</span>
+                <span className="text-xs font-semibold text-slate-600">Yenilenme</span>
             
                 <span className={cn("text-xs font-bold", sub.theme.subtext)}>
                     {sub.daysLeft === 0 ? "Bugün" : `${sub.daysLeft} gün kaldı`}
@@ -54,13 +54,13 @@ const SubscriptionCard = ({ sub, formatMoney }) => {
                 <CreditCard size={15} />
                 <span>Otomatik</span>
             </div>
-            <div className="text-lg lg:text-3xl font-black text-slate-900 tabular-nums tracking-tight">
-                {formatMoney(sub.price)} <span className="text-xl font-bold text-slate-600">₺</span>
+            <div className="text-lg lg:text-3xl font-black text-slate-900 tabular-nums tracking-tight ">
+                {formatMoney(sub.price)} <span className="text-xl  font-bold text-slate-600">₺</span>
             </div>
         </div>
 
         {/* arka plan glow */}
-        <div className={cn("absolute -right-10 -bottom-10 w-40 h-40 rounded-full blur-[60px] opacity-20 pointer-events-none", sub.theme.bar)}></div>
+        <div className={cn("absolute -right-10 -bottom-10 w-80 h-40 rounded-full blur-[20px] opacity-20 pointer-events-none", sub.theme.bar)}></div>
     </BentoCard>
   );
 };

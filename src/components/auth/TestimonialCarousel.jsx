@@ -2,11 +2,23 @@ import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { TESTIMONIALS } from "./testimonials";
 
+const BRANDS = [
+  "/brands/apple.svg",
+  "/brands/amazon.svg",
+  "/brands/netflix.svg",
+  "/brands/spotify.svg",
+  "/brands/youtube.svg",
+  "/brands/discord.svg",
+  "/brands/playstation.svg",
+  "/brands/xbox.svg",
+  "/brands/adobe.svg",
+  "/brands/canva.svg",
+];
+
 const TestimonialCarousel = () => {
   
   const [currentTestimonial, setCurrentTestimonial] = useState(0);
   const [direction, setDirection] = useState(0);
-
 
   useEffect(() => {
     const timer = setInterval(() => {
@@ -23,14 +35,17 @@ const TestimonialCarousel = () => {
   };
 
   return (
-    <div className="hidden lg:flex w-1/2 h-full bg-zinc-50 relative items-center justify-center p-16">
-      <div className="absolute inset-0 overflow-hidden">
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-150 h-150 bg-cyan-100 rounded-full blur-[120px] opacity-60 animate-pulse"></div>
+    <div className="hidden lg:flex flex-col justify-between w-1/2 h-full bg-zinc-50 relative p-12 lg:p-20 overflow-hidden">
+      <div className="absolute inset-0 overflow-hidden pointer-events-none">
+        <div className="absolute top-1/4 left-1/4 -translate-x-1/2 -translate-y-1/2 w-150 h-150 bg-cyan-100 rounded-full blur-[120px] opacity-60 animate-pulse"></div>
         <div className="absolute bottom-0 right-0 w-100 h-100 bg-blue-100/40 rounded-full blur-[100px] opacity-40"></div>
       </div>
 
-      <div className="relative z-10 max-w-lg w-full">
-        <div className="flex items-center gap-3 mb-10">
+     
+      <div className="relative z-10 max-w-lg w-full mt-7 ml-6">
+        
+        
+        <div className="flex items-center gap-3 mb-15">
           <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className="text-cyan-500 drop-shadow-sm">
             <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/>
           </svg>
@@ -83,23 +98,43 @@ const TestimonialCarousel = () => {
               </footer>
             </motion.div>
           </AnimatePresence>
-
-      
-          <div className="flex items-center justify-center gap-2 mt-8">
-
-         
-            {TESTIMONIALS.map((_, index) => (
-              <div
-                key={index}
-                className={`h-1.5 rounded-full transition-all duration-300 ${
-                  index === currentTestimonial 
-                    ? 'w-8 bg-cyan-500' 
-                    : 'w-1.5 bg-zinc-300'
-                }`}
-              />
-            ))}
-          </div>
         </div>
+      </div>
+
+    
+      <div className="relative w-full overflow-hidden mt-auto pb-4 opacity-60 hover:opacity-75 transition-opacity duration-300 z-10">
+     
+        <div className="absolute inset-y-0 left-0 w-24 bg-linear-to-r from-zinc-50 to-transparent z-20 pointer-events-none"></div>
+        <div className="absolute inset-y-0 right-0 w-24 bg-linear-to-l from-zinc-50 to-transparent z-20 pointer-events-none"></div>
+        
+        <motion.div
+          animate={{ x: ["0%", "-50%"] }}
+          transition={{ 
+            repeat: Infinity, 
+            ease: "linear", 
+            duration: 35 
+          }}
+          className="flex items-center w-max gap-16 pr-16"
+        >
+          {/* logolarin ilk seti */}
+          {BRANDS.map((brand, i) => (
+            <img 
+              key={`brand-1-${i}`} 
+              src={brand} 
+              alt="Sponsor Logo" 
+              className="h-8 w-auto object-contain grayscale mix-blend-multiply" 
+            />
+          ))}
+        
+          {BRANDS.map((brand, i) => (
+            <img 
+              key={`brand-2-${i}`} 
+              src={brand} 
+              alt="Sponsor Logo" 
+              className="h-8 w-auto object-contain grayscale mix-blend-multiply" 
+            />
+          ))}
+        </motion.div>
       </div>
     </div>
   );

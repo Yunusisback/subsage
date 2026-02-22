@@ -467,8 +467,8 @@ const SubscriptionList = () => {
                         {displayedSubscriptions.length === 0 && (
                             <div className="col-span-full py-24 text-center border-2 border-dashed border-slate-200 rounded-[2.5rem] bg-slate-50/50">
                             <svg className="mx-auto h-15 w-15 text-red-900/40 mb-4 animate-pulse drop-shadow-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-+     <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" />
-+ </svg>
+    <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" />
+ </svg>
                                 <h3 className="text-red-700 font-bold text-lg">
                                          {viewFilter === 'active' ? 'Aktif abonelik bulunamadı' : 'Geçmiş abonelik bulunamadı'}
                                 </h3>

@@ -33,7 +33,7 @@ const Sidebar = ({ isCollapsed, toggleSidebar, isMobileMenuOpen, closeMobileMenu
                 "h-full w-72 lg:h-[calc(100vh-32px)] lg:rounded-4xl",
                 "lg:my-4 lg:ml-4",
                 "bg-white/95 lg:bg-white/80 backdrop-blur-xl supports-backdrop-filter:bg-white/60",
-                "flex flex-col shadow-2xl shadow-zinc-300/30 ring-1 ring-black/5",
+                "flex flex-col shadow-2xl shadow-zinc-300/30 ring-1 ring-cyan-100/50",
 
 
                 isCollapsed ? "lg:w-20" : "lg:w-70",

@@ -4,7 +4,6 @@ import { toast } from "react-hot-toast";
 import { ArrowRight, Loader2, Zap } from "lucide-react"; 
 import { motion, AnimatePresence } from "framer-motion";
 
-
 const InputField = ({ label, type, value, onChange, required, id }) => (
   <div className="relative w-full mb-3 group">
     <input
@@ -14,7 +13,7 @@ const InputField = ({ label, type, value, onChange, required, id }) => (
       name={id}
       value={value}
       onChange={onChange}
-      className="block w-full px-4 pt-4 pb-2 text-sm text-zinc-900 bg-white rounded-xl border-2 border-zinc-200 appearance-none focus:outline-none focus:border-cyan-500 group-hover:border-zinc-300 peer transition-all duration-200"
+      className="block w-full px-4 py-3.5 text-sm text-zinc-900 bg-white rounded-3xl border-2 border-zinc-200 appearance-none focus:outline-none focus:border-cyan-500 group-hover:border-zinc-300 peer transition-all duration-200"
       placeholder=" "
     />
     <label
@@ -32,6 +31,7 @@ const AuthForm = () => {
   const { login, signup, loginAsGuest } = useUser();
   const [isLogin, setIsLogin] = useState(true);
   const [loading, setLoading] = useState(false);
+  const [guestLoading, setGuestLoading] = useState(false);
   
   const [formData, setFormData] = useState({
     email: "",
@@ -65,17 +65,19 @@ const AuthForm = () => {
   };
 
   const handleGuestLogin = async () => {
-      setLoading(true);
+      setGuestLoading(true);
       setTimeout(() => {
           loginAsGuest();
-          setLoading(false);
+          setGuestLoading(false);
       }, 800);
   };
 
   return (
     <div className="w-full lg:w-1/2 h-full overflow-y-auto bg-white">
-      <div className="min-h-full flex flex-col justify-start p-6 sm:p-8 lg:p-16 lg:py-12">
-        <div className="max-w-md w-full mx-auto">
+ 
+      <div className="min-h-full flex flex-col justify-start p-6 sm:p-10 lg:p-20 lg:py-12">
+    
+        <div className="max-w-sm w-full mx-auto">
           
           {/* başlık bolumu */}
           <div className="text-center mb-6">
@@ -87,27 +89,36 @@ const AuthForm = () => {
             </p>
           </div>
 
-          {/* geçiş butonları */}
+          
           <div className="flex p-1 bg-zinc-100 rounded-3xl mb-6 relative">
-            <div className="absolute inset-0 p-1 flex">
-              <motion.div 
-                layout
-                className="w-1/2 bg-white rounded-3xl shadow-sm border border-zinc-200/50"
-                initial={false}
-                animate={{ x: isLogin ? 0 : "100%" }}
-                transition={{ type: "spring", stiffness: 300, damping: 30 }}
-              />
-            </div>
             <button 
+              type="button"
               onClick={() => setIsLogin(true)}
               className={`flex-1 relative z-10 py-2 text-sm font-bold transition-colors duration-200 ${isLogin ? "text-cyan-500" : "text-zinc-500 hover:text-cyan-700"}`}
             >
+              {isLogin && (
+                <motion.div 
+                  layoutId="active-tab-indicator"
+                  className="absolute inset-0 bg-white rounded-3xl shadow-sm border border-zinc-200/50"
+                  style={{ zIndex: -1 }}
+                  transition={{ type: "spring", stiffness: 300, damping: 30 }}
+                />
+              )}
               Giriş Yap
             </button>
             <button 
+              type="button"
               onClick={() => setIsLogin(false)}
               className={`flex-1 relative z-10 py-2 text-sm font-bold transition-colors duration-200 ${!isLogin ? "text-cyan-500" : "text-zinc-500 hover:text-cyan-700"}`}
             >
+              {!isLogin && (
+                <motion.div 
+                  layoutId="active-tab-indicator"
+                  className="absolute inset-0 bg-white rounded-3xl shadow-sm border border-zinc-200/50"
+                  style={{ zIndex: -1 }}
+                  transition={{ type: "spring", stiffness: 300, damping: 30 }}
+                />
+              )}
               Kayıt Ol
             </button>
           </div>
@@ -169,7 +180,7 @@ const AuthForm = () => {
                   name="floating_password"
                   value={formData.password}
                   onChange={(e) => setFormData({...formData, password: e.target.value})}
-                  className="block w-full px-4 pt-4 pb-2 text-sm text-zinc-900 bg-white rounded-xl border-2 border-zinc-200 appearance-none focus:outline-none focus:border-cyan-500 group-hover:border-zinc-300 peer transition-all duration-200"
+                  className="block w-full px-4 py-3.5 text-sm text-zinc-900 bg-white rounded-3xl border-2 border-zinc-200 appearance-none focus:outline-none focus:border-cyan-500 group-hover:border-zinc-300 peer transition-all duration-200"
                   placeholder=" "
                 />
                 <label 
@@ -223,18 +234,18 @@ const AuthForm = () => {
 
               <motion.button 
                 type="submit" 
-                disabled={loading}
+                disabled={loading || guestLoading}
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: isLogin ? 0.2 : 0.35 }}
-                className="w-full bg-cyan-600 hover:bg-cyan-700 text-white h-11 rounded-3xl text-sm font-bold hover:shadow-cyan-300/50 transition-all active:scale-[0.98] mt-4 cursor-pointer flex items-center justify-center gap-2"
+                className="w-full group bg-cyan-600 hover:bg-cyan-700 text-white h-11 rounded-3xl text-sm font-bold hover:shadow-cyan-300/50 transition-all active:scale-[0.98] mt-4 cursor-pointer flex items-center justify-center gap-2"
               >
                 {loading ? (
                   <Loader2 size={18} className="animate-spin text-white/80" />
                 ) : (
                   <>
                     {isLogin ? "Giriş Yap" : "Hesabı Oluştur"}
-                    <ArrowRight size={16} />
+                    <ArrowRight size={16} className="transition-transform duration-300 group-hover:translate-x-1.5 " />
                   </>
                 )}
               </motion.button>
@@ -251,12 +262,12 @@ const AuthForm = () => {
           <motion.button 
             type="button"
             onClick={handleGuestLogin}
-            disabled={loading}
+            disabled={loading || guestLoading}
             initial={{ opacity: 0, y: 10 }}
             animate={{ 
               opacity: 1, 
               y: 0,
-              boxShadow: ["0 0 0px rgba(6,182,212,0)", "0 0 15px rgba(6,182,212,0.4)", "0 0 0px rgba(6,182,212,0)"]
+              boxShadow: ["0 0 0px rgba(6,182,212,0)", "0 0 5px rgba(6,182,212,1.4)", "0 0 0px rgba(6,182,212,0)"]
             }}
             transition={{ 
               opacity: { delay: 0.2 },
@@ -264,16 +275,22 @@ const AuthForm = () => {
             }}
             whileHover={{ scale: 1.02 }}
             whileTap={{ scale: 0.98 }}
-            className="w-full relative group mb-3 h-12 rounded-3xl text-sm font-bold flex items-center justify-center gap-3 cursor-pointer overflow-hidden border border-cyan-400/30 bg-linear-to-r from-cyan-500/5 via-cyan-400/10 to-cyan-500/5 backdrop-blur-sm"
+            className="w-full relative group mb-3 h-12 rounded-3xl text-sm font-bold flex items-center justify-center gap-3 cursor-pointer overflow-hidden border border-cyan-400/30 bg-linear-to-r from-cyan-500/5 via-cyan-400/10 to-cyan-500/5 backdrop-blur-sm "
           >
         
             <div className="absolute inset-0 -translate-x-full group-hover:animate-[shimmer_1.5s_infinite] bg-linear-to-r from-transparent via-white/20 to-transparent z-0" />
             
-            {loading ? (
-               <Loader2 size={20} className="animate-spin text-cyan-600 relative z-10" /> 
+            {guestLoading ? (
+               <motion.div 
+                 animate={{ scale: [1, 1.25, 1], rotate: [0, 10, -10, 0] }}
+                 transition={{ duration: 1, repeat: Infinity, ease: "easeInOut" }}
+                 className="relative z-10"
+               >
+                 <Zap size={24} className="text-cyan-600 fill-cyan-600" />
+               </motion.div>
             ) : (
                <>
-                 <div className="p-1.5 rounded-full  transition-colors relative z-10">
+                 <div className="p-1.5 rounded-full transition-colors relative z-10">
                     <Zap size={20} className="text-cyan-700 fill-cyan-700" />
                  </div>
                  <span className="relative z-10 text-cyan-800 group-hover:text-cyan-900 transition-colors">

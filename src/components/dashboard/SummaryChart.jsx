@@ -103,7 +103,7 @@ const SummaryChart = () => {
             
             <div className="relative z-10 flex flex-col justify-between h-full">
                 <div className="flex items-center justify-end mb-4">
-                    <span className="text-xs font-bold text-white bg-orange-900 rounded-xl px-2 py-1 -mb-4 backdrop-blur-sm left-0 absolute">
+                    <span className="text-xs font-bold text-white bg-orange-800/80 rounded-xl px-2 py-1 -mb-4 backdrop-blur-sm left-0 absolute">
                         Bu Ay
                     </span>
                 </div>
@@ -131,7 +131,7 @@ const SummaryChart = () => {
                 <div className="flex items-center justify-end mb-4">
 
                     {/* Status */}
-                    <span className="text-xs font-bold px-2 py-1 rounded-xl bg-blue-400 backdrop-blur-md border-white/20 text-white">
+                    <span className="text-xs font-bold px-2 py-1 rounded-xl bg-blue-800/60 backdrop-blur-md border-white/20 text-white">
                         {statusInfo.text}
                     </span>
                 </div>
@@ -143,13 +143,13 @@ const SummaryChart = () => {
                     </div>
                     
                     {/* progress bar */}
-                    <div className="h-3 w-full bg-black/20 rounded-full p-0.5 border border-white/10">
+                    <div className="h-3 w-full bg-black/50 rounded-full p-0.6 ">
                         <div 
                             className="h-full rounded-full bg-white shadow-[0_0_20px_7px_rgba(255,255,255,1)] relative transition-all duration-1000 ease-out"
                             style={{ width: `${limitPercentage}%` }}
                         >
                              {/* Işıltı efekti */}
-                             <div className="absolute inset-0 bg-white/50 animate-ping" />
+                             <div className="absolute inset-0 bg-white/50 animate-ping rounded-full" />
                         </div>
                     </div>
                     
