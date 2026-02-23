@@ -88,8 +88,8 @@ export const useSpendingAnalysis = (subscriptions, totalExpenses) => {
 
   
     const yearlyProjection = totalExpenses * 12;
-    const yearlySavingsTip = mostExpensive.price > 0 
-        ? `${mostExpensive.name} iptal edilirse yılda ${formatMoneyClean(mostExpensive.price * 12)}₺ cepte.`
+    const monthlySavingsTip = mostExpensive.price > 0 
+        ? `${mostExpensive.name} iptal edilirse ayda ${formatMoneyClean(mostExpensive.price)}₺ cepte.`
         : "Abonelik ekleyerek tasarruf analizlerini görebilirsin.";
 
     return {
@@ -98,6 +98,6 @@ export const useSpendingAnalysis = (subscriptions, totalExpenses) => {
         chartData,
         growthPercentage,
         yearlyProjection,
-        yearlySavingsTip
+        monthlySavingsTip
     };
 };

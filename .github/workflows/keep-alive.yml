@@ -24,4 +24,4 @@ jobs:
         env:
           SUPABASE_URL: ${{ secrets.VITE_SUPABASE_URL }}
           SUPABASE_KEY: ${{ secrets.VITE_SUPABASE_ANON_KEY }}
-        run: node scripts/keep-alive.js
+        run: node scripts/keep-alive.js 

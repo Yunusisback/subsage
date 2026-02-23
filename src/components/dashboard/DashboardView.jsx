@@ -1,22 +1,12 @@
 import { useMemo } from 'react';
-import { ArchiveX, ChevronRight, Wallet, CalendarClock, TrendingDown, Layers, TrendingUp } from "lucide-react";
+import { ArchiveX, Wallet, CalendarClock, TrendingDown, Layers, TrendingUp } from "lucide-react";
 import { useData } from "../../context/DataContext";
 import { useSpendingAnalysis } from "../../hooks/useSpendingAnalysis";
-import { cn } from "../../utils/helpers";
+import { cn, formatMoneyClean } from "../../utils/helpers";
 import { AreaChart, Area, ResponsiveContainer } from 'recharts';
 import { SERVICE_LOGOS } from "../../utils/constants";
-import { useNavigate } from "react-router-dom";
 import SubscriptionCard from "./SubscriptionCard";
 import StatCard from "./StatCard";
-
-// Para formatlama fonksiyonu
-const formatMoneyClean = (amount) => {
-    return new Intl.NumberFormat('tr-TR', {
-        style: 'decimal',
-        minimumFractionDigits: 0,
-        maximumFractionDigits: 0
-    }).format(amount);
-};
 
 // Kalan gün hesaplama fonksiyonu
 const calculateDaysLeft = (startDateStr) => {
@@ -44,7 +34,6 @@ const calculateDaysLeft = (startDateStr) => {
 const DashboardView = () => {
 
     const { totalExpenses, subscriptions } = useData();
-    const navigate = useNavigate();
 
 
     const {
@@ -53,7 +42,7 @@ const DashboardView = () => {
         chartData,
         growthPercentage,
         yearlyProjection,
-        yearlySavingsTip
+        monthlySavingsTip
     } = useSpendingAnalysis(subscriptions, totalExpenses);
 
     const THEMES = {
@@ -176,12 +165,12 @@ const DashboardView = () => {
                         </div>
 
                         {/* yıllık tasarruf */}
-                        <div className="mt-auto bg-zinc-700/60 border border-white/10 rounded-3xl p-3 flex items-start gap-3 backdrop-blur-sm">
-                            <div className="mt-0.5 p-1 bg-white rounded-full text-cyan-600 shrink-0 shadow-xs">
+                        <div className="mt-auto bg-cyan-900/90 ring-2 ring-zinc-400 rounded-3xl p-3 flex items-center gap-3 backdrop-blur-sm">
+                            <div className="p-1 bg-white rounded-full text-cyan-800 shrink-0 shadow-xs">
                                 <TrendingDown size={15} strokeWidth={3} />
                             </div>
                             <p className="text-xs font-semibold text-white leading-relaxed line-clamp-2 tracking-wide">
-                                {yearlySavingsTip}
+                                {monthlySavingsTip}
                             </p>
                         </div>
                     </div>
@@ -263,7 +252,6 @@ const DashboardView = () => {
                             Aboneliklerim
                         </h2>
                     </div>
-                    <button onClick={() => navigate('/subscriptions')} className="text-xs lg:text-sm font-semibold text-white border border-zinc-200 bg-cyan-600 hover:bg-cyan-500 hover:border-cyan-300 px-4 py-2 rounded-3xl shadow-sm transition-all cursor-pointer flex items-center gap-1 scale-95 hover:scale-100 active:scale-95 select-none" > Tümünü Gör <ChevronRight size={14} /> </button>
                 </div>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 lg:gap-5">

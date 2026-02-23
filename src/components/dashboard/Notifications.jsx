@@ -43,14 +43,14 @@ const Notifications = () => {
                           highlight: "bg-emerald-500"
                       },
                       warning: { 
-                          card: "bg-amber-50/80 border-amber-200/60 hover:border-amber-300", 
-                          iconBg: "bg-amber-100 text-amber-600",
-                          highlight: "bg-amber-500"
-                      },
-                      alert: { 
                           card: "bg-red-50/80 border-red-200/60 hover:border-red-300", 
                           iconBg: "bg-red-100 text-red-600",
                           highlight: "bg-red-500"
+                      },
+                      alert: { 
+                          card: "bg-amber-50/80 border-amber-200/60 hover:border-amber-300", 
+                          iconBg: "bg-amber-100 text-amber-600",
+                          highlight: "bg-amber-500"
                       },
                       info: { 
                           card: "bg-blue-50/80 border-blue-200/60 hover:border-blue-300", 
@@ -72,7 +72,7 @@ const Notifications = () => {
                               : "bg-white border-zinc-100 hover:border-zinc-200 hover:bg-zinc-50/80 opacity-75 hover:opacity-100"
                       )}
                   >
-                      {/* okunmamış bildirim arkaplanı */}
+              
                       {isUnread && (
                           <div className={cn("absolute left-0 top-6 bottom-6 w-1 rounded-r-full opacity-60", style.highlight)} />
                       )}
@@ -106,7 +106,7 @@ const Notifications = () => {
                           </p>
                       </div>
 
-                       {/* Okunmamış bildirim noktası */}
+                   
                       {isUnread && (
                           <div className="absolute top-5 right-5 flex h-2.5 w-2.5">
                               <span className={cn("animate-ping absolute inline-flex h-full w-full rounded-full opacity-75", style.highlight)}></span>

@@ -175,8 +175,8 @@ const WalletView = () => {
                 transition={{ type: "spring", stiffness: 300, damping: 20 }}
             >
                 {/* Arka Plan */}
-                <div className="absolute inset-0 bg-[#071129]">
-                    <div className="absolute top-0 right-0 w-[80%] h-[80%] bg-cyan-800 rounded-full blur-[80px] group-hover:bg-cyan-500/40 transition-colors duration-500"></div>
+                <div className="absolute inset-0 bg-[#030d25]">
+                    <div className="absolute top-0 right-0 w-[80%] h-[80%] bg-cyan-900 rounded-full blur-[80px] group-hover:bg-cyan-500/40 transition-colors duration-500"></div>
                     <div className="absolute bottom-0 left-0 w-[60%] h-[60%] bg-blue-600/20 rounded-full blur-[60px] group-hover:bg-blue-500/30 transition-colors duration-500"></div>
                     
                 
@@ -188,7 +188,7 @@ const WalletView = () => {
                 <div className="relative h-full w-full p-6 sm:p-8 flex flex-col justify-between text-white z-10">
                     <div className="flex justify-between items-start">
                         <div className="flex flex-col gap-1">
-                            <span className="text-3xl text-white/90">VAULT</span>
+                            <span className="text-3xl text-white ">V A U L T</span>
                         </div>
                         <div className="flex items-center gap-3">
                             <Wifi size={33} className="rotate-90 text-white/60" strokeWidth={2} />
@@ -223,8 +223,8 @@ const WalletView = () => {
                              <span className="text-sm font-bold text-white tracking-widest">12/28</span>
                         </div>
 
-                        <div className="flex flex-col items-end">
-                             <img src="https://upload.wikimedia.org/wikipedia/commons/5/5e/Visa_Inc._logo.svg" alt="Visa" className="h-5 sm:h-6 w-auto brightness-0 invert opacity-90" />
+                      <div className="flex flex-col items-end">
+                             <img src="https://upload.wikimedia.org/wikipedia/commons/5/5c/Visa_Inc._logo_%282021%E2%80%93present%29.svg" alt="Visa" className="h-5 sm:h-8 w-auto brightness-0 invert opacity-60" />
                         </div>
                     </div>
                 </div>

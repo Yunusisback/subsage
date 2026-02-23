@@ -51,7 +51,7 @@ const Header = ({ onOpenMobileMenu }) => {
 
     const currentTitle = getPageTitle(location.pathname);
 
-    // Bildirim tipi stilleri
+   
     const getTypeStyles = (type) => {
         switch (type) {
             case "success": return { bg: "bg-emerald-50", border: "border-emerald-100", icon: "text-emerald-600", dot: "bg-emerald-500" };
@@ -85,7 +85,7 @@ const Header = ({ onOpenMobileMenu }) => {
                 <div className="relative" ref={notificationRef}>
                     <button
                         onClick={() => setShowNotifications(!showNotifications)}
-                        className="p-2.5 ring-2 ring-cyan-600 md:p-3.5 rounded-3xl bg-cyan-700 hover:bg-cyan-600 text-cyan-50 transition-colors relative cursor-pointer shadow-sm "
+                        className="p-2.5 ring-2 ring-zinc-900 md:p-3.5 rounded-3xl bg-gray-900 hover:bg-cyan-800 hover:ring-cyan-700 text-cyan-50 transition-colors relative cursor-pointer shadow-sm "
                     >
                         <Bell size={22} className="md:w-6 md:h-6" />
                         {unreadCount > 0 && (
@@ -187,7 +187,7 @@ const Header = ({ onOpenMobileMenu }) => {
                 {/* Profil Bölümü */}
                 <button
                     onClick={() => navigate("/settings")}
-                    className="flex items-center gap-2 pl-1.5 md:pl-2.5 pr-1.5 md:pr-4 py-1.5 md:py-2 rounded-full ring-1 ring-cyan-600 bg-cyan-700 hover:bg-cyan-600 transition-all group cursor-pointer shadow-sm"
+                    className="flex items-center gap-2 pl-1.5 md:pl-2.5 pr-1.5 md:pr-4 py-1.5 md:py-2 rounded-full ring-1 ring-zinc-900 hover:ring-cyan-600  bg-gray-900 hover:bg-cyan-800 transition-all group cursor-pointer shadow-sm"
                 >
                     <div className="w-8 h-8 md:w-10 md:h-10 min-w-8 md:min-w-9 rounded-full bg-zinc-100 flex items-center justify-center overflow-hidden border border-cyan-600 cyan-300 ring ring-cyan-600">
                         {hasAvatar ? (

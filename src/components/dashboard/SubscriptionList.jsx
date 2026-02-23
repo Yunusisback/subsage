@@ -77,7 +77,7 @@ const SubscriptionList = () => {
         setTimeout(() => {
             cancelSubscription(subId);
             setLoadingStates(prev => ({ ...prev, [subId]: null }));
-            toast.success("Abonelik iptal edildi.");
+          
         }, 1000);
     };
 
@@ -136,9 +136,9 @@ const SubscriptionList = () => {
                                 placeholder={isAddingMode ? "Servis ara..." : "Abonelik ara..."}
                                 value={searchQuery}
                                 onChange={(e) => setSearchQuery(e.target.value)}
-                                className="pl-10 pr-4 py-2.5 w-full md:w-64 rounded-xl text-sm 
+                                className="pl-10 pr-4 py-2.5 w-full md:w-64 rounded-3xl text-sm 
                bg-white  text-gray-700 placeholder-gray-400
-               outline-none ring-1 ring-zinc-200 hover:ring-cyan-300
+               outline-none ring-2 ring-zinc-200 hover:ring-cyan-300
                hover:border-cyan-300
                focus:border-cyan-500 focus:bg-cyan-50/40 focus:text-cyan-950
                transition-all duration-200 ease-in-out"
