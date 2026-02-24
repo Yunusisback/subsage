@@ -55,8 +55,8 @@ const Header = ({ onOpenMobileMenu }) => {
     const getTypeStyles = (type) => {
         switch (type) {
             case "success": return { bg: "bg-emerald-50", border: "border-emerald-100", icon: "text-emerald-600", dot: "bg-emerald-500" };
-            case "warning": return { bg: "bg-amber-50", border: "border-amber-100", icon: "text-amber-600", dot: "bg-amber-500" };
-            case "alert": return { bg: "bg-red-50", border: "border-red-100", icon: "text-red-600", dot: "bg-red-500" };
+            case "warning": return { bg: "bg-red-50", border: "border-red-100", icon: "text-red-600", dot: "bg-red-500" };
+            case "alert": return { bg: "bg-amber-50", border: "border-amber-100", icon: "text-amber-600", dot: "bg-amber-500" };
             case "info": return { bg: "bg-blue-50", border: "border-blue-100", icon: "text-blue-600", dot: "bg-blue-500" };
             default: return { bg: "bg-zinc-50", border: "border-zinc-100", icon: "text-zinc-500", dot: "bg-zinc-400" };
         }
@@ -85,9 +85,9 @@ const Header = ({ onOpenMobileMenu }) => {
                 <div className="relative" ref={notificationRef}>
                     <button
                         onClick={() => setShowNotifications(!showNotifications)}
-                        className="p-2.5 ring-2 ring-zinc-900 md:p-3.5 rounded-3xl bg-gray-900 hover:bg-cyan-800 hover:ring-cyan-700 text-cyan-50 transition-colors relative cursor-pointer shadow-sm "
+                        className="p-2.5 ring-2 ring-gray-400 md:p-3.5 rounded-3xl bg-gray-300 hover:bg-cyan-800 hover:ring-cyan-500 text-cyan-600 transition-colors relative cursor-pointer shadow-sm  active:scale-95 hover:text-cyan-50"
                     >
-                        <Bell size={22} className="md:w-6 md:h-6" />
+                        <Bell size={22} className="md:w-6 md:h-6 " />
                         {unreadCount > 0 && (
                             <span className="absolute -top-2 right-1.5 w-3 h-3 rounded-full bg-red-500 border-2 border-white animate-ping"></span>
                         )}
@@ -104,7 +104,7 @@ const Header = ({ onOpenMobileMenu }) => {
                                 className="absolute -right-6 md:right-0 top-full mt-3 w-80 md:w-96 bg-white border border-zinc-200 rounded-2xl shadow-xl z-50 overflow-hidden origin-top-right"
                             >
                                 <div className="p-4 border-b border-zinc-100 flex justify-between items-center bg-zinc-50/30 backdrop-blur-md">
-                                    <span className="text-sm font-bold text-zinc-900">Bildirimler</span>
+                                    <span className="text-sm font-bold text-cyan-900">Bildirimler</span>
                                     {unreadCount > 0 ? (
                                         <span className="text-[10px] bg-cyan-700 text-cyan-50 px-2 py-0.5 rounded-full font-bold border border-cyan-800 shadow-sm">{unreadCount} Yeni</span>
                                     ) : (
@@ -149,7 +149,7 @@ const Header = ({ onOpenMobileMenu }) => {
                                                         )}>
                                                             {note.title}
                                                         </p>
-                                                        <span className="text-[9px] text-zinc-400 whitespace-nowrap">{note.time}</span>
+                                                        <span className="text-[9px] text-zinc-800 whitespace-nowrap">{note.time}</span>
                                                     </div>
                                                     <p className={cn(
                                                         "text-[10px] line-clamp-2 leading-relaxed",
@@ -173,10 +173,10 @@ const Header = ({ onOpenMobileMenu }) => {
                                             navigate("/notifications");
                                             setShowNotifications(false);
                                         }}
-                                        className="w-full py-2 text-xs text-center text-zinc-500 hover:text-zinc-900 font-bold transition-colors cursor-pointer flex items-center justify-center gap-1"
+                                        className="w-full py-2 text-xs text-center text-cyan-600 hover:text-cyan-900 font-bold transition-colors cursor-pointer flex items-center justify-center gap-1"
                                     >
                                         Tümünü Gör
-                                        <span className="text-[10px] opacity-50">→</span>
+                                        <span className="text-[10px] opacity-70 ">→</span>
                                     </button>
                                 </div>
                             </motion.div>
@@ -187,9 +187,9 @@ const Header = ({ onOpenMobileMenu }) => {
                 {/* Profil Bölümü */}
                 <button
                     onClick={() => navigate("/settings")}
-                    className="flex items-center gap-2 pl-1.5 md:pl-2.5 pr-1.5 md:pr-4 py-1.5 md:py-2 rounded-full ring-1 ring-zinc-900 hover:ring-cyan-600  bg-gray-900 hover:bg-cyan-800 transition-all group cursor-pointer shadow-sm"
+                    className="flex items-center gap-2 pl-1.5 md:pl-2.5 pr-1.5 md:pr-4 py-1.5 md:py-2 rounded-full ring-2 ring-gray-400 hover:ring-cyan-600  bg-gray-300 hover:bg-cyan-800 transition-all group cursor-pointer shadow-sm active:scale-95"
                 >
-                    <div className="w-8 h-8 md:w-10 md:h-10 min-w-8 md:min-w-9 rounded-full bg-zinc-100 flex items-center justify-center overflow-hidden border border-cyan-600 cyan-300 ring ring-cyan-600">
+                    <div className="w-8 h-8 md:w-10 md:h-10 min-w-8 md:min-w-9 rounded-full bg-zinc-100 flex items-center justify-center overflow-hidden border border-cyan-200  ring-2 ring-zinc-200">
                         {hasAvatar ? (
                             <img
                                 src={userSettings.avatar}
@@ -211,7 +211,7 @@ const Header = ({ onOpenMobileMenu }) => {
                         </span>
                     </div>
                     <div className="text-left hidden md:block">
-                        <h4 className="text-m font-bold text-cyan-50 group-hover:text-white transition-colors">
+                        <h4 className="text-m font-bold text-cyan-600 group-hover:text-white transition-colors">
                             {userSettings.name}
                         </h4>
                     </div>

@@ -159,7 +159,7 @@ const Settings = () => {
             <Button 
                 variant="primary" 
                 onClick={handleSave} 
-                className="bg-cyan-500 hover:bg-cyan-700 text-white font-bold px-6 shadow-sm cursor-pointer"
+                className="bg-cyan-700 hover:bg-cyan-900 text-white font-bold px-6 shadow-sm cursor-pointer rounded-3xl active:scale-95 transition-all duration-200"
                 disabled={loading}
             >
                 {loading ? (
