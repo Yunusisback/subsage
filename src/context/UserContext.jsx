@@ -21,6 +21,8 @@ export const UserProvider = ({ children }) => {
     const [session, setSession] = useState(null);
     const [loading, setLoading] = useState(true);
     const [isGuest, setIsGuest] = useState(false);
+    // sayfa geçiş animasyonunun aktif olup olmadığını tutar
+    const [isTransitioning, setIsTransitioning] = useState(false);
 
     const [userSettings, setUserSettings] = useState(() => {
         return safeJSONParse("userSettings", {
@@ -75,6 +77,17 @@ export const UserProvider = ({ children }) => {
     const updateSpendingLimit = (newLimit) => setSpendingLimit(newLimit);
 
 
+    const triggerTransition = async (callback) => {
+        setIsTransitioning(true);
+      
+        await new Promise(resolve => setTimeout(resolve, 750));
+  
+        await callback();
+     
+        await new Promise(resolve => setTimeout(resolve, 120));
+        setIsTransitioning(false);
+    };
+
     const login = async (email, password) => {
         const { data, error } = await supabase.auth.signInWithPassword({ email, password });
         if (error) throw error;
@@ -91,29 +104,49 @@ export const UserProvider = ({ children }) => {
         return data;
     };
 
+
+    const loginWithTransition = async (email, password) => {
+        const data = await login(email, password);
+        triggerTransition(() => Promise.resolve());
+        return data;
+    };
+
+  
+    const signupWithTransition = async (email, password, fullName) => {
+        const data = await signup(email, password, fullName);
+        triggerTransition(() => Promise.resolve());
+        return data;
+    };
+
     const loginAsGuest = () => {
-        setIsGuest(true);
-        setUser({ id: 'guest', email: 'misafir@demo.com', user_metadata: { full_name: 'Misafir' } });
-        updateUserSettings({ name: "Misafir Kullanıcı" });
-        toast.success("Misafir moduna geçildi.");
+        triggerTransition(() => {
+            setIsGuest(true);
+            setUser({ id: 'guest', email: 'misafir@demo.com', user_metadata: { full_name: 'Misafir' } });
+            updateUserSettings({ name: "Misafir Kullanıcı" });
+            toast.success("Misafir moduna geçildi.");
+        });
     };
 
     const logout = async () => {
-        if (isGuest) {
-            setIsGuest(false);
-            setUser(null);
-        } else {
-            await supabase.auth.signOut();
-        }
-        toast.success("Çıkış yapıldı");
+        await triggerTransition(async () => {
+            if (isGuest) {
+                setIsGuest(false);
+                setUser(null);
+            } else {
+                await supabase.auth.signOut();
+            }
+            toast.success("Çıkış yapıldı");
+        });
     };
 
     return (
         <UserContext.Provider value={{
             user, session, loading, isGuest,
             login, signup, loginAsGuest, logout,
+            loginWithTransition, signupWithTransition,
             userSettings, updateUserSettings,
-            spendingLimit, updateSpendingLimit
+            spendingLimit, updateSpendingLimit,
+            isTransitioning
         }}>
             {children}
         </UserContext.Provider>

@@ -78,7 +78,6 @@ export const useSpendingAnalysis = (subscriptions, totalExpenses) => {
     }, [chartData]);
 
 
-    // En pahalıyı bul
     const mostExpensive = useMemo(() => {
         if (activeSubs.length === 0) return { name: '-', price: 0 };
         return activeSubs.reduce((prev, current) => {
