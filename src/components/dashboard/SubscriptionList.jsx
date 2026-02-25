@@ -1,5 +1,5 @@
 import { useState, useMemo } from "react";
-import { Plus, Calendar, ArrowLeft, CheckCircle2, X, Loader2,  Search, Filter, Trash2, XCircle, PenTool, Pencil, AlertTriangle } from "lucide-react";
+import { Plus, Calendar, ArrowLeft, CheckCircle2, X, Loader2, Search, Filter, Trash2, XCircle, PenTool, Pencil, AlertTriangle } from "lucide-react";
 import Button from "../ui/Button";
 import { cn, formatDate, formatMoneyClean } from "../../utils/helpers";
 import { AnimatePresence, motion } from "framer-motion";
@@ -77,7 +77,7 @@ const SubscriptionList = () => {
         setTimeout(() => {
             cancelSubscription(subId);
             setLoadingStates(prev => ({ ...prev, [subId]: null }));
-          
+
         }, 1000);
     };
 
@@ -87,7 +87,7 @@ const SubscriptionList = () => {
         setDeletingId(subId);
     }
 
-  
+
     const confirmDelete = () => {
         if (deletingId) {
             removeSubscription(deletingId);
@@ -96,7 +96,7 @@ const SubscriptionList = () => {
         }
     };
 
-   
+
     const handleCustomSuccess = () => {
         setShowCustomForm(false);
         setIsAddingMode(false);
@@ -124,7 +124,7 @@ const SubscriptionList = () => {
                     {/* Arama Kutusu */}
                     {!showCustomForm && (
                         <div className="relative group w-full md:w-auto font-sans">
-                        
+
                             <Search
                                 className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 
                group-focus-within:text-cyan-600 
@@ -250,7 +250,7 @@ const SubscriptionList = () => {
                                                 alt={platform.name}
                                                 className="w-full h-full object-contain"
                                                 loading="lazy"
-                                                 onError={(e) => {
+                                                onError={(e) => {
 
                                                     // Eğer resim yüklenmezse varsayılan göster
                                                     e.target.src = SERVICE_LOGOS.DEFAULT;
@@ -373,7 +373,6 @@ const SubscriptionList = () => {
                                                 className="w-full h-full object-contain"
                                                 onError={(e) => {
 
-                                                    // Hata durumunda varsayılan ikon
                                                     e.target.src = SERVICE_LOGOS.DEFAULT;
                                                 }}
                                             />
@@ -466,11 +465,11 @@ const SubscriptionList = () => {
                         {/* empty state */}
                         {displayedSubscriptions.length === 0 && (
                             <div className="col-span-full py-24 text-center border-2 border-dashed border-slate-200 rounded-[2.5rem] bg-slate-50/50">
-                            <svg className="mx-auto h-15 w-15 text-red-900/40 mb-4 animate-pulse drop-shadow-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-    <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" />
- </svg>
+                                <svg className="mx-auto h-15 w-15 text-red-900/40 mb-4 animate-pulse drop-shadow-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                                    <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" />
+                                </svg>
                                 <h3 className="text-red-700 font-bold text-lg">
-                                         {viewFilter === 'active' ? 'Aktif abonelik bulunamadı' : 'Geçmiş abonelik bulunamadı'}
+                                    {viewFilter === 'active' ? 'Aktif abonelik bulunamadı' : 'Geçmiş abonelik bulunamadı'}
                                 </h3>
                                 <p className="text-red-900 text-sm mb-6 max-w-xs mx-auto">
                                     {viewFilter === 'active'

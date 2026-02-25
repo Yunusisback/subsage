@@ -68,7 +68,7 @@ const AuthForm = () => {
       setGuestLoading(true);
       setTimeout(() => {
           loginAsGuest();
-          setGuestLoading(false);
+         
       }, 800);
   };
 
@@ -275,29 +275,32 @@ const AuthForm = () => {
             }}
             whileHover={{ scale: 1.02 }}
             whileTap={{ scale: 0.98 }}
-            className="w-full relative group mb-3 h-12 rounded-3xl text-sm font-bold flex items-center justify-center gap-3 cursor-pointer overflow-hidden border border-cyan-400/30 bg-linear-to-r from-cyan-500/5 via-cyan-400/10 to-cyan-500/5 backdrop-blur-sm "
+            className="w-full relative group mb-3 h-12 rounded-3xl text-sm font-bold flex items-center justify-center cursor-pointer overflow-hidden border border-cyan-400/30 bg-linear-to-r from-cyan-500/5 via-cyan-400/10 to-cyan-500/5 backdrop-blur-sm "
           >
         
             <div className="absolute inset-0 -translate-x-full group-hover:animate-[shimmer_1.5s_infinite] bg-linear-to-r from-transparent via-white/20 to-transparent z-0" />
             
-            {guestLoading ? (
-               <motion.div 
-                 animate={{ scale: [1, 1.25, 1], rotate: [0, 10, -10, 0] }}
-                 transition={{ duration: 1, repeat: Infinity, ease: "easeInOut" }}
-                 className="relative z-10"
-               >
-                 <Zap size={24} className="text-cyan-600 fill-cyan-600" />
+           
+            <motion.div layout className="relative z-10 flex items-center justify-center">
+               <motion.div layout className="p-1.5 rounded-full transition-colors shrink-0">
+                 <Zap size={guestLoading ? 24 : 20} className={guestLoading ? "text-cyan-600 fill-cyan-600" : "text-cyan-700 fill-cyan-700"} />
                </motion.div>
-            ) : (
-               <>
-                 <div className="p-1.5 rounded-full transition-colors relative z-10">
-                    <Zap size={20} className="text-cyan-700 fill-cyan-700" />
-                 </div>
-                 <span className="relative z-10 text-cyan-800 group-hover:text-cyan-900 transition-colors">
-                    Misafir Modu ile Keşfet
-                 </span>
-               </>
-            )}
+               
+               <AnimatePresence>
+                 {!guestLoading && (
+                   <motion.span 
+                     layout
+                     initial={{ opacity: 1, width: "auto", marginLeft: 12 }}
+                     animate={{ opacity: 1, width: "auto", marginLeft: 12 }}
+                     exit={{ opacity: 0, width: 0, marginLeft: 0 }}
+                     transition={{ duration: 0.3 }}
+                     className="text-cyan-800 group-hover:text-cyan-900 transition-colors whitespace-nowrap overflow-hidden"
+                   >
+                     Misafir Modu ile Keşfet
+                   </motion.span>
+                 )}
+               </AnimatePresence>
+            </motion.div>
           </motion.button>
 
     
