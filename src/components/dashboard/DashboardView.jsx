@@ -177,7 +177,6 @@ const DashboardView = () => {
                 </StatCard>
 
                 {/* aylık toplam */}
-
                 <StatCard className="flex flex-col p-0 bg-linear-to-br from-zinc-900 to-red-400 border-none text-white shadow-lg shadow-red-500/20">
                     <div className="p-6 pb-0 relative z-20 flex justify-between items-start">
 
@@ -248,7 +247,7 @@ const DashboardView = () => {
             <div>
                 <div className="flex items-center justify-between mb-4 lg:mb-6 px-1">
                     <div>
-                        <h2 className="text-xl lg:text-2xl font-bold text-cyan-700 flex items-center gap-2 select-none tracking-[0.055em]!">
+                        <h2 className="text-xl lg:text-2xl font-bold text-cyan-700 dark:text-cyan-400 flex items-center gap-2 select-none tracking-[0.055em]!">
                             Aboneliklerim
                         </h2>
                     </div>
@@ -267,20 +266,20 @@ const DashboardView = () => {
 
             {/* iptal edilmiş abonelikler listesi  */}
             {canceledSubs.length > 0 && (
-                <div className="mt-8 lg:mt-12 bg-slate-50/50 border border-slate-200 rounded-3xl p-4 lg:p-6">
+                <div className="mt-8 lg:mt-12 bg-slate-50/50 dark:bg-zinc-800/50 border border-slate-200 dark:border-zinc-700 rounded-3xl p-4 lg:p-6">
                     <div className="flex items-center gap-3 mb-6 opacity-70">
-                        <div className="p-2 bg-slate-200 rounded-lg">
-                            <ArchiveX size={18} className="text-slate-600" />
+                        <div className="p-2 bg-slate-200 dark:bg-zinc-700 rounded-lg">
+                            <ArchiveX size={18} className="text-slate-600 dark:text-zinc-300" />
                         </div>
-                        <h2 className="text-sm font-bold text-slate-600 uppercase tracking-widest">
+                        <h2 className="text-sm font-bold text-slate-600 dark:text-zinc-400 uppercase tracking-widest">
                             Geçmiş Abonelikler
                         </h2>
                     </div>
 
                     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 lg:gap-4">
                         {canceledSubs.map((sub) => (
-                            <div key={sub.id} className="group flex items-center gap-4 bg-white p-3 pr-5 rounded-2xl border border-slate-100 shadow-sm opacity-60 hover:opacity-100 hover:shadow-md transition-all duration-300">
-                                <div className="w-10 h-10 rounded-lg bg-slate-50 border border-slate-100 p-1.5 shrink-0 grayscale group-hover:grayscale-0 transition-all">
+                            <div key={sub.id} className="group flex items-center gap-4 bg-white dark:bg-zinc-800 p-3 pr-5 rounded-2xl border border-slate-100 dark:border-zinc-700 shadow-sm opacity-60 hover:opacity-100 hover:shadow-md transition-all duration-300">
+                                <div className="w-10 h-10 rounded-lg bg-slate-50 dark:bg-zinc-700 border border-slate-100 dark:border-zinc-600 p-1.5 shrink-0 grayscale group-hover:grayscale-0 transition-all">
                                     <img
                                         src={sub.image || SERVICE_LOGOS.DEFAULT}
                                         alt={sub.name}
@@ -291,11 +290,11 @@ const DashboardView = () => {
                                     />
                                 </div>
                                 <div className="flex-1 min-w-0">
-                                    <h4 className="text-sm font-bold text-slate-700 truncate decoration-slate-400 line-through decoration-2 group-hover:no-underline transition-all">{sub.name}</h4>
-                                    <span className="text-[10px] text-slate-400">İptal Edildi</span>
+                                    <h4 className="text-sm font-bold text-slate-700 dark:text-zinc-300 truncate decoration-slate-400 line-through decoration-2 group-hover:no-underline transition-all">{sub.name}</h4>
+                                    <span className="text-[10px] text-slate-400 dark:text-zinc-500">İptal Edildi</span>
                                 </div>
                                 <div className="text-right">
-                                    <span className="text-sm font-bold text-slate-400 group-hover:text-slate-600">{formatMoneyClean(sub.price)}₺</span>
+                                    <span className="text-sm font-bold text-slate-400 dark:text-zinc-400 group-hover:text-slate-600 dark:group-hover:text-zinc-200">{formatMoneyClean(sub.price)}₺</span>
                                 </div>
                             </div>
                         ))}

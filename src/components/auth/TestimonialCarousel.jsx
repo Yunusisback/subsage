@@ -35,10 +35,10 @@ const TestimonialCarousel = () => {
   };
 
   return (
-    <div className="hidden lg:flex flex-col justify-between w-1/2 h-full bg-zinc-50 relative p-12 lg:p-20 overflow-hidden">
+    <div className="hidden lg:flex flex-col justify-between w-1/2 h-full bg-zinc-50 dark:bg-zinc-900 relative p-12 lg:p-20 overflow-hidden">
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute top-1/4 left-1/4 -translate-x-1/2 -translate-y-1/2 w-150 h-150 bg-cyan-100 rounded-full blur-[120px] opacity-60 animate-pulse"></div>
-        <div className="absolute bottom-0 right-0 w-100 h-100 bg-blue-100/40 rounded-full blur-[100px] opacity-40"></div>
+        <div className="absolute top-1/4 left-1/4 -translate-x-1/2 -translate-y-1/2 w-150 h-150 bg-cyan-100 dark:bg-cyan-900/30 rounded-full blur-[120px] opacity-60 animate-pulse"></div>
+        <div className="absolute bottom-0 right-0 w-100 h-100 bg-blue-100/40 dark:bg-blue-900/20 rounded-full blur-[100px] opacity-40"></div>
       </div>
 
      
@@ -49,7 +49,7 @@ const TestimonialCarousel = () => {
           <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className="text-cyan-500 drop-shadow-sm">
             <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/>
           </svg>
-          <h1 className="text-4xl font-bold tracking-tight text-cyan-800">SubSage</h1>
+          <h1 className="text-4xl font-bold tracking-tight text-cyan-800 dark:text-cyan-400">SubSage</h1>
         </div>
         
          
@@ -65,7 +65,7 @@ const TestimonialCarousel = () => {
               className="space-y-6"
             >
               <blockquote>
-                <p className="text-4xl font-semibold leading-tight text-zinc-800">
+                <p className="text-4xl font-semibold leading-tight text-zinc-800 dark:text-zinc-100">
                   "{TESTIMONIALS[currentTestimonial].quote}"
                 </p>
               </blockquote>
@@ -75,7 +75,7 @@ const TestimonialCarousel = () => {
                   initial={{ scale: 0.8, opacity: 0 }}
                   animate={{ scale: 1, opacity: 1 }}
                   transition={{ delay: 0.2 }}
-                  className="w-12 h-12 bg-white rounded-full border border-zinc-200 p-0.5 shadow-sm"
+                  className="w-12 h-12 bg-white dark:bg-zinc-800 rounded-full border border-zinc-200 dark:border-zinc-700 p-0.5 shadow-sm"
                 >
                   <img 
                     src={TESTIMONIALS[currentTestimonial].avatar} 
@@ -88,10 +88,10 @@ const TestimonialCarousel = () => {
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: 0.3 }}
                 >
-                  <cite className="not-italic font-bold block text-zinc-900">
+                  <cite className="not-italic font-bold block text-zinc-900 dark:text-zinc-100">
                     {TESTIMONIALS[currentTestimonial].author}
                   </cite>
-                  <span className="text-zinc-500 text-sm font-medium">
+                  <span className="text-zinc-500 dark:text-zinc-400 text-sm font-medium">
                     {TESTIMONIALS[currentTestimonial].role}
                   </span>
                 </motion.div>
@@ -104,8 +104,8 @@ const TestimonialCarousel = () => {
     
       <div className="relative w-full overflow-hidden mt-auto pb-4 opacity-60 hover:opacity-75 transition-opacity duration-300 z-10">
      
-        <div className="absolute inset-y-0 left-0 w-24 bg-linear-to-r from-zinc-50 to-transparent z-20 pointer-events-none"></div>
-        <div className="absolute inset-y-0 right-0 w-24 bg-linear-to-l from-zinc-50 to-transparent z-20 pointer-events-none"></div>
+        <div className="absolute inset-y-0 left-0 w-24 bg-linear-to-r from-zinc-50 dark:from-zinc-900 to-transparent z-20 pointer-events-none"></div>
+        <div className="absolute inset-y-0 right-0 w-24 bg-linear-to-l from-zinc-50 dark:from-zinc-900 to-transparent z-20 pointer-events-none"></div>
         
         <motion.div
           animate={{ x: ["0%", "-50%"] }}
@@ -122,7 +122,7 @@ const TestimonialCarousel = () => {
               key={`brand-1-${i}`} 
               src={brand} 
               alt="Sponsor Logo" 
-              className="h-8 w-auto object-contain grayscale mix-blend-multiply" 
+              className="h-8 w-auto object-contain grayscale mix-blend-multiply dark:mix-blend-screen dark:opacity-50" 
             />
           ))}
         
@@ -131,7 +131,7 @@ const TestimonialCarousel = () => {
               key={`brand-2-${i}`} 
               src={brand} 
               alt="Sponsor Logo" 
-              className="h-8 w-auto object-contain grayscale mix-blend-multiply" 
+              className="h-8 w-auto object-contain grayscale mix-blend-multiply dark:mix-blend-screen dark:opacity-50" 
             />
           ))}
         </motion.div>

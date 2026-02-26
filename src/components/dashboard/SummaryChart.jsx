@@ -4,6 +4,7 @@ import { PieChart, Pie, Cell, ResponsiveContainer, BarChart, Bar, XAxis, YAxis, 
 import { Activity, Target, Wallet, TrendingDown, Sparkles, Layers, Droplets } from "lucide-react";
 import { useData } from "../../context/DataContext"; 
 import { useUser } from "../../context/UserContext"; 
+import { useUI } from "../../context/UIContext";
 
 const COLORS = ['#f97316', '#06b6d4', '#84cc16', '#eab308', '#ec4899', '#8b5cf6'];
 
@@ -20,6 +21,7 @@ const SummaryChart = () => {
  
   const { subscriptions, totalExpenses } = useData();
   const { userSettings } = useUser();
+  const { darkMode } = useUI();
 
 
   const monthlyLimit = parseInt(userSettings.budgetLimit) || 5000;
@@ -42,7 +44,7 @@ const SummaryChart = () => {
    // Abonelik yoksa gösterilecek placeholder
   if (subscriptions.length === 0) {
     return (
-        <div className="flex flex-col items-center justify-center h-96 border border-dashed border-zinc-200 rounded-3xl bg-zinc-50/50 text-zinc-400">
+        <div className="flex flex-col items-center justify-center h-96 border border-dashed border-zinc-200 dark:border-zinc-700 rounded-3xl bg-zinc-50/50 dark:bg-zinc-900/50 text-zinc-400">
             <Layers size={48} className="mb-4 opacity-30" />
             <p>Veri analizi için abonelik ekleyin.</p>
         </div>
@@ -68,16 +70,22 @@ const SummaryChart = () => {
     .map(sub => ({ name: sub.name, price: parseFloat(sub.price) }))
     .sort((a, b) => b.price - a.price); 
 
+
   const CustomTooltip = ({ active, payload }) => {
     if (active && payload && payload.length) {
       return (
-        <div className="bg-white/95 backdrop-blur-xl p-3 border border-zinc-100 shadow-[0_8px_30px_rgb(0,0,0,0.12)] rounded-xl text-xs z-50 relative"> 
-          <p className="font-bold text-zinc-700 mb-1">{payload[0].name}</p>
+        <div className={cn(
+          "p-3 border shadow-[0_8px_30px_rgb(0,0,0,0.12)] rounded-xl text-xs z-50 relative backdrop-blur-xl",
+          darkMode
+            ? "bg-zinc-800/95 border-zinc-700 text-zinc-100"
+            : "bg-white/95 border-zinc-100 text-zinc-700"
+        )}>
+          <p className="font-bold mb-1">{payload[0].name}</p>
           
          
           <div className="flex items-center gap-2">
-             <span className="text-zinc-500 font-medium">Fiyat:</span>
-             <span className="font-black text-base text-zinc-900">
+             <span className={darkMode ? "text-zinc-400 font-medium" : "text-zinc-500 font-medium"}>Fiyat:</span>
+             <span className="font-black text-base">
                 {formatCurrency(payload[0].value)}
              </span>
           </div>
@@ -191,8 +199,8 @@ const SummaryChart = () => {
 
       {/* grafikler */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-5">
-          <BentoCard className="p-6 bg-white border border-zinc-100 shadow-[0_2px_15px_rgb(0,0,0,0.03)] min-h-100 flex flex-col">
-            <h3 className="text-lg font-bold text-slate-800 flex items-center gap-2">
+          <BentoCard className="p-6 bg-white dark:bg-zinc-800 border border-zinc-100 dark:border-zinc-700 shadow-[0_2px_15px_rgb(0,0,0,0.03)] min-h-100 flex flex-col">
+            <h3 className="text-lg font-bold text-slate-800 dark:text-zinc-100 flex items-center gap-2">
                 <span className="w-1.5 h-6 bg-lime-500 rounded-full mr-1 shadow-sm"></span>
                 Kategori Dağılımı
             </h3>
@@ -200,8 +208,8 @@ const SummaryChart = () => {
             <div className="flex-1 w-full min-h-75 mt-4 relative isolate"> 
                
                 <div className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none z-0">
-                     <span className="text-slate-600 text-xs font-bold uppercase tracking-wider">Toplam</span>
-                     <span className="text-slate-800 text-2xl font-black">{formatCurrency(totalExpenses)}</span>
+                     <span className="text-slate-600 dark:text-zinc-400 text-xs font-bold uppercase tracking-wider">Toplam</span>
+                     <span className="text-slate-800 dark:text-zinc-100 text-2xl font-black">{formatCurrency(totalExpenses)}</span>
                 </div>
 
                 {/* Grafik  */}
@@ -258,8 +266,8 @@ const SummaryChart = () => {
             </div>
           </BentoCard>
 
-          <BentoCard className="p-6 bg-white border border-zinc-100 shadow-[0_2px_15px_rgb(0,0,0,0.03)] min-h-100 flex flex-col">
-            <h3 className="text-lg font-bold text-slate-800 flex items-center gap-2">
+          <BentoCard className="p-6 bg-white dark:bg-zinc-800 border border-zinc-100 dark:border-zinc-700 shadow-[0_2px_15px_rgb(0,0,0,0.03)] min-h-100 flex flex-col">
+            <h3 className="text-lg font-bold text-slate-800 dark:text-zinc-100 flex items-center gap-2">
                 <span className="w-1.5 h-6 bg-orange-500 rounded-full mr-1 shadow-sm"></span>
                 Hizmet Maliyetleri
             </h3>
@@ -276,17 +284,17 @@ const SummaryChart = () => {
                     dataKey="name" 
                     type="category" 
                     width={100} 
-                    tick={{fill: '#64748b', fontSize: 12, fontWeight: 700 }}
+                    tick={{ fill: darkMode ? '#a1a1aa' : '#64748b', fontSize: 12, fontWeight: 700 }}
                     axisLine={false} 
                     tickLine={false} 
                 />
                 
-                <Tooltip cursor={{fill: 'rgba(241, 245, 249, 0.6)', radius: 8 }} content={<CustomTooltip />} />
+                <Tooltip cursor={{ fill: darkMode ? 'rgba(39,39,42,0.6)' : 'rgba(241, 245, 249, 0.6)', radius: 8 }} content={<CustomTooltip />} />
                 <Bar 
                   dataKey="price" 
                   name="Fiyat" 
                   radius={[0, 8, 8, 0]} 
-                  background={{ fill: '#f8fafc', radius: [0, 8, 8, 0] }}
+                  background={{ fill: darkMode ? '#27272a' : '#f8fafc', radius: [0, 8, 8, 0] }}
                 >
                   {
                       subscriptionData.map((entry, index) => (

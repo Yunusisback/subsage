@@ -137,10 +137,10 @@ const SubscriptionList = () => {
                                 value={searchQuery}
                                 onChange={(e) => setSearchQuery(e.target.value)}
                                 className="pl-10 pr-4 py-2.5 w-full md:w-64 rounded-3xl text-sm 
-               bg-white  text-gray-700 placeholder-gray-400
-               outline-none ring-2 ring-zinc-200 hover:ring-cyan-300
+               bg-white dark:bg-zinc-800 text-gray-700 dark:text-zinc-200 placeholder-gray-400 dark:placeholder-zinc-500
+               outline-none ring-2 ring-zinc-200 dark:ring-zinc-700 hover:ring-cyan-300 dark:hover:ring-cyan-700
                hover:border-cyan-300
-               focus:border-cyan-500 focus:bg-cyan-50/40 focus:text-cyan-950
+               focus:border-cyan-500 focus:bg-cyan-50/40 dark:focus:bg-cyan-900/20 focus:text-cyan-950 dark:focus:text-cyan-200
                transition-all duration-200 ease-in-out"
                             />
                         </div>
@@ -171,14 +171,14 @@ const SubscriptionList = () => {
 
             {/* tab menü */}
             {!isAddingMode && !showCustomForm && (
-                <div className="flex gap-2 mb-6 border-b border-slate-200 pb-1">
+                <div className="flex gap-2 mb-6 border-b border-slate-200 dark:border-zinc-700 pb-1">
                     <button
                         onClick={() => setViewFilter("active")}
                         className={cn(
                             "px-4 py-2 text-sm font-bold cursor-pointer rounded-t-lg transition-all relative top-1",
                             viewFilter === "active"
-                                ? "text-cyan-700 border-b-2 border-cyan-600 bg-cyan-50"
-                                : "text-slate-500 hover:text-cyan-700 hover:bg-cyan-50"
+                                ? "text-cyan-700 dark:text-cyan-400 border-b-2 border-cyan-600 dark:border-cyan-500 bg-cyan-50 dark:bg-cyan-900/30"
+                                : "text-slate-500 dark:text-zinc-400 hover:text-cyan-700 dark:hover:text-cyan-400 hover:bg-cyan-50 dark:hover:bg-cyan-900/20"
                         )}
                     >
                         Aktif Abonelikler
@@ -188,8 +188,8 @@ const SubscriptionList = () => {
                         className={cn(
                             "px-4 py-2 text-sm font-bold rounded-t-lg cursor-pointer transition-all relative top-1",
                             viewFilter === "canceled"
-                                ? "text-red-800 border-b-2 border-red-800 bg-red-100"
-                                : "text-slate-500 hover:text-red-700 hover:bg-red-50"
+                                ? "text-red-800 dark:text-red-400 border-b-2 border-red-800 dark:border-red-500 bg-red-100 dark:bg-red-900/30"
+                                : "text-slate-500 dark:text-zinc-400 hover:text-red-700 dark:hover:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/20"
                         )}
                     >
                         İptal Edilenler
@@ -208,14 +208,14 @@ const SubscriptionList = () => {
                             initial={{ opacity: 0, scale: 0.95 }}
                             animate={{ opacity: 1, scale: 1 }}
                             exit={{ opacity: 0, scale: 0.95 }}
-                            className="max-w-xl mx-auto bg-white p-8 -mt-10 rounded-3xl border border-slate-200 shadow-lg"
+                            className="max-w-xl mx-auto bg-white dark:bg-zinc-800 p-8 -mt-10 rounded-3xl border border-slate-200 dark:border-zinc-700 shadow-lg"
                         >
                             <div className="text-center mb-6">
-                                <div className="w-12 h-12 bg-cyan-100 text-cyan-600 rounded-full flex items-center justify-center mx-auto mb-3">
+                                <div className="w-12 h-12 bg-cyan-100 dark:bg-cyan-900/40 text-cyan-600 dark:text-cyan-400 rounded-full flex items-center justify-center mx-auto mb-3">
                                     <PenTool size={24} />
                                 </div>
-                                <h3 className="text-xl font-bold text-slate-900">Özel Abonelik Oluştur</h3>
-                                <p className="text-sm text-slate-500">Listede olmayan servisi kendin ekle.</p>
+                                <h3 className="text-xl font-bold text-slate-900 dark:text-zinc-100">Özel Abonelik Oluştur</h3>
+                                <p className="text-sm text-slate-500 dark:text-zinc-400">Listede olmayan servisi kendin ekle.</p>
                             </div>
                             <AddSubscriptionForm onSuccess={handleCustomSuccess} />
                         </motion.div>
@@ -236,15 +236,15 @@ const SubscriptionList = () => {
                                     <div
                                         key={platform.id}
                                         className={cn(
-                                            "group relative bg-white border rounded-3xl p-5 flex flex-col items-center text-center transition-all duration-300",
+                                            "group relative bg-white dark:bg-zinc-800 border rounded-3xl p-5 flex flex-col items-center text-center transition-all duration-300",
                                             isSubscribed && status !== "success"
-                                                ? "opacity-50 grayscale border-slate-100 bg-slate-50 cursor-default"
-                                                : "border-slate-200 hover:border-cyan-300 hover:shadow-[0_8px_30px_-6px_rgba(0,0,0,0.1)] hover:-translate-y-1 cursor-pointer"
+                                                ? "opacity-50 grayscale border-slate-100 dark:border-zinc-700 bg-slate-50 dark:bg-zinc-900 cursor-default"
+                                                : "border-slate-200 dark:border-zinc-700 hover:border-cyan-300 dark:hover:border-cyan-600 hover:shadow-[0_8px_30px_-6px_rgba(0,0,0,0.1)] hover:-translate-y-1 cursor-pointer"
                                         )}
                                         onClick={() => !isSubscribed && handleAddPlatform(platform)}
                                     >
                                         {/* Platform Logo */}
-                                        <div className="w-14 h-14 mb-4 rounded-xl bg-white border border-slate-100 p-2.5 flex items-center justify-center shadow-sm group-hover:scale-105 transition-transform duration-300">
+                                        <div className="w-14 h-14 mb-4 rounded-xl bg-white dark:bg-zinc-700 border border-slate-100 dark:border-zinc-600 p-2.5 flex items-center justify-center shadow-sm group-hover:scale-105 transition-transform duration-300">
                                             <img
                                                 src={platform.image}
                                                 alt={platform.name}
@@ -258,15 +258,15 @@ const SubscriptionList = () => {
                                             />
                                         </div>
 
-                                        <h3 className="font-bold text-slate-900 text-sm mb-1">{platform.name}</h3>
-                                        <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider bg-slate-50 px-2 py-0.5 rounded border border-slate-100 mb-3">
+                                        <h3 className="font-bold text-slate-900 dark:text-zinc-100 text-sm mb-1">{platform.name}</h3>
+                                        <span className="text-[10px] font-bold text-slate-400 dark:text-zinc-500 uppercase tracking-wider bg-slate-50 dark:bg-zinc-700 px-2 py-0.5 rounded border border-slate-100 dark:border-zinc-600 mb-3">
                                             {platform.category}
                                         </span>
 
-                                        <div className="mt-auto w-full pt-3 border-t border-slate-50 flex flex-col items-center justify-center gap-1">
+                                        <div className="mt-auto w-full pt-3 border-t border-slate-50 dark:border-zinc-700 flex flex-col items-center justify-center gap-1">
                                             <div className="flex items-baseline gap-1">
-                                                <span className="text-lg font-black text-slate-800 tracking-tight">{formatMoneyClean(platform.price)}</span>
-                                                <span className="text-[10px] font-bold text-slate-400">₺/ay</span>
+                                                <span className="text-lg font-black text-slate-800 dark:text-zinc-100 tracking-tight">{formatMoneyClean(platform.price)}</span>
+                                                <span className="text-[10px] font-bold text-slate-400 dark:text-zinc-500">₺/ay</span>
                                             </div>
 
                                             {/* durum göstergesi */}
@@ -274,15 +274,15 @@ const SubscriptionList = () => {
                                                 {status === "loading" ? (
                                                     <Loader2 size={16} className="animate-spin text-cyan-500" />
                                                 ) : status === "success" ? (
-                                                    <div className="flex items-center gap-1 text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded-full border border-emerald-100 animate-in zoom-in">
+                                                    <div className="flex items-center gap-1 text-emerald-600 bg-emerald-50 dark:bg-emerald-900/30 px-2 py-0.5 rounded-full border border-emerald-100 dark:border-emerald-800 animate-in zoom-in">
                                                         <CheckCircle2 size={12} /> <span className="text-[10px] font-bold">Eklendi</span>
                                                     </div>
                                                 ) : isSubscribed ? (
-                                                    <span className="text-[10px] font-bold text-slate-400 flex items-center gap-1">
+                                                    <span className="text-[10px] font-bold text-slate-400 dark:text-zinc-500 flex items-center gap-1">
                                                         <CheckCircle2 size={12} /> Mevcut
                                                     </span>
                                                 ) : (
-                                                    <span className="text-[10px] font-bold text-cyan-600 opacity-0 group-hover:opacity-100 transition-opacity">
+                                                    <span className="text-[10px] font-bold text-cyan-600 dark:text-cyan-400 opacity-0 group-hover:opacity-100 transition-opacity">
                                                         Seçmek için tıkla
                                                     </span>
                                                 )}
@@ -291,7 +291,7 @@ const SubscriptionList = () => {
 
                                         {/* seçili değilken hover ikonu */}
                                         {!isSubscribed && (
-                                            <div className="absolute top-3 right-3 w-6 h-6 rounded-full bg-cyan-50 text-cyan-600 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all scale-75 group-hover:scale-100">
+                                            <div className="absolute top-3 right-3 w-6 h-6 rounded-full bg-cyan-50 dark:bg-cyan-900/50 text-cyan-600 dark:text-cyan-400 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all scale-75 group-hover:scale-100">
                                                 <Plus size={14} strokeWidth={3} />
                                             </div>
                                         )}
@@ -301,22 +301,22 @@ const SubscriptionList = () => {
 
                             {/* oluşturma kartı */}
                             <div
-                                className="group relative bg-white border border-dashed border-slate-300 rounded-3xl p-5 flex flex-col items-center text-center transition-all duration-300 hover:border-cyan-400 hover:bg-cyan-50 cursor-pointer"
+                                className="group relative bg-white dark:bg-zinc-800 border border-dashed border-slate-300 dark:border-zinc-600 rounded-3xl p-5 flex flex-col items-center text-center transition-all duration-300 hover:border-cyan-400 dark:hover:border-cyan-500 hover:bg-cyan-50 dark:hover:bg-cyan-900/20 cursor-pointer"
                                 onClick={() => setShowCustomForm(true)}
                             >
-                                <div className="w-14 h-14 mb-4 rounded-xl bg-slate-50 border border-slate-100 text-slate-400 p-2.5 flex items-center justify-center shadow-sm group-hover:scale-105 group-hover:bg-white group-hover:text-cyan-500 transition-all duration-300">
+                                <div className="w-14 h-14 mb-4 rounded-xl bg-slate-50 dark:bg-zinc-700 border border-slate-100 dark:border-zinc-600 text-slate-400 dark:text-zinc-500 p-2.5 flex items-center justify-center shadow-sm group-hover:scale-105 group-hover:bg-white dark:group-hover:bg-zinc-600 group-hover:text-cyan-500 transition-all duration-300">
                                     <Plus size={24} />
                                 </div>
-                                <h3 className="font-bold text-slate-900 text-sm mb-1">Özel Oluştur</h3>
-                                <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider bg-slate-50 px-2 py-0.5 rounded border border-slate-100 mb-3">
+                                <h3 className="font-bold text-slate-900 dark:text-zinc-100 text-sm mb-1">Özel Oluştur</h3>
+                                <span className="text-[10px] font-bold text-slate-400 dark:text-zinc-500 uppercase tracking-wider bg-slate-50 dark:bg-zinc-700 px-2 py-0.5 rounded border border-slate-100 dark:border-zinc-600 mb-3">
                                     Kişisel
                                 </span>
-                                <div className="mt-auto w-full pt-3 border-t border-slate-50 flex flex-col items-center justify-center gap-1">
+                                <div className="mt-auto w-full pt-3 border-t border-slate-50 dark:border-zinc-700 flex flex-col items-center justify-center gap-1">
                                     <div className="flex items-baseline gap-1">
-                                        <span className="text-lg font-black text-slate-300 group-hover:text-cyan-600">-</span>
+                                        <span className="text-lg font-black text-slate-300 dark:text-zinc-600 group-hover:text-cyan-600 dark:group-hover:text-cyan-400">-</span>
                                     </div>
                                     <div className="h-6 flex items-center justify-center">
-                                        <span className="text-[10px] font-bold text-slate-400 group-hover:text-cyan-600">
+                                        <span className="text-[10px] font-bold text-slate-400 dark:text-zinc-500 group-hover:text-cyan-600 dark:group-hover:text-cyan-400">
                                             Formu Aç
                                         </span>
                                     </div>
@@ -325,8 +325,8 @@ const SubscriptionList = () => {
 
                             {filteredPlatforms.length === 0 && (
                                 <div className="col-span-full py-20 text-center">
-                                    <Filter className="mx-auto h-12 w-12 text-slate-200 mb-2" />
-                                    <p className="text-slate-500">Aradığınız kriterlere uygun servis bulunamadı.</p>
+                                    <Filter className="mx-auto h-12 w-12 text-slate-200 dark:text-zinc-700 mb-2" />
+                                    <p className="text-slate-500 dark:text-zinc-400">Aradığınız kriterlere uygun servis bulunamadı.</p>
                                 </div>
                             )}
                         </motion.div>
@@ -357,7 +357,7 @@ const SubscriptionList = () => {
                                 <div
                                     key={sub.id}
                                     className={cn(
-                                        "group relative bg-white p-6 rounded-[28px] border border-slate-200 shadow-[0_2px_10px_-4px_rgba(0,0,0,0.02)] transition-all duration-300 hover:shadow-xl hover:-translate-y-1 cursor-default overflow-hidden",
+                                        "group relative bg-white dark:bg-zinc-800 p-6 rounded-[28px] border border-slate-200 dark:border-zinc-700 shadow-[0_2px_10px_-4px_rgba(0,0,0,0.02)] transition-all duration-300 hover:shadow-xl hover:-translate-y-1 cursor-default overflow-hidden",
                                         isInactive ? "opacity-75 grayscale hover:grayscale-0" : hoverBorderColor
                                     )}
                                 >
@@ -365,7 +365,7 @@ const SubscriptionList = () => {
                                     <div className="flex justify-between items-start mb-6 relative z-10">
                                         <div className={cn(
                                             "w-14 h-14 rounded-2xl border p-2.5 flex items-center justify-center shadow-sm",
-                                            isInactive ? "bg-slate-50 border-slate-100" : "bg-white border-slate-100"
+                                            isInactive ? "bg-slate-50 dark:bg-zinc-700 border-slate-100 dark:border-zinc-600" : "bg-white dark:bg-zinc-700 border-slate-100 dark:border-zinc-600"
                                         )}>
                                             <img
                                                 src={sub.image}
@@ -394,7 +394,7 @@ const SubscriptionList = () => {
 
                                                 // Silme Butonu
                                                 <button
-                                                    className="w-8 h-8 flex items-center justify-center rounded-full transition-all border bg-slate-50 border-slate-200 text-slate-400 hover:bg-red-50 hover:text-red-600 hover:border-red-100"
+                                                    className="w-8 h-8 flex items-center justify-center rounded-full transition-all border bg-slate-50 dark:bg-zinc-700 border-slate-200 dark:border-zinc-600 text-slate-400 dark:text-zinc-400 hover:bg-red-50 dark:hover:bg-red-900/30 hover:text-red-600 hover:border-red-100"
                                                     onClick={(e) => handleDeleteClick(e, sub.id)}
                                                     title="Geçmişten Sil"
                                                 >
@@ -424,37 +424,37 @@ const SubscriptionList = () => {
                                     {/* İçerik */}
                                     <div className="relative z-10">
                                         <div className="flex items-center gap-2 mb-1">
-                                            <h3 className={cn("text-lg font-bold tracking-tight", isInactive ? "text-slate-600 line-through decoration-slate-300 decoration-2" : "text-slate-900")}>
+                                            <h3 className={cn("text-lg font-bold tracking-tight", isInactive ? "text-slate-600 dark:text-zinc-400 line-through decoration-slate-300 dark:decoration-zinc-600 decoration-2" : "text-slate-900 dark:text-zinc-100")}>
                                                 {sub.name}
                                             </h3>
                                             <span className={cn(
                                                 "text-[9px] font-bold px-1.5 py-0.5 rounded uppercase tracking-wider border",
-                                                isInactive ? "bg-slate-100 text-slate-500 border-slate-200" : "bg-slate-50 text-slate-500 border-slate-100"
+                                                isInactive ? "bg-slate-100 dark:bg-zinc-700 text-slate-500 dark:text-zinc-400 border-slate-200 dark:border-zinc-600" : "bg-slate-50 dark:bg-zinc-700 text-slate-500 dark:text-zinc-400 border-slate-100 dark:border-zinc-600"
                                             )}>
                                                 {sub.category}
                                             </span>
                                         </div>
 
-                                        <div className="flex items-center gap-2 text-xs text-slate-400 font-medium mb-5">
+                                        <div className="flex items-center gap-2 text-xs text-slate-400 dark:text-zinc-500 font-medium mb-5">
                                             <Calendar size={12} />
                                             <span>
                                                 {isInactive ? `İptal: ${formatDate(sub.canceledDate) || 'Bilinmiyor'}` : `Başlangıç: ${formatDate(sub.startDate)}`}
                                             </span>
                                         </div>
 
-                                        <div className="pt-4 border-t border-slate-100 flex items-center justify-between">
+                                        <div className="pt-4 border-t border-slate-100 dark:border-zinc-700 flex items-center justify-between">
                                             <div className="flex items-center gap-1.5 text-xs font-semibold text-slate-400">
                                                 {isInactive ? (
-                                                    <span className="flex items-center gap-1 text-slate-400"><XCircle size={14} /> Pasif</span>
+                                                    <span className="flex items-center gap-1 text-slate-400 dark:text-zinc-500"><XCircle size={14} /> Pasif</span>
                                                 ) : (
-                                                    <span className="flex items-center gap-1 text-emerald-600"><CheckCircle2 size={14} /> Aktif</span>
+                                                    <span className="flex items-center gap-1 text-emerald-600 dark:text-emerald-400"><CheckCircle2 size={14} /> Aktif</span>
                                                 )}
                                             </div>
                                             <div className="flex items-baseline gap-0.5">
-                                                <span className={cn("text-2xl font-black tracking-tighter tabular-nums", isInactive ? "text-slate-400" : "text-slate-900")}>
+                                                <span className={cn("text-2xl font-black tracking-tighter tabular-nums", isInactive ? "text-slate-400 dark:text-zinc-500" : "text-slate-900 dark:text-zinc-100")}>
                                                     {formatMoneyClean(sub.price)}
                                                 </span>
-                                                <span className="text-sm font-bold text-slate-400">₺</span>
+                                                <span className="text-sm font-bold text-slate-400 dark:text-zinc-500">₺</span>
                                             </div>
                                         </div>
                                     </div>
@@ -464,21 +464,21 @@ const SubscriptionList = () => {
 
                         {/* empty state */}
                         {displayedSubscriptions.length === 0 && (
-                            <div className="col-span-full py-24 text-center border-2 border-dashed border-slate-200 rounded-[2.5rem] bg-slate-50/50">
-                                <svg className="mx-auto h-15 w-15 text-red-900/40 mb-4 animate-pulse drop-shadow-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                            <div className="col-span-full py-24 text-center border-2 border-dashed border-slate-200 dark:border-zinc-700 rounded-[2.5rem] bg-slate-50/50 dark:bg-zinc-900/50">
+                                <svg className="mx-auto h-15 w-15 text-red-900/40 dark:text-red-400/30 mb-4 animate-pulse drop-shadow-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
                                     <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" />
                                 </svg>
-                                <h3 className="text-red-700 font-bold text-lg">
+                                <h3 className="text-red-700 dark:text-red-400 font-bold text-lg">
                                     {viewFilter === 'active' ? 'Aktif abonelik bulunamadı' : 'Geçmiş abonelik bulunamadı'}
                                 </h3>
-                                <p className="text-red-900 text-sm mb-6 max-w-xs mx-auto">
+                                <p className="text-red-900 dark:text-red-300/70 text-sm mb-6 max-w-xs mx-auto">
                                     {viewFilter === 'active'
                                         ? "Giderlerinizi takip etmeye başlamak için ilk aboneliğinizi ekleyin."
                                         : "İptal ettiğiniz abonelikler burada listelenir."}
                                 </p>
                                 {viewFilter === 'active' && (
                                     <Button
-                                        className="bg-slate-900 text-white hover:bg-black px-6 py-3 rounded-xl shadow-lg shadow-slate-200"
+                                        className="bg-slate-900 dark:bg-zinc-100 text-white dark:text-zinc-900 hover:bg-black dark:hover:bg-white px-6 py-3 rounded-xl shadow-lg shadow-slate-200 dark:shadow-black/20"
                                         onClick={() => setIsAddingMode(true)}
                                     >
                                         <Plus size={18} className="mr-2" />
@@ -495,7 +495,7 @@ const SubscriptionList = () => {
             <Modal
                 isOpen={!!editingSub}
                 onClose={() => setEditingSub(null)}
-                title={<span className="text-cyan-700 font-bold">Aboneliği Düzenle</span>}
+                title={<span className="text-cyan-700 dark:text-cyan-400 font-bold">Aboneliği Düzenle</span>}
             >
                 <AddSubscriptionForm
                     initialData={editingSub}
@@ -511,13 +511,13 @@ const SubscriptionList = () => {
                 variant="danger"
             >
                 <div className="p-1">
-                    <div className="bg-red-50 border border-red-100 rounded-xl p-4 flex gap-4 mb-6">
-                        <div className="bg-white p-2 rounded-full h-10 w-10 flex items-center justify-center shrink-0 shadow-sm text-red-500">
+                    <div className="bg-red-50 dark:bg-red-950/40 border border-red-100 dark:border-red-900/50 rounded-xl p-4 flex gap-4 mb-6">
+                        <div className="bg-white dark:bg-zinc-800 p-2 rounded-full h-10 w-10 flex items-center justify-center shrink-0 shadow-sm text-red-500">
                             <AlertTriangle size={20} />
                         </div>
                         <div>
-                            <h4 className="font-bold text-red-900 text-sm mb-1">Kalıcı İşlem</h4>
-                            <p className="text-xs text-red-700 leading-relaxed">
+                            <h4 className="font-bold text-red-900 dark:text-red-300 text-sm mb-1">Kalıcı İşlem</h4>
+                            <p className="text-xs text-red-700 dark:text-red-400 leading-relaxed">
                                 Bu abonelik kaydını ve geçmişe dönük tüm verilerini kalıcı olarak silmek üzeresiniz. Bu işlem geri alınamaz.
                             </p>
                         </div>
@@ -527,14 +527,14 @@ const SubscriptionList = () => {
                         <Button
                             variant="ghost"
                             onClick={() => setDeletingId(null)}
-                            className="text-slate-500 hover:text-slate-900"
+                            className="text-slate-500 dark:text-zinc-400 hover:text-slate-900 dark:hover:text-zinc-100"
                         >
                             Vazgeç
                         </Button>
                         <Button
                             variant="danger"
                             onClick={confirmDelete}
-                            className="bg-red-600 hover:bg-red-700 text-white border-transparent shadow-red-200 shadow-lg"
+                            className="bg-red-600 hover:bg-red-700 text-white border-transparent shadow-red-200 dark:shadow-red-900/30 shadow-lg"
                         >
                             Evet, Kalıcı Olarak Sil
                         </Button>

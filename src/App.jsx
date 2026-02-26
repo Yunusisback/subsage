@@ -1,6 +1,6 @@
 /**
  * SubSage SaaS Dashboard
- * * @author Yunusisback <
+ * * @author Yunusisback 
  * @copyright 2026 Yunusisback
  * @license Proprietary - No License (See LICENSE file)
  * * 🛑 NOTICE: This source code is protected by copyright laws. 
@@ -8,7 +8,7 @@
  * Bu kodun izinsiz ticari kullanımı yasaktır.
  */
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Toaster } from "react-hot-toast";
 import { Routes, Route, Navigate } from "react-router-dom";
 import { AnimatePresence, motion } from "framer-motion"; 
@@ -26,6 +26,7 @@ import Modal from "./components/ui/Modal";
 import { cn } from "./utils/helpers";
 import AuthPage from "./components/auth/AuthPage"; 
 import { useUser } from "./context/UserContext"; 
+import { useUI } from "./context/UIContext"; 
 import { Loader2 } from "lucide-react"; 
 import { useNotificationService } from "./hooks/useNotificationService";
 
@@ -267,15 +268,25 @@ const LiquidTransition = () => {
 
 function App() {
   const { user, loading, isTransitioning } = useUser(); 
+  const { darkMode } = useUI();
   const [isCollapsed, setIsCollapsed] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   useNotificationService();
 
+ 
+  useEffect(() => {
+    if (darkMode) {
+      document.documentElement.classList.add("dark");
+    } else {
+      document.documentElement.classList.remove("dark");
+    }
+  }, [darkMode]);
+
   if (loading) {
       return (
-          <div className="min-h-screen flex items-center justify-center bg-slate-50">
+          <div className="min-h-screen flex items-center justify-center bg-slate-50 dark:bg-zinc-950">
               <motion.div 
                 initial={{ opacity: 0 }} 
                 animate={{ opacity: 1 }} 
@@ -317,7 +328,7 @@ function App() {
         {isTransitioning && <LiquidTransition />}
       </AnimatePresence>
 
-      <div className="min-h-screen flex text-zinc-900 font-sans bg-background overflow-hidden relative">
+      <div className="min-h-screen flex text-zinc-900 dark:text-zinc-100 font-sans bg-background overflow-hidden relative">
         
         <Toaster toastOptions={modernToastOptions} />
 

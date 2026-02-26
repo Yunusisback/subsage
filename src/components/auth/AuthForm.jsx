@@ -13,13 +13,13 @@ const InputField = ({ label, type, value, onChange, required, id }) => (
       name={id}
       value={value}
       onChange={onChange}
-      className="block w-full px-4 py-3.5 text-sm text-zinc-900 bg-white rounded-3xl border-2 border-zinc-200 appearance-none focus:outline-none focus:border-cyan-500 group-hover:border-zinc-300 peer transition-all duration-200"
+      className="block w-full px-4 py-3.5 text-sm text-zinc-900 dark:text-zinc-100 bg-white dark:bg-zinc-800 rounded-3xl border-2 border-zinc-200 dark:border-zinc-700 appearance-none focus:outline-none focus:border-cyan-500 dark:focus:border-cyan-500 group-hover:border-zinc-300 dark:group-hover:border-zinc-600 peer transition-all duration-200"
       placeholder=" "
     />
     <label
       htmlFor={id}
-      className="absolute left-3 px-1 text-sm text-zinc-400 bg-white duration-200 transform -translate-y-3 scale-75 top-0 origin-left z-10
-                 peer-focus:-translate-y-3 peer-focus:scale-75 peer-focus:text-cyan-600 peer-focus:top-0
+      className="absolute left-3 px-1 text-sm text-zinc-400 dark:text-zinc-500 bg-white dark:bg-zinc-800 duration-200 transform -translate-y-3 scale-75 top-0 origin-left z-10
+                 peer-focus:-translate-y-3 peer-focus:scale-75 peer-focus:text-cyan-600 dark:peer-focus:text-cyan-400 peer-focus:top-0
                  peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-placeholder-shown:top-3.5"
     >
       {label}
@@ -73,7 +73,7 @@ const AuthForm = () => {
   };
 
   return (
-    <div className="w-full lg:w-1/2 h-full overflow-y-auto bg-white">
+    <div className="w-full lg:w-1/2 h-full overflow-y-auto bg-white dark:bg-zinc-950">
  
       <div className="min-h-full flex flex-col justify-start p-6 sm:p-10 lg:p-20 lg:py-12">
     
@@ -81,25 +81,25 @@ const AuthForm = () => {
           
           {/* başlık bolumu */}
           <div className="text-center mb-6">
-            <h2 className="text-3xl font-bold tracking-tight text-cyan-600">
+            <h2 className="text-3xl font-bold tracking-tight text-cyan-600 dark:text-cyan-400">
               {isLogin ? "Hoş Geldin!" : "Hesap Oluştur"}
             </h2>
-            <p className="text-zinc-400 mt-2 text-sm">
+            <p className="text-zinc-400 dark:text-zinc-500 mt-2 text-sm">
               {isLogin ? "Kaldığın yerden devam etmek için giriş yap." : "Aboneliklerini yönetmeye hemen başla."}
             </p>
           </div>
 
           
-          <div className="flex p-1 bg-zinc-100 rounded-3xl mb-6 relative">
+          <div className="flex p-1 bg-zinc-100 dark:bg-zinc-800 rounded-3xl mb-6 relative">
             <button 
               type="button"
               onClick={() => setIsLogin(true)}
-              className={`flex-1 relative z-10 py-2 text-sm font-bold transition-colors duration-200 ${isLogin ? "text-cyan-500" : "text-zinc-500 hover:text-cyan-700"}`}
+              className={`flex-1 relative z-10 py-2 text-sm font-bold transition-colors duration-200 ${isLogin ? "text-cyan-500" : "text-zinc-500 dark:text-zinc-400 hover:text-cyan-700 dark:hover:text-cyan-400"}`}
             >
               {isLogin && (
                 <motion.div 
                   layoutId="active-tab-indicator"
-                  className="absolute inset-0 bg-white rounded-3xl shadow-sm border border-zinc-200/50"
+                  className="absolute inset-0 bg-white dark:bg-zinc-700 rounded-3xl shadow-sm border border-zinc-200/50 dark:border-zinc-600/50"
                   style={{ zIndex: -1 }}
                   transition={{ type: "spring", stiffness: 300, damping: 30 }}
                 />
@@ -109,12 +109,12 @@ const AuthForm = () => {
             <button 
               type="button"
               onClick={() => setIsLogin(false)}
-              className={`flex-1 relative z-10 py-2 text-sm font-bold transition-colors duration-200 ${!isLogin ? "text-cyan-500" : "text-zinc-500 hover:text-cyan-700"}`}
+              className={`flex-1 relative z-10 py-2 text-sm font-bold transition-colors duration-200 ${!isLogin ? "text-cyan-500" : "text-zinc-500 dark:text-zinc-400 hover:text-cyan-700 dark:hover:text-cyan-400"}`}
             >
               {!isLogin && (
                 <motion.div 
                   layoutId="active-tab-indicator"
-                  className="absolute inset-0 bg-white rounded-3xl shadow-sm border border-zinc-200/50"
+                  className="absolute inset-0 bg-white dark:bg-zinc-700 rounded-3xl shadow-sm border border-zinc-200/50 dark:border-zinc-600/50"
                   style={{ zIndex: -1 }}
                   transition={{ type: "spring", stiffness: 300, damping: 30 }}
                 />
@@ -180,19 +180,19 @@ const AuthForm = () => {
                   name="floating_password"
                   value={formData.password}
                   onChange={(e) => setFormData({...formData, password: e.target.value})}
-                  className="block w-full px-4 py-3.5 text-sm text-zinc-900 bg-white rounded-3xl border-2 border-zinc-200 appearance-none focus:outline-none focus:border-cyan-500 group-hover:border-zinc-300 peer transition-all duration-200"
+                  className="block w-full px-4 py-3.5 text-sm text-zinc-900 dark:text-zinc-100 bg-white dark:bg-zinc-800 rounded-3xl border-2 border-zinc-200 dark:border-zinc-700 appearance-none focus:outline-none focus:border-cyan-500 dark:focus:border-cyan-500 group-hover:border-zinc-300 dark:group-hover:border-zinc-600 peer transition-all duration-200"
                   placeholder=" "
                 />
                 <label 
                   htmlFor="floating_password"
-                  className="absolute left-3 px-1 text-sm text-zinc-400 bg-white duration-200 transform -translate-y-3 scale-75 top-0 origin-left z-10
-                             peer-focus:-translate-y-3 peer-focus:scale-75 peer-focus:text-cyan-600 peer-focus:top-0
+                  className="absolute left-3 px-1 text-sm text-zinc-400 dark:text-zinc-500 bg-white dark:bg-zinc-800 duration-200 transform -translate-y-3 scale-75 top-0 origin-left z-10
+                             peer-focus:-translate-y-3 peer-focus:scale-75 peer-focus:text-cyan-600 dark:peer-focus:text-cyan-400 peer-focus:top-0
                              peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-placeholder-shown:top-3.5"
                 >
                   Şifre
                 </label>
                 {isLogin && (
-                  <a href="#" className="absolute right-3 top-3.5 text-xs font-semibold text-cyan-500 hover:text-cyan-700 transition-colors z-10">
+                  <a href="#" className="absolute right-3 top-3.5 text-xs font-semibold text-cyan-500 hover:text-cyan-700 dark:hover:text-cyan-300 transition-colors z-10">
                     Şifremi unuttum?
                   </a>
                 )}
@@ -254,8 +254,8 @@ const AuthForm = () => {
           
           {/* ayrıcı çizgi */}
           <div className="relative my-5">
-            <div className="absolute inset-0 flex items-center"><div className="w-full border-t border-cyan-100"></div></div>
-            <div className="relative flex justify-center text-[10px] uppercase tracking-widest font-bold text-cyan-600"><span className="bg-white px-2">veya</span></div>
+            <div className="absolute inset-0 flex items-center"><div className="w-full border-t border-cyan-100 dark:border-zinc-700"></div></div>
+            <div className="relative flex justify-center text-[10px] uppercase tracking-widest font-bold text-cyan-600 dark:text-cyan-500"><span className="bg-white dark:bg-zinc-950 px-2">veya</span></div>
           </div>
 
      
@@ -275,7 +275,7 @@ const AuthForm = () => {
             }}
             whileHover={{ scale: 1.02 }}
             whileTap={{ scale: 0.98 }}
-            className="w-full relative group mb-3 h-12 rounded-3xl text-sm font-bold flex items-center justify-center cursor-pointer overflow-hidden border border-cyan-400/30 bg-linear-to-r from-cyan-500/5 via-cyan-400/10 to-cyan-500/5 backdrop-blur-sm "
+            className="w-full relative group mb-3 h-12 rounded-3xl text-sm font-bold flex items-center justify-center cursor-pointer overflow-hidden border border-cyan-400/30 dark:border-cyan-500/30 bg-linear-to-r from-cyan-500/5 via-cyan-400/10 to-cyan-500/5 backdrop-blur-sm "
           >
         
             <div className="absolute inset-0 -translate-x-full group-hover:animate-[shimmer_1.5s_infinite] bg-linear-to-r from-transparent via-white/20 to-transparent z-0" />
@@ -283,7 +283,7 @@ const AuthForm = () => {
            
             <motion.div layout className="relative z-10 flex items-center justify-center">
                <motion.div layout className="p-1.5 rounded-full transition-colors shrink-0">
-                 <Zap size={guestLoading ? 24 : 20} className={guestLoading ? "text-cyan-600 fill-cyan-600" : "text-cyan-700 fill-cyan-700"} />
+                 <Zap size={guestLoading ? 24 : 20} className={guestLoading ? "text-cyan-600 fill-cyan-600" : "text-cyan-700 dark:text-cyan-400 fill-cyan-700 dark:fill-cyan-400"} />
                </motion.div>
                
                <AnimatePresence>
@@ -294,7 +294,7 @@ const AuthForm = () => {
                      animate={{ opacity: 1, width: "auto", marginLeft: 12 }}
                      exit={{ opacity: 0, width: 0, marginLeft: 0 }}
                      transition={{ duration: 0.3 }}
-                     className="text-cyan-800 group-hover:text-cyan-900 transition-colors whitespace-nowrap overflow-hidden"
+                     className="text-cyan-800 dark:text-cyan-300 group-hover:text-cyan-900 dark:group-hover:text-cyan-200 transition-colors whitespace-nowrap overflow-hidden"
                    >
                      Misafir Modu ile Keşfet
                    </motion.span>
@@ -314,7 +314,7 @@ const AuthForm = () => {
               <button 
                 type="button"
                 onClick={() => toast.info("Google girişi yakında aktif olacak")}
-                className="w-full group bg-white border-2 border-zinc-200 hover:border-cyan-200 hover:bg-cyan-50/30 text-zinc-800 h-12 rounded-3xl text-sm font-semibold transition-all flex items-center justify-center gap-3 shadow-sm hover:shadow-md cursor-pointer"
+                className="w-full group bg-white dark:bg-zinc-800 border-2 border-zinc-200 dark:border-zinc-700 hover:border-cyan-200 dark:hover:border-cyan-700 hover:bg-cyan-50/30 dark:hover:bg-cyan-900/20 text-zinc-800 dark:text-zinc-200 h-12 rounded-3xl text-sm font-semibold transition-all flex items-center justify-center gap-3 shadow-sm hover:shadow-md cursor-pointer"
               >
                 <svg className="w-5 h-5" viewBox="0 0 24 24">
                   <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
@@ -322,7 +322,7 @@ const AuthForm = () => {
                   <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/>
                   <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/>
                 </svg>
-                <span className="group-hover:text-cyan-700 transition-colors">Google ile Giriş Yap</span>
+                <span className="group-hover:text-cyan-700 dark:group-hover:text-cyan-300 transition-colors">Google ile Giriş Yap</span>
               </button>
 
               <button 
@@ -338,8 +338,8 @@ const AuthForm = () => {
             </motion.div>
           )}
           
-          <p className="text-center text-xs text-zinc-400 mt-6 mb-4 font-medium">
-            Devam ederek <a href="#" className="underline text-cyan-500 hover:text-cyan-800">Kullanım Koşulları</a>'nı kabul etmiş olursunuz.
+          <p className="text-center text-xs text-zinc-400 dark:text-zinc-500 mt-6 mb-4 font-medium">
+            Devam ederek <a href="#" className="underline text-cyan-500 hover:text-cyan-800 dark:hover:text-cyan-300">Kullanım Koşulları</a>'nı kabul etmiş olursunuz.
           </p>
         </div>
       </div>

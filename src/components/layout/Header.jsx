@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from "react";
-import { Bell, CheckCircle, Info, Clock, XCircle, Menu } from "lucide-react";
+import { Bell, CheckCircle, Info, Clock, XCircle, Menu, Sun, Moon } from "lucide-react";
 import { useUI } from "../../context/UIContext";
 import { useUser } from "../../context/UserContext";
 import { motion, AnimatePresence } from "framer-motion";
@@ -8,7 +8,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 
 const Header = ({ onOpenMobileMenu }) => {
 
-    const { notifications } = useUI();
+    const { notifications, darkMode, toggleDarkMode } = useUI();
     const { userSettings } = useUser();
 
     const [showNotifications, setShowNotifications] = useState(false);
@@ -54,11 +54,11 @@ const Header = ({ onOpenMobileMenu }) => {
    
     const getTypeStyles = (type) => {
         switch (type) {
-            case "success": return { bg: "bg-emerald-50", border: "border-emerald-100", icon: "text-emerald-600", dot: "bg-emerald-500" };
-            case "warning": return { bg: "bg-red-50", border: "border-red-100", icon: "text-red-600", dot: "bg-red-500" };
-            case "alert": return { bg: "bg-amber-50", border: "border-amber-100", icon: "text-amber-600", dot: "bg-amber-500" };
-            case "info": return { bg: "bg-blue-50", border: "border-blue-100", icon: "text-blue-600", dot: "bg-blue-500" };
-            default: return { bg: "bg-zinc-50", border: "border-zinc-100", icon: "text-zinc-500", dot: "bg-zinc-400" };
+            case "success": return { bg: "bg-emerald-50 dark:bg-emerald-950/40", border: "border-emerald-100 dark:border-emerald-900/50", icon: "text-emerald-600", dot: "bg-emerald-500" };
+            case "warning": return { bg: "bg-red-50 dark:bg-red-950/40", border: "border-red-100 dark:border-red-900/50", icon: "text-red-600", dot: "bg-red-500" };
+            case "alert": return { bg: "bg-amber-50 dark:bg-amber-950/40", border: "border-amber-100 dark:border-amber-900/50", icon: "text-amber-600", dot: "bg-amber-500" };
+            case "info": return { bg: "bg-blue-50 dark:bg-blue-950/40", border: "border-blue-100 dark:border-blue-900/50", icon: "text-blue-600", dot: "bg-blue-500" };
+            default: return { bg: "bg-zinc-50 dark:bg-zinc-800", border: "border-zinc-100 dark:border-zinc-700", icon: "text-zinc-500", dot: "bg-zinc-400" };
         }
     };
 
@@ -73,23 +73,45 @@ const Header = ({ onOpenMobileMenu }) => {
                 >
                     <Menu size={24} />
                 </button>
-                <h1 className="text-2xl md:text-3xl pl-1 md:pl-3 font-bold tracking-[0.055em]! text-cyan-800 truncate">
+                <h1 className="text-2xl md:text-3xl pl-1 md:pl-3 font-bold tracking-[0.055em]! text-cyan-800 dark:text-cyan-400 truncate">
                     {currentTitle}
                 </h1>
             </div>
 
             {/* Bildirim ve Profil */}
-            <div className="flex items-center  gap-3 md:gap-4 pr-0 md:pr-2 ">
+            <div className="flex items-center gap-3 md:gap-4 pr-0 md:pr-2">
+
+                {/* dark mode toggle butonu */}
+                <button
+                    onClick={toggleDarkMode}
+                    className="p-2.5 ring-2 ring-gray-400 md:p-3.5 rounded-3xl bg-gray-300 hover:bg-cyan-800 hover:ring-cyan-800 text-cyan-600 transition-all relative cursor-pointer shadow-sm active:scale-95 hover:text-cyan-50 dark:bg-zinc-700 dark:ring-zinc-600 dark:text-cyan-400 dark:hover:bg-cyan-700 dark:hover:ring-cyan-700"
+                    title={darkMode ? "Açık Moda Geç" : "Koyu Moda Geç"}
+                >
+                    <AnimatePresence mode="wait" initial={false}>
+                        <motion.div
+                            key={darkMode ? "sun" : "moon"}
+                            initial={{ rotate: -30, scale: 0.7, opacity: 0 }}
+                            animate={{ rotate: 0, scale: 1, opacity: 1 }}
+                            exit={{ rotate: 30, scale: 0.7, opacity: 0 }}
+                            transition={{ duration: 0.25, ease: "easeInOut" }}
+                        >
+                            {darkMode
+                                ? <Sun size={22} className="md:w-6 md:h-6" />
+                                : <Moon size={22} className="md:w-6 md:h-6" />
+                            }
+                        </motion.div>
+                    </AnimatePresence>
+                </button>
 
                 {/* Bildirim */}
                 <div className="relative" ref={notificationRef}>
                     <button
                         onClick={() => setShowNotifications(!showNotifications)}
-                        className="p-2.5 ring-2 ring-gray-400 md:p-3.5 rounded-3xl bg-gray-300 hover:bg-cyan-800 hover:ring-cyan-500 text-cyan-600 transition-colors relative cursor-pointer shadow-sm  active:scale-95 hover:text-cyan-50"
+                        className="p-2.5 ring-2 ring-gray-400 md:p-3.5 rounded-3xl bg-gray-300 hover:bg-cyan-800 hover:ring-cyan-800 text-cyan-600 transition-colors relative cursor-pointer shadow-sm active:scale-95 hover:text-cyan-50 dark:bg-zinc-700 dark:ring-zinc-600 dark:text-cyan-400 dark:hover:bg-cyan-700 dark:hover:ring-cyan-700"
                     >
                         <Bell size={22} className="md:w-6 md:h-6 " />
                         {unreadCount > 0 && (
-                            <span className="absolute -top-2 right-1.5 w-3 h-3 rounded-full bg-red-500 border-2 border-white animate-ping"></span>
+                            <span className="absolute -top-2 right-1.5 w-3 h-3 rounded-full bg-red-500 border-2 border-white dark:border-zinc-700 animate-ping"></span>
                         )}
                     </button>
                     
@@ -101,14 +123,14 @@ const Header = ({ onOpenMobileMenu }) => {
                                 animate={{ opacity: 1, y: 0, scale: 1 }}
                                 exit={{ opacity: 0, y: 10, scale: 0.95 }}
                                 transition={{ duration: 0.2, ease: "easeOut" }}
-                                className="absolute -right-6 md:right-0 top-full mt-3 w-80 md:w-96 bg-white border border-zinc-200 rounded-2xl shadow-xl z-50 overflow-hidden origin-top-right"
+                                className="absolute -right-6 md:right-0 top-full mt-3 w-80 md:w-96 bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-700 rounded-2xl shadow-xl dark:shadow-black/40 z-50 overflow-hidden origin-top-right"
                             >
-                                <div className="p-4 border-b border-zinc-100 flex justify-between items-center bg-zinc-50/30 backdrop-blur-md">
-                                    <span className="text-sm font-bold text-cyan-900">Bildirimler</span>
+                                <div className="p-4 border-b border-zinc-100 dark:border-zinc-800 flex justify-between items-center bg-zinc-50/30 dark:bg-zinc-800/50 backdrop-blur-md">
+                                    <span className="text-sm font-bold text-cyan-900 dark:text-cyan-300">Bildirimler</span>
                                     {unreadCount > 0 ? (
                                         <span className="text-[10px] bg-cyan-700 text-cyan-50 px-2 py-0.5 rounded-full font-bold border border-cyan-800 shadow-sm">{unreadCount} Yeni</span>
                                     ) : (
-                                        <span className="text-[10px] bg-zinc-100 text-zinc-500 px-2 py-0.5 rounded-full font-bold">Hepsi Okundu</span>
+                                        <span className="text-[10px] bg-zinc-100 dark:bg-zinc-700 text-zinc-500 dark:text-zinc-400 px-2 py-0.5 rounded-full font-bold">Hepsi Okundu</span>
                                     )}
                                 </div>
                                 <div className="max-h-80 overflow-y-auto custom-scrollbar">
@@ -123,10 +145,10 @@ const Header = ({ onOpenMobileMenu }) => {
                                                     setShowNotifications(false);
                                                 }}
                                                 className={cn(
-                                                    "w-full text-left px-4 py-3 transition-all flex gap-3 group border-b border-zinc-50 last:border-0 relative overflow-hidden",
+                                                    "w-full text-left px-4 py-3 transition-all flex gap-3 group border-b border-zinc-50 dark:border-zinc-800 last:border-0 relative overflow-hidden",
                                                     isUnread
                                                         ? cn(styles.bg, "hover:brightness-95")
-                                                        : "bg-white hover:bg-zinc-50"
+                                                        : "bg-white dark:bg-zinc-900 hover:bg-zinc-50 dark:hover:bg-zinc-800"
                                                 )}
                                             >
                                                 {isUnread && (
@@ -134,7 +156,7 @@ const Header = ({ onOpenMobileMenu }) => {
                                                 )}
                                                 <div className={cn(
                                                     "mt-0.5 w-8 h-8 rounded-full flex items-center justify-center shrink-0 border",
-                                                    isUnread ? cn("bg-white border-white/50 shadow-sm", styles.icon) : "bg-zinc-100 border-zinc-200 text-zinc-400"
+                                                    isUnread ? cn("bg-white dark:bg-zinc-800 border-white/50 shadow-sm", styles.icon) : "bg-zinc-100 dark:bg-zinc-700 border-zinc-200 dark:border-zinc-600 text-zinc-400"
                                                 )}>
                                                     {note.type === "success" && <CheckCircle size={14} strokeWidth={2.5} />}
                                                     {note.type === "warning" && <Clock size={14} strokeWidth={2.5} />}
@@ -145,15 +167,15 @@ const Header = ({ onOpenMobileMenu }) => {
                                                     <div className="flex justify-between items-start mb-0.5">
                                                         <p className={cn(
                                                             "text-xs font-bold truncate pr-2",
-                                                            isUnread ? "text-zinc-900" : "text-zinc-500"
+                                                            isUnread ? "text-zinc-900 dark:text-zinc-100" : "text-zinc-500 dark:text-zinc-400"
                                                         )}>
                                                             {note.title}
                                                         </p>
-                                                        <span className="text-[9px] text-zinc-800 whitespace-nowrap">{note.time}</span>
+                                                        <span className="text-[9px] text-zinc-800 dark:text-zinc-400 whitespace-nowrap">{note.time}</span>
                                                     </div>
                                                     <p className={cn(
                                                         "text-[10px] line-clamp-2 leading-relaxed",
-                                                        isUnread ? "text-zinc-600 font-medium" : "text-zinc-400"
+                                                        isUnread ? "text-zinc-600 dark:text-zinc-300 font-medium" : "text-zinc-400 dark:text-zinc-500"
                                                     )}>
                                                         {note.message}
                                                     </p>
@@ -167,13 +189,13 @@ const Header = ({ onOpenMobileMenu }) => {
                                         </div>
                                     )}
                                 </div>
-                                <div className="p-2 border-t border-zinc-100 bg-zinc-50/50">
+                                <div className="p-2 border-t border-zinc-100 dark:border-zinc-800 bg-zinc-50/50 dark:bg-zinc-800/50">
                                     <button
                                         onClick={() => {
                                             navigate("/notifications");
                                             setShowNotifications(false);
                                         }}
-                                        className="w-full py-2 text-xs text-center text-cyan-600 hover:text-cyan-900 font-bold transition-colors cursor-pointer flex items-center justify-center gap-1"
+                                        className="w-full py-2 text-xs text-center text-cyan-600 dark:text-cyan-400 hover:text-cyan-900 dark:hover:text-cyan-300 font-bold transition-colors cursor-pointer flex items-center justify-center gap-1"
                                     >
                                         Tümünü Gör
                                         <span className="text-[10px] opacity-70 ">→</span>
@@ -187,9 +209,9 @@ const Header = ({ onOpenMobileMenu }) => {
                 {/* Profil Bölümü */}
                 <button
                     onClick={() => navigate("/settings")}
-                    className="flex items-center gap-2 pl-1.5 md:pl-2.5 pr-1.5 md:pr-4 py-1.5 md:py-2 rounded-full ring-2 ring-gray-400 hover:ring-cyan-600  bg-gray-300 hover:bg-cyan-800 transition-all group cursor-pointer shadow-sm active:scale-95"
+                    className="flex items-center gap-2 pl-1.5 md:pl-2.5 pr-1.5 md:pr-4 py-1.5 md:py-2 rounded-full ring-2 ring-gray-400 dark:ring-zinc-600 hover:ring-cyan-800 bg-gray-300 dark:bg-zinc-700 hover:bg-cyan-800 transition-all group cursor-pointer shadow-sm active:scale-95"
                 >
-                    <div className="w-8 h-8 md:w-10 md:h-10 min-w-8 md:min-w-9 rounded-full bg-zinc-100 flex items-center justify-center overflow-hidden border border-cyan-200  ring-2 ring-zinc-200">
+                    <div className="w-8 h-8 md:w-10 md:h-10 min-w-8 md:min-w-9 rounded-full bg-zinc-100 dark:bg-zinc-800 flex items-center justify-center overflow-hidden border border-cyan-200 dark:border-cyan-900 ring-2 ring-zinc-200 dark:ring-zinc-700">
                         {hasAvatar ? (
                             <img
                                 src={userSettings.avatar}
@@ -211,7 +233,7 @@ const Header = ({ onOpenMobileMenu }) => {
                         </span>
                     </div>
                     <div className="text-left hidden md:block">
-                        <h4 className="text-m font-bold text-cyan-600 group-hover:text-white transition-colors">
+                        <h4 className="text-m font-bold text-cyan-600 dark:text-cyan-400 group-hover:text-white transition-colors">
                             {userSettings.name}
                         </h4>
                     </div>

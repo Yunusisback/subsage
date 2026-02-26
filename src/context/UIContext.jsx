@@ -17,12 +17,10 @@ const safeJSONParse = (key, fallback) => {
 
 export const UIProvider = ({ children }) => {
 
-    
     const [notifications, setNotifications] = useState(() => {
         return safeJSONParse("notifications", INITIAL_NOTIFICATIONS);
     });
 
-  
     const [messages, setMessages] = useState(() => {
         const defaultMessages = {
             1: [ 
@@ -33,15 +31,19 @@ export const UIProvider = ({ children }) => {
         return safeJSONParse("messages", defaultMessages);
     });
 
-  
+
+    const [darkMode, setDarkMode] = useState(() => {
+        return safeJSONParse("darkMode", false);
+    });
+
     useEffect(() => { localStorage.setItem("notifications", JSON.stringify(notifications)); }, [notifications]);
     useEffect(() => { localStorage.setItem("messages", JSON.stringify(messages)); }, [messages]); 
+    useEffect(() => { localStorage.setItem("darkMode", JSON.stringify(darkMode)); }, [darkMode]);
 
     const markAllNotificationsAsRead = () => {
         setNotifications(prev => prev.map(n => ({ ...n, read: true })));
     };
 
-    
     const sendMessage = (contactId, text, sender = "me") => {
         const newMessage = {
             id: crypto.randomUUID(),
@@ -56,7 +58,6 @@ export const UIProvider = ({ children }) => {
         }));
     };
 
-  
     const addNotification = (title, message, type = "success") => {
         const newNote = {
             id: crypto.randomUUID(),
@@ -69,13 +70,18 @@ export const UIProvider = ({ children }) => {
         setNotifications(prev => [newNote, ...prev]);
     };
 
+
+    const toggleDarkMode = () => setDarkMode(prev => !prev);
+
     return (
         <UIContext.Provider value={{
             notifications,
             markAllNotificationsAsRead,
             messages,
             sendMessage,
-            addNotification
+            addNotification,
+            darkMode,
+            toggleDarkMode
         }}>
             {children}
         </UIContext.Provider>

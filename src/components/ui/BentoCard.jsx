@@ -25,9 +25,9 @@ const BentoCard = ({ children, className, glowColor = "zinc", ...props }) => {
         "rounded-4xl", 
         "flex flex-col",
         "cursor-default",
-        "bg-white/70 backdrop-blur-xl border border-white/60", 
-        "shadow-[0_8px_30px_rgb(0,0,0,0.04)]",
-        "hover:shadow-[0_8px_30px_rgb(0,0,0,0.08)]",
+        "bg-white/70 dark:bg-zinc-800/70 backdrop-blur-xl border border-white/60 dark:border-zinc-700/60", 
+        "shadow-[0_8px_30px_rgb(0,0,0,0.04)] dark:shadow-[0_8px_30px_rgb(0,0,0,0.2)]",
+        "hover:shadow-[0_8px_30px_rgb(0,0,0,0.08)] dark:hover:shadow-[0_8px_30px_rgb(0,0,0,0.3)]",
         "transition-all duration-300",
         className
       )}
