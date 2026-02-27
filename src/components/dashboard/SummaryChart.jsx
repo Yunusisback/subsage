@@ -44,7 +44,7 @@ const SummaryChart = () => {
    // Abonelik yoksa gösterilecek placeholder
   if (subscriptions.length === 0) {
     return (
-        <div className="flex flex-col items-center justify-center h-96 border border-dashed border-zinc-200 dark:border-zinc-700 rounded-3xl bg-zinc-50/50 dark:bg-zinc-900/50 text-zinc-400">
+        <div className="flex flex-col items-center justify-center h-96 border border-dashed border-zinc-200 dark:border-zinc-700/50 rounded-3xl bg-zinc-50/50 dark:bg-zinc-900/40 text-zinc-400 dark:text-zinc-600">
             <Layers size={48} className="mb-4 opacity-30" />
             <p>Veri analizi için abonelik ekleyin.</p>
         </div>
@@ -77,7 +77,7 @@ const SummaryChart = () => {
         <div className={cn(
           "p-3 border shadow-[0_8px_30px_rgb(0,0,0,0.12)] rounded-xl text-xs z-50 relative backdrop-blur-xl",
           darkMode
-            ? "bg-zinc-800/95 border-zinc-700 text-zinc-100"
+            ? "bg-zinc-800/95 border-zinc-700/80 text-zinc-100"
             : "bg-white/95 border-zinc-100 text-zinc-700"
         )}>
           <p className="font-bold mb-1">{payload[0].name}</p>
@@ -102,22 +102,22 @@ const SummaryChart = () => {
        <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
         
          {/* Toplam gider */}
-        <BentoCard className="relative overflow-hidden p-6 bg-linear-to-br from-orange-500 to-amber-600 text-white shadow-xl  group hover:shadow-orange-300 duration-500">
-            <div className="absolute top-0 right-0 w-32 h-32 bg-white/10 blur-[60px] -mr-10 -mt-10 rounded-full group-hover:bg-white/20 transition-all" />
-            <div className="absolute bottom-0 left-0 w-24 h-24 bg-yellow-300/20 blur-[50px] -ml-10 -mb-10 rounded-full mix-blend-overlay" />
+        <BentoCard className="relative overflow-hidden p-6 bg-linear-to-br from-orange-500 to-amber-600 dark:from-orange-600 dark:to-amber-700 text-white shadow-xl shadow-orange-300/30 dark:shadow-orange-900/30 border-orange-400/30 dark:border-orange-800/30 group hover:shadow-orange-300/40 dark:hover:shadow-orange-900/40 duration-500">
+            <div className="absolute top-0 right-0 w-32 h-32 bg-white/10 dark:bg-white/5 blur-[60px] -mr-10 -mt-10 rounded-full group-hover:bg-white/15 transition-all" />
+            <div className="absolute bottom-0 left-0 w-24 h-24 bg-yellow-300/20 dark:bg-yellow-300/10 blur-[50px] -ml-10 -mb-10 rounded-full mix-blend-overlay" />
             
             {/* buyuk saydam ikon */}
-            <Wallet className="absolute -right-9 top-0 w-28 h-28 text-orange-200 opacity-50  rotate-0 pointer-events-none" />
+            <Wallet className="absolute -right-9 top-0 w-28 h-28 text-orange-200/60 dark:text-orange-100/30 opacity-50 rotate-0 pointer-events-none" />
             
             <div className="relative z-10 flex flex-col justify-between h-full">
                 <div className="flex items-center justify-end mb-4">
-                    <span className="text-xs font-bold text-white bg-orange-800/80 rounded-xl px-2 py-1 -mb-4 backdrop-blur-sm left-0 absolute">
+                    <span className="text-xs font-bold text-white bg-black/20 dark:bg-black/30 rounded-xl px-2 py-1 -mb-4 backdrop-blur-sm left-0 absolute border border-white/10">
                         Bu Ay
                     </span>
                 </div>
                 <div>
-                    <p className="text-xl font-bold text-white mb-3 drop-shadow-sm  tracking-wide">Toplam Gider</p>
-                    <h3 className="text-4xl font-black text-zinc-100/95 tracking-tight tabular-nums drop-shadow-md -mb-2">
+                    <p className="text-xl font-bold text-white/90 mb-3 drop-shadow-sm tracking-wide">Toplam Gider</p>
+                    <h3 className="text-4xl font-black text-white tracking-tight tabular-nums drop-shadow-md -mb-2">
                         {formatCurrency(totalExpenses)}
                     </h3>
                 </div>
@@ -126,42 +126,42 @@ const SummaryChart = () => {
 
 
         {/* Kart limit kullanımı */}
-        <BentoCard className="relative overflow-hidden p-6 bg-linear-to-br from-cyan-500 to-blue-600 text-white shadow-xl shadow-cyan-500/20  group transition-all duration-500">
+        <BentoCard className="relative overflow-hidden p-6 bg-linear-to-br from-cyan-500 to-blue-600 dark:from-cyan-600 dark:to-blue-800 text-white shadow-xl shadow-cyan-500/20 dark:shadow-cyan-900/30 border-cyan-400/30 dark:border-cyan-800/30 group transition-all duration-500">
 
              {/* Arka Plan  */}
-             <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-40 h-40 bg-white/10 blur-[60px] rounded-full" />
-             <div className="absolute top-0 right-0 w-20 h-20 bg-teal-300/20 blur-[30px] rounded-full mix-blend-overlay" />
+             <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-40 h-40 bg-white/10 dark:bg-white/5 blur-[60px] rounded-full" />
+             <div className="absolute top-0 right-0 w-20 h-20 bg-teal-300/20 dark:bg-teal-300/10 blur-[30px] rounded-full mix-blend-overlay" />
 
              {/* buyuk saydam ikon */}
-             <statusInfo.icon className="absolute -left-10 -top-8 w-28 h-28 text-white opacity-30 -rotate-12 pointer-events-none" />
+             <statusInfo.icon className="absolute -left-10 -top-8 w-28 h-28 text-white/20 dark:text-white/10 -rotate-12 pointer-events-none" />
 
              <div className="relative z-10 flex flex-col justify-between h-full">
                 <div className="flex items-center justify-end mb-4">
 
                     {/* Status */}
-                    <span className="text-xs font-bold px-2 py-1 rounded-xl bg-blue-800/60 backdrop-blur-md border-white/20 text-white">
+                    <span className="text-xs font-bold px-2 py-1 rounded-xl bg-black/20 dark:bg-black/30 backdrop-blur-md border border-white/10 text-white">
                         {statusInfo.text}
                     </span>
                 </div>
 
                 <div className="w-full">
                     <div className="flex justify-between items-end mb-2">
-                        <p className="text-xl font-bold text-white drop-shadow-sm tracking-wide">Limit Kullanımı</p>
+                        <p className="text-xl font-bold text-white/90 drop-shadow-sm tracking-wide">Limit Kullanımı</p>
                         <p className="text-xl text-white drop-shadow-md">{Math.round(limitPercentage)}%</p>
                     </div>
                     
                     {/* progress bar */}
-                    <div className="h-3 w-full bg-black/50 rounded-full p-0.6 ">
+                    <div className="h-3 w-full bg-black/30 dark:bg-black/40 rounded-full p-0.5">
                         <div 
-                            className="h-full rounded-full bg-white shadow-[0_0_20px_7px_rgba(255,255,255,1)] relative transition-all duration-1000 ease-out"
+                            className="h-full rounded-full bg-white shadow-[0_0_16px_6px_rgba(255,255,255,0.7)] dark:shadow-[0_0_14px_4px_rgba(255,255,255,0.4)] relative transition-all duration-1000 ease-out"
                             style={{ width: `${limitPercentage}%` }}
                         >
                              {/* Işıltı efekti */}
-                             <div className="absolute inset-0 bg-white/50 animate-ping rounded-full" />
+                             <div className="absolute inset-0 bg-white/40 animate-ping rounded-full" />
                         </div>
                     </div>
                     
-                    <div className="flex justify-between mt-2 text-[16px] font-bold text-white">
+                    <div className="flex justify-between mt-2 text-sm font-bold text-white/80">
                         <span>0₺</span>
                         <span>{formatCurrency(monthlyLimit)}</span>
                     </div>
@@ -171,23 +171,27 @@ const SummaryChart = () => {
 
 
          {/* Kalan Bütçe */}
-        <BentoCard className="relative overflow-hidden p-6 bg-linear-to-br to-lime-500 from-emerald-800 text-white shadow-xl shadow-lime-500/20 border border-lime-300/50">
-             <div className="absolute top-0 right-0 w-64 h-64 bg-yellow-300/30 blur-[70px] rounded-full mix-blend-overlay" />
-             <div className="absolute bottom-0 left-0 w-40 h-40 bg-teal-100/20 blur-[50px] rounded-full mix-blend-overlay" />
-            
+        <BentoCard className="relative overflow-hidden p-6 bg-linear-to-br from-emerald-600 to-teal-500 dark:from-emerald-700 dark:to-teal-700 text-white shadow-xl shadow-emerald-500/20 dark:shadow-emerald-900/30 border-emerald-400/30 dark:border-emerald-800/30">
+             <div className="absolute top-0 right-0 w-64 h-64 bg-yellow-300/20 dark:bg-yellow-300/10 blur-[70px] rounded-full mix-blend-overlay" />
+             <div className="absolute bottom-0 left-0 w-40 h-40 bg-teal-100/20 dark:bg-teal-100/10 blur-[50px] rounded-full mix-blend-overlay" />
 
              {/* buyuk saydam ikon */}
-             <Activity className="absolute -right-11 -top-3 w-45 h-40 text-white opacity-30 -rotate-12 pointer-events-none" />
+             <Activity className="absolute -right-11 -top-3 w-45 h-40 text-white/20 dark:text-white/10 -rotate-12 pointer-events-none" />
 
              <div className="relative z-10 flex flex-col justify-between h-full">
                 <div className="flex items-center justify-end mb-4 mr-62">
-                    <div className={cn("flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-bold backdrop-blur-md shadow-sm", remainingBudget > 0 ? "bg-green-900 text-white" : "bg-red-500/40 border-red-200/40 text-white")}>
+                    <div className={cn(
+                        "flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-bold backdrop-blur-md shadow-sm border",
+                        remainingBudget > 0 
+                            ? "bg-black/20 dark:bg-black/30 border-white/10 text-white" 
+                            : "bg-red-500/30 dark:bg-red-500/20 border-red-300/20 text-white"
+                    )}>
                          {remainingBudget > 0 ? "Güvendesin" : "Eksi Bakiye"} 
                     </div>
                 </div>
                 
                 <div>
-                    <p className="text-xm font-bold text-white mb-4 drop-shadow-sm tracking-wider">Kalan Bütçe</p>
+                    <p className="text-xl font-bold text-white/90 mb-4 drop-shadow-sm tracking-wide">Kalan Bütçe</p>
                     <h3 className="text-4xl font-black text-white tracking-tight tabular-nums drop-shadow-md">
                         {formatCurrency(remainingBudget)}
                     </h3>
@@ -199,16 +203,16 @@ const SummaryChart = () => {
 
       {/* grafikler */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-5">
-          <BentoCard className="p-6 bg-white dark:bg-zinc-800 border border-zinc-100 dark:border-zinc-700 shadow-[0_2px_15px_rgb(0,0,0,0.03)] min-h-100 flex flex-col">
+          <BentoCard className="p-6 bg-white dark:bg-zinc-900/80 border border-zinc-100/80 dark:border-zinc-800/60 shadow-[0_2px_15px_rgb(0,0,0,0.03)] dark:shadow-[0_4px_24px_rgba(0,0,0,0.3)] min-h-100 flex flex-col">
             <h3 className="text-lg font-bold text-slate-800 dark:text-zinc-100 flex items-center gap-2">
-                <span className="w-1.5 h-6 bg-lime-500 rounded-full mr-1 shadow-sm"></span>
+                <span className="w-1.5 h-6 bg-lime-500 dark:bg-lime-400 rounded-full mr-1 shadow-sm"></span>
                 Kategori Dağılımı
             </h3>
             
             <div className="flex-1 w-full min-h-75 mt-4 relative isolate"> 
                
                 <div className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none z-0">
-                     <span className="text-slate-600 dark:text-zinc-400 text-xs font-bold uppercase tracking-wider">Toplam</span>
+                     <span className="text-slate-500 dark:text-zinc-500 text-xs font-bold uppercase tracking-wider">Toplam</span>
                      <span className="text-slate-800 dark:text-zinc-100 text-2xl font-black">{formatCurrency(totalExpenses)}</span>
                 </div>
 
@@ -266,9 +270,9 @@ const SummaryChart = () => {
             </div>
           </BentoCard>
 
-          <BentoCard className="p-6 bg-white dark:bg-zinc-800 border border-zinc-100 dark:border-zinc-700 shadow-[0_2px_15px_rgb(0,0,0,0.03)] min-h-100 flex flex-col">
+          <BentoCard className="p-6 bg-white dark:bg-zinc-900/80 border border-zinc-100/80 dark:border-zinc-800/60 shadow-[0_2px_15px_rgb(0,0,0,0.03)] dark:shadow-[0_4px_24px_rgba(0,0,0,0.3)] min-h-100 flex flex-col">
             <h3 className="text-lg font-bold text-slate-800 dark:text-zinc-100 flex items-center gap-2">
-                <span className="w-1.5 h-6 bg-orange-500 rounded-full mr-1 shadow-sm"></span>
+                <span className="w-1.5 h-6 bg-orange-500 dark:bg-orange-400 rounded-full mr-1 shadow-sm"></span>
                 Hizmet Maliyetleri
             </h3>
             <div className="flex-1 w-full mt-4">
@@ -289,12 +293,12 @@ const SummaryChart = () => {
                     tickLine={false} 
                 />
                 
-                <Tooltip cursor={{ fill: darkMode ? 'rgba(39,39,42,0.6)' : 'rgba(241, 245, 249, 0.6)', radius: 8 }} content={<CustomTooltip />} />
+                <Tooltip cursor={{ fill: darkMode ? 'rgba(39,39,42,0.5)' : 'rgba(241, 245, 249, 0.7)', radius: 8 }} content={<CustomTooltip />} />
                 <Bar 
                   dataKey="price" 
                   name="Fiyat" 
                   radius={[0, 8, 8, 0]} 
-                  background={{ fill: darkMode ? '#27272a' : '#f8fafc', radius: [0, 8, 8, 0] }}
+                  background={{ fill: darkMode ? '#18181b' : '#f8fafc', radius: [0, 8, 8, 0] }}
                 >
                   {
                       subscriptionData.map((entry, index) => (

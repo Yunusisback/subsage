@@ -20,7 +20,6 @@ const Header = ({ onOpenMobileMenu }) => {
     // Okunmamış bildirim sayısı
     const unreadCount = notifications.filter(n => !n.read).length;
 
-
     const avatarInitial = userSettings.name?.charAt(0)?.toUpperCase() || "?";
     const hasAvatar = !!userSettings.avatar;
 
@@ -33,7 +32,6 @@ const Header = ({ onOpenMobileMenu }) => {
         document.addEventListener("mousedown", handleClickOutside);
         return () => document.removeEventListener("mousedown", handleClickOutside);
     }, []);
-
 
     const getPageTitle = (path) => {
         switch (path) {
@@ -48,17 +46,15 @@ const Header = ({ onOpenMobileMenu }) => {
         }
     };
 
-
     const currentTitle = getPageTitle(location.pathname);
 
-   
     const getTypeStyles = (type) => {
         switch (type) {
             case "success": return { bg: "bg-emerald-50 dark:bg-emerald-950/40", border: "border-emerald-100 dark:border-emerald-900/50", icon: "text-emerald-600", dot: "bg-emerald-500" };
             case "warning": return { bg: "bg-red-50 dark:bg-red-950/40", border: "border-red-100 dark:border-red-900/50", icon: "text-red-600", dot: "bg-red-500" };
             case "alert": return { bg: "bg-amber-50 dark:bg-amber-950/40", border: "border-amber-100 dark:border-amber-900/50", icon: "text-amber-600", dot: "bg-amber-500" };
             case "info": return { bg: "bg-blue-50 dark:bg-blue-950/40", border: "border-blue-100 dark:border-blue-900/50", icon: "text-blue-600", dot: "bg-blue-500" };
-            default: return { bg: "bg-zinc-50 dark:bg-zinc-800", border: "border-zinc-100 dark:border-zinc-700", icon: "text-zinc-500", dot: "bg-zinc-400" };
+            default: return { bg: "bg-zinc-50 dark:bg-zinc-800", border: "border-zinc-100 dark:border-zinc-700", icon: "text-zinc-500 dark:text-zinc-400", dot: "bg-zinc-400 dark:bg-zinc-500" };
         }
     };
 
@@ -69,7 +65,7 @@ const Header = ({ onOpenMobileMenu }) => {
             <div className="flex items-center gap-3">
                 <button
                     onClick={onOpenMobileMenu}
-                    className="p-2 -ml-2 rounded-xl text-cyan-800 hover:bg-cyan-700 hover:text-cyan-50 lg:hidden transition-colors"
+                    className="p-2 -ml-2 rounded-xl text-cyan-800 dark:text-cyan-400 hover:bg-cyan-50 dark:hover:bg-zinc-800 hover:text-cyan-600 dark:hover:text-cyan-300 lg:hidden transition-colors cursor-pointer"
                 >
                     <Menu size={24} />
                 </button>
@@ -84,7 +80,7 @@ const Header = ({ onOpenMobileMenu }) => {
                 {/* dark mode toggle butonu */}
                 <button
                     onClick={toggleDarkMode}
-                    className="p-2.5 ring-2 ring-gray-400 md:p-3.5 rounded-3xl bg-gray-300 hover:bg-cyan-800 hover:ring-cyan-800 text-cyan-600 transition-all relative cursor-pointer shadow-sm active:scale-95 hover:text-cyan-50 dark:bg-zinc-700 dark:ring-zinc-600 dark:text-cyan-400 dark:hover:bg-cyan-700 dark:hover:ring-cyan-700"
+                    className="p-2.5 md:p-3.5 rounded-full bg-white dark:bg-zinc-800 border-3 border-zinc-200 dark:border-zinc-700 text-zinc-500 dark:text-zinc-400 hover:text-cyan-600 dark:hover:text-cyan-400 hover:border-cyan-300 dark:hover:border-cyan-700 hover:bg-cyan-50 dark:hover:bg-cyan-900/20 transition-all cursor-pointer shadow-sm active:scale-95"
                     title={darkMode ? "Açık Moda Geç" : "Koyu Moda Geç"}
                 >
                     <AnimatePresence mode="wait" initial={false}>
@@ -107,15 +103,18 @@ const Header = ({ onOpenMobileMenu }) => {
                 <div className="relative" ref={notificationRef}>
                     <button
                         onClick={() => setShowNotifications(!showNotifications)}
-                        className="p-2.5 ring-2 ring-gray-400 md:p-3.5 rounded-3xl bg-gray-300 hover:bg-cyan-800 hover:ring-cyan-800 text-cyan-600 transition-colors relative cursor-pointer shadow-sm active:scale-95 hover:text-cyan-50 dark:bg-zinc-700 dark:ring-zinc-600 dark:text-cyan-400 dark:hover:bg-cyan-700 dark:hover:ring-cyan-700"
+                        className="p-2.5 md:p-3.5 rounded-full bg-white dark:bg-zinc-800 border-3 border-zinc-200 dark:border-zinc-700 text-zinc-500 dark:text-zinc-400 hover:text-cyan-600 dark:hover:text-cyan-400 hover:border-cyan-300 dark:hover:border-cyan-700 hover:bg-cyan-50 dark:hover:bg-cyan-900/20 transition-all cursor-pointer shadow-sm active:scale-95"
                     >
-                        <Bell size={22} className="md:w-6 md:h-6 " />
+                        <Bell size={22} className="md:w-6 md:h-6" />
                         {unreadCount > 0 && (
-                            <span className="absolute -top-2 right-1.5 w-3 h-3 rounded-full bg-red-500 border-2 border-white dark:border-zinc-700 animate-ping"></span>
+                            <span className="absolute -top-1.5 -right-1.5 w-3.5 h-3.5 rounded-full bg-red-500 border-2 border-white dark:border-zinc-800 animate-ping"></span>
+                        )}
+                        {unreadCount > 0 && (
+                            <span className="absolute -top-1.5 -right-1.5 w-3.5 h-3.5 rounded-full bg-red-500 border-2 border-white dark:border-zinc-800"></span>
                         )}
                     </button>
                     
-                    {/* Menü */}
+                      {/* bildirim paneli */}
                     <AnimatePresence>
                         {showNotifications && (
                             <motion.div
@@ -123,14 +122,14 @@ const Header = ({ onOpenMobileMenu }) => {
                                 animate={{ opacity: 1, y: 0, scale: 1 }}
                                 exit={{ opacity: 0, y: 10, scale: 0.95 }}
                                 transition={{ duration: 0.2, ease: "easeOut" }}
-                                className="absolute -right-6 md:right-0 top-full mt-3 w-80 md:w-96 bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-700 rounded-2xl shadow-xl dark:shadow-black/40 z-50 overflow-hidden origin-top-right"
+                                className="absolute -right-16 md:right-0 top-full mt-3 w-80 md:w-96 bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-700 rounded-2xl shadow-xl dark:shadow-black/40 z-50 overflow-hidden origin-top-right"
                             >
                                 <div className="p-4 border-b border-zinc-100 dark:border-zinc-800 flex justify-between items-center bg-zinc-50/30 dark:bg-zinc-800/50 backdrop-blur-md">
                                     <span className="text-sm font-bold text-cyan-900 dark:text-cyan-300">Bildirimler</span>
                                     {unreadCount > 0 ? (
-                                        <span className="text-[10px] bg-cyan-700 text-cyan-50 px-2 py-0.5 rounded-full font-bold border border-cyan-800 shadow-sm">{unreadCount} Yeni</span>
+                                        <span className="text-[10px] bg-cyan-600 dark:bg-cyan-700 text-white px-2 py-0.5 rounded-full font-bold shadow-sm">{unreadCount} Yeni</span>
                                     ) : (
-                                        <span className="text-[10px] bg-zinc-100 dark:bg-zinc-700 text-zinc-500 dark:text-zinc-400 px-2 py-0.5 rounded-full font-bold">Hepsi Okundu</span>
+                                        <span className="text-[10px] bg-zinc-100 dark:bg-zinc-800 text-zinc-500 dark:text-zinc-400 px-2 py-0.5 rounded-full font-bold border border-zinc-200 dark:border-zinc-700">Hepsi Okundu</span>
                                     )}
                                 </div>
                                 <div className="max-h-80 overflow-y-auto custom-scrollbar">
@@ -145,9 +144,9 @@ const Header = ({ onOpenMobileMenu }) => {
                                                     setShowNotifications(false);
                                                 }}
                                                 className={cn(
-                                                    "w-full text-left px-4 py-3 transition-all flex gap-3 group border-b border-zinc-50 dark:border-zinc-800 last:border-0 relative overflow-hidden",
+                                                    "w-full text-left px-4 py-3 transition-all flex gap-3 group border-b border-zinc-50 dark:border-zinc-800/50 last:border-0 relative overflow-hidden cursor-pointer",
                                                     isUnread
-                                                        ? cn(styles.bg, "hover:brightness-95")
+                                                        ? cn(styles.bg, "dark:hover:brightness-110")
                                                         : "bg-white dark:bg-zinc-900 hover:bg-zinc-50 dark:hover:bg-zinc-800"
                                                 )}
                                             >
@@ -156,7 +155,7 @@ const Header = ({ onOpenMobileMenu }) => {
                                                 )}
                                                 <div className={cn(
                                                     "mt-0.5 w-8 h-8 rounded-full flex items-center justify-center shrink-0 border",
-                                                    isUnread ? cn("bg-white dark:bg-zinc-800 border-white/50 shadow-sm", styles.icon) : "bg-zinc-100 dark:bg-zinc-700 border-zinc-200 dark:border-zinc-600 text-zinc-400"
+                                                    isUnread ? cn("bg-white dark:bg-zinc-800 border-white/50 dark:border-zinc-700 shadow-sm", styles.icon) : "bg-zinc-100 dark:bg-zinc-800 border-zinc-200 dark:border-zinc-700 text-zinc-400 dark:text-zinc-500"
                                                 )}>
                                                     {note.type === "success" && <CheckCircle size={14} strokeWidth={2.5} />}
                                                     {note.type === "warning" && <Clock size={14} strokeWidth={2.5} />}
@@ -171,11 +170,11 @@ const Header = ({ onOpenMobileMenu }) => {
                                                         )}>
                                                             {note.title}
                                                         </p>
-                                                        <span className="text-[9px] text-zinc-800 dark:text-zinc-400 whitespace-nowrap">{note.time}</span>
+                                                        <span className="text-[9px] text-zinc-500 dark:text-zinc-500 whitespace-nowrap">{note.time}</span>
                                                     </div>
                                                     <p className={cn(
                                                         "text-[10px] line-clamp-2 leading-relaxed",
-                                                        isUnread ? "text-zinc-600 dark:text-zinc-300 font-medium" : "text-zinc-400 dark:text-zinc-500"
+                                                        isUnread ? "text-zinc-700 dark:text-zinc-300 font-medium" : "text-zinc-400 dark:text-zinc-500"
                                                     )}>
                                                         {note.message}
                                                     </p>
@@ -184,7 +183,7 @@ const Header = ({ onOpenMobileMenu }) => {
                                         );
                                     })}
                                     {notifications.length === 0 && (
-                                        <div className="p-8 text-center text-zinc-400 text-xs">
+                                        <div className="p-8 text-center text-zinc-400 dark:text-zinc-500 text-xs">
                                             Bildiriminiz bulunmuyor.
                                         </div>
                                     )}
@@ -195,10 +194,10 @@ const Header = ({ onOpenMobileMenu }) => {
                                             navigate("/notifications");
                                             setShowNotifications(false);
                                         }}
-                                        className="w-full py-2 text-xs text-center text-cyan-600 dark:text-cyan-400 hover:text-cyan-900 dark:hover:text-cyan-300 font-bold transition-colors cursor-pointer flex items-center justify-center gap-1"
+                                        className="w-full py-2 text-xs text-center text-cyan-600 dark:text-cyan-400 hover:text-cyan-800 dark:hover:text-cyan-300 font-bold transition-colors cursor-pointer flex items-center justify-center gap-1 rounded-lg hover:bg-cyan-50 dark:hover:bg-zinc-800"
                                     >
                                         Tümünü Gör
-                                        <span className="text-[10px] opacity-70 ">→</span>
+                                        <span className="text-[10px] opacity-70">→</span>
                                     </button>
                                 </div>
                             </motion.div>
@@ -209,16 +208,15 @@ const Header = ({ onOpenMobileMenu }) => {
                 {/* Profil Bölümü */}
                 <button
                     onClick={() => navigate("/settings")}
-                    className="flex items-center gap-2 pl-1.5 md:pl-2.5 pr-1.5 md:pr-4 py-1.5 md:py-2 rounded-full ring-2 ring-gray-400 dark:ring-zinc-600 hover:ring-cyan-800 bg-gray-300 dark:bg-zinc-700 hover:bg-cyan-800 transition-all group cursor-pointer shadow-sm active:scale-95"
+                    className="flex items-center gap-2 pl-1.5 md:pl-2.5 pr-1.5 md:pr-4 py-1.5 md:py-2 rounded-full bg-white dark:bg-zinc-800 border-3 border-zinc-200 dark:border-zinc-700 hover:border-cyan-300 dark:hover:border-cyan-700 hover:bg-cyan-50 dark:hover:bg-cyan-900/20 transition-all group cursor-pointer shadow-sm active:scale-95"
                 >
-                    <div className="w-8 h-8 md:w-10 md:h-10 min-w-8 md:min-w-9 rounded-full bg-zinc-100 dark:bg-zinc-800 flex items-center justify-center overflow-hidden border border-cyan-200 dark:border-cyan-900 ring-2 ring-zinc-200 dark:ring-zinc-700">
+                    <div className="w-8 h-8 md:w-10 md:h-10 min-w-8 md:min-w-9 rounded-full bg-zinc-100 dark:bg-zinc-700 flex items-center justify-center overflow-hidden border border-zinc-200 dark:border-zinc-600 group-hover:border-cyan-300 dark:group-hover:border-cyan-600 transition-colors">
                         {hasAvatar ? (
                             <img
                                 src={userSettings.avatar}
                                 alt="User"
-                                className="w-full h-full object-cover opacity-100 group-hover:opacity-100 transition-opacity"
+                                className="w-full h-full object-cover opacity-100 transition-opacity"
                                 onError={(e) => {
-
                                     e.target.style.display = "none";
                                     e.target.nextSibling.style.display = "flex";
                                 }}
@@ -226,14 +224,14 @@ const Header = ({ onOpenMobileMenu }) => {
                         ) : null}
 
                         <span
-                            className="w-full h-full flex items-center justify-center text-sm font-bold text-white bg-cyan-600"
+                            className="w-full h-full flex items-center justify-center text-sm font-bold text-cyan-700 dark:text-cyan-300 bg-cyan-100 dark:bg-cyan-900/50 group-hover:bg-cyan-600 group-hover:text-white transition-colors"
                             style={{ display: hasAvatar ? "none" : "flex" }}
                         >
                             {avatarInitial}
                         </span>
                     </div>
                     <div className="text-left hidden md:block">
-                        <h4 className="text-m font-bold text-cyan-600 dark:text-cyan-400 group-hover:text-white transition-colors">
+                        <h4 className="text-sm font-bold text-zinc-700 dark:text-zinc-300 group-hover:text-cyan-700 dark:group-hover:text-cyan-400 transition-colors">
                             {userSettings.name}
                         </h4>
                     </div>

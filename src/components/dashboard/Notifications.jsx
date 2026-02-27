@@ -13,9 +13,24 @@ const Notifications = () => {
       <div className="flex justify-end mb-6">
         <button 
             onClick={markAllNotificationsAsRead}
-            className="group flex items-center gap-2 px-4 py-2.5 rounded-xl text-xs font-bold text-zinc-600 dark:text-zinc-300 bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 shadow-sm hover:shadow-md hover:border-yellow-300 dark:hover:border-yellow-600 hover:bg-yellow-50 dark:hover:bg-yellow-900/20 hover:text-yellow-800 dark:hover:text-yellow-400 transition-all duration-300 cursor-pointer active:scale-95"
+            className={cn(
+                "group flex items-center gap-2 px-4 py-2.5 rounded-xl text-xs font-bold transition-all duration-300 cursor-pointer active:scale-95",
+                "text-zinc-600 dark:text-zinc-300",
+                "bg-white dark:bg-zinc-900/80",
+                "border border-zinc-200 dark:border-zinc-700/60",
+                "shadow-sm hover:shadow-md",
+                "hover:border-yellow-300 dark:hover:border-yellow-600/50",
+                "hover:bg-yellow-50 dark:hover:bg-yellow-500/8",
+                "hover:text-yellow-800 dark:hover:text-yellow-400",
+                "backdrop-blur-sm"
+            )}
         >
-            <div className="p-1 rounded-full bg-zinc-100 dark:bg-zinc-700 group-hover:bg-yellow-200 dark:group-hover:bg-yellow-800/50 group-hover:text-yellow-700 dark:group-hover:text-yellow-400 transition-colors">
+            <div className={cn(
+                "p-1 rounded-full transition-colors",
+                "bg-zinc-100 dark:bg-zinc-800",
+                "group-hover:bg-yellow-200 dark:group-hover:bg-yellow-500/20",
+                "group-hover:text-yellow-700 dark:group-hover:text-yellow-400"
+            )}>
                  <Check size={12} strokeWidth={3} />
             </div>
             Tümünü okundu işaretle
@@ -23,38 +38,45 @@ const Notifications = () => {
       </div>
 
        {/* bildirim listesi */}
-      <div className="space-y-4 w-full">
+      <div className="space-y-3 w-full">
           {notifications.length === 0 ? (
-                <div className="flex flex-col items-center justify-center py-16 bg-white dark:bg-zinc-800 rounded-3xl border border-dashed border-zinc-200 dark:border-zinc-700 text-center">
-                    <div className="w-16 h-16 bg-zinc-50 dark:bg-zinc-700 rounded-full flex items-center justify-center mb-4">
-                        <Bell size={24} className="text-zinc-300 dark:text-zinc-500" />
+                <div className={cn(
+                    "flex flex-col items-center justify-center py-16 rounded-3xl border border-dashed text-center",
+                    "bg-white dark:bg-zinc-900/50",
+                    "border-zinc-200 dark:border-zinc-700/50"
+                )}>
+                    <div className={cn(
+                        "w-16 h-16 rounded-full flex items-center justify-center mb-4 border",
+                        "bg-zinc-50 dark:bg-zinc-800",
+                        "border-zinc-100 dark:border-zinc-700/50"
+                    )}>
+                        <Bell size={24} className="text-zinc-300 dark:text-zinc-600" />
                     </div>
-                    <p className="text-zinc-500 dark:text-zinc-400 font-medium">Hiç yeni bildiriminiz yok.</p>
+                    <p className="text-zinc-400 dark:text-zinc-500 font-medium">Hiç yeni bildiriminiz yok.</p>
                 </div>
           ) : (
               notifications.map((item) => {
                   const isUnread = !item.read;
 
-                  
                   const typeStyles = {
                       success: { 
-                          card: "bg-emerald-50/80 dark:bg-emerald-950/30 border-emerald-200/60 dark:border-emerald-800/40 hover:border-emerald-300 dark:hover:border-emerald-700", 
-                          iconBg: "bg-emerald-100 dark:bg-emerald-900/50 text-emerald-600 dark:text-emerald-400",
+                          card: "bg-emerald-50/70 dark:bg-emerald-500/5 border-emerald-200/70 dark:border-emerald-500/20 hover:border-emerald-300 dark:hover:border-emerald-500/35", 
+                          iconBg: "bg-emerald-100 dark:bg-emerald-500/15 text-emerald-600 dark:text-emerald-400",
                           highlight: "bg-emerald-500"
                       },
                       warning: { 
-                          card: "bg-red-50/80 dark:bg-red-950/30 border-red-200/60 dark:border-red-800/40 hover:border-red-300 dark:hover:border-red-700", 
-                          iconBg: "bg-red-100 dark:bg-red-900/50 text-red-600 dark:text-red-400",
+                          card: "bg-red-50/70 dark:bg-red-500/5 border-red-200/70 dark:border-red-500/20 hover:border-red-300 dark:hover:border-red-500/35", 
+                          iconBg: "bg-red-100 dark:bg-red-500/15 text-red-600 dark:text-red-400",
                           highlight: "bg-red-500"
                       },
                       alert: { 
-                          card: "bg-amber-50/80 dark:bg-amber-950/30 border-amber-200/60 dark:border-amber-800/40 hover:border-amber-300 dark:hover:border-amber-700", 
-                          iconBg: "bg-amber-100 dark:bg-amber-900/50 text-amber-600 dark:text-amber-400",
+                          card: "bg-amber-50/70 dark:bg-amber-500/5 border-amber-200/70 dark:border-amber-500/20 hover:border-amber-300 dark:hover:border-amber-500/35", 
+                          iconBg: "bg-amber-100 dark:bg-amber-500/15 text-amber-600 dark:text-amber-400",
                           highlight: "bg-amber-500"
                       },
                       info: { 
-                          card: "bg-blue-50/80 dark:bg-blue-950/30 border-blue-200/60 dark:border-blue-800/40 hover:border-blue-300 dark:hover:border-blue-700", 
-                          iconBg: "bg-blue-100 dark:bg-blue-900/50 text-blue-600 dark:text-blue-400",
+                          card: "bg-blue-50/70 dark:bg-blue-500/5 border-blue-200/70 dark:border-blue-500/20 hover:border-blue-300 dark:hover:border-blue-500/35", 
+                          iconBg: "bg-blue-100 dark:bg-blue-500/15 text-blue-600 dark:text-blue-400",
                           highlight: "bg-blue-500"
                       },
                   };
@@ -69,7 +91,13 @@ const Notifications = () => {
                         
                           isUnread 
                               ? cn(style.card, "shadow-sm hover:shadow-md hover:-translate-y-0.5") 
-                              : "bg-white dark:bg-zinc-800 border-zinc-100 dark:border-zinc-700 hover:border-zinc-200 dark:hover:border-zinc-600 hover:bg-zinc-50/80 dark:hover:bg-zinc-700/50 opacity-75 hover:opacity-100"
+                              : cn(
+                                  "bg-white dark:bg-zinc-900/60",
+                                  "border-zinc-100 dark:border-zinc-800/60",
+                                  "hover:border-zinc-200 dark:hover:border-zinc-700/60",
+                                  "hover:bg-zinc-50/80 dark:hover:bg-zinc-800/40",
+                                  "opacity-60 hover:opacity-100"
+                              )
                       )}
                   >
               
@@ -79,8 +107,15 @@ const Notifications = () => {
 
                       {/* İkon */}
                       <div className={cn(
-                          "p-3 rounded-xl shrink-0 transition-transform group-hover:scale-110", 
-                          isUnread ? style.iconBg : "bg-zinc-100 dark:bg-zinc-700 text-zinc-400 dark:text-zinc-500"
+                          "p-3 rounded-xl shrink-0 transition-transform duration-200 group-hover:scale-110", 
+                          isUnread 
+                              ? style.iconBg 
+                              : cn(
+                                  "border",
+                                  "bg-zinc-100 dark:bg-zinc-800/80",
+                                  "border-zinc-200 dark:border-zinc-700/50",
+                                  "text-zinc-400 dark:text-zinc-500"
+                              )
                       )}>
                           {item.type === "success" && <CheckCircle size={20} strokeWidth={2.5} />}
                           {item.type === "warning" && <Clock size={20} strokeWidth={2.5} />}
@@ -91,17 +126,29 @@ const Notifications = () => {
                       {/* İçerik */}
                       <div className="flex-1 min-w-0 pt-0.5">
                           <div className="flex justify-between items-start gap-4 mb-1.5">
-                              <h3 className={cn("text-sm font-bold tracking-tight", isUnread ? "text-zinc-900 dark:text-zinc-100" : "text-zinc-600 dark:text-zinc-400")}>
+                              <h3 className={cn(
+                                  "text-sm font-bold tracking-tight",
+                                  isUnread 
+                                      ? "text-zinc-900 dark:text-zinc-100" 
+                                      : "text-zinc-500 dark:text-zinc-400"
+                              )}>
                                   {item.title}
                               </h3>
                               <span className={cn(
-                                  "text-[10px] font-bold px-2 py-0.5 rounded-full border whitespace-nowrap shrink-0", 
-                                  isUnread ? "bg-white/60 dark:bg-zinc-800/60 border-black/5 dark:border-white/5 text-zinc-600 dark:text-zinc-300 backdrop-blur-sm" : "bg-zinc-100 dark:bg-zinc-700 border-zinc-200 dark:border-zinc-600 text-zinc-400 dark:text-zinc-500"
+                                  "text-[10px] font-bold px-2 py-0.5 rounded-full border whitespace-nowrap shrink-0 transition-colors", 
+                                  isUnread 
+                                      ? "bg-white/60 dark:bg-zinc-900/60 border-black/5 dark:border-white/8 text-zinc-600 dark:text-zinc-300 backdrop-blur-sm" 
+                                      : "bg-zinc-100 dark:bg-zinc-800/60 border-zinc-200 dark:border-zinc-700/50 text-zinc-400 dark:text-zinc-500"
                               )}>
                                   {item.time}
                               </span>
                           </div>
-                          <p className={cn("text-xs leading-relaxed", isUnread ? "text-zinc-700 dark:text-zinc-300 font-medium" : "text-zinc-400 dark:text-zinc-500")}>
+                          <p className={cn(
+                              "text-xs leading-relaxed",
+                              isUnread 
+                                  ? "text-zinc-700 dark:text-zinc-300 font-medium" 
+                                  : "text-zinc-400 dark:text-zinc-500"
+                          )}>
                               {item.message}
                           </p>
                       </div>
@@ -109,7 +156,7 @@ const Notifications = () => {
                    
                       {isUnread && (
                           <div className="absolute top-5 right-5 flex h-2.5 w-2.5">
-                              <span className={cn("animate-ping absolute inline-flex h-full w-full rounded-full opacity-75", style.highlight)}></span>
+                              <span className={cn("animate-ping absolute inline-flex h-full w-full rounded-full opacity-60", style.highlight)}></span>
                               <span className={cn("relative inline-flex rounded-full h-2.5 w-2.5", style.highlight)}></span>
                           </div>
                       )}

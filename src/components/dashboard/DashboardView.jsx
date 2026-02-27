@@ -16,14 +16,12 @@ const calculateDaysLeft = (startDateStr) => {
     const start = new Date(startDateStr);
     const billingDay = start.getDate();
 
-
     let nextBilling = new Date(today.getFullYear(), today.getMonth(), billingDay);
 
     // Eğer bu ayın fatura günü geçtiyse bir sonraki aya geç
     if (nextBilling < today) {
         nextBilling.setMonth(nextBilling.getMonth() + 1);
     }
-
 
     const diffTime = Math.abs(nextBilling - today);
     const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
@@ -35,7 +33,6 @@ const DashboardView = () => {
 
     const { totalExpenses, subscriptions } = useData();
 
-
     const {
         activeSubs,
         canceledSubs,
@@ -45,22 +42,77 @@ const DashboardView = () => {
         monthlySavingsTip
     } = useSpendingAnalysis(subscriptions, totalExpenses);
 
+   
     const THEMES = {
-        red: { bg: "bg-rose-50/50 hover:bg-rose-50", border: "border-rose-100 hover:border-rose-200", text: "text-rose-950", subtext: "text-rose-600", bar: "bg-rose-500", gradient: "from-rose-500 to-pink-600", iconBg: "bg-rose-100 text-rose-600" },
-        green: { bg: "bg-emerald-50/50 hover:bg-emerald-50", border: "border-emerald-100 hover:border-emerald-200", text: "text-emerald-950", subtext: "text-emerald-600", bar: "bg-emerald-500", gradient: "from-emerald-500 to-teal-600", iconBg: "bg-emerald-100 text-emerald-600" },
-        blue: { bg: "bg-blue-50/50 hover:bg-blue-50", border: "border-blue-100 hover:border-blue-200", text: "text-blue-950", subtext: "text-blue-600", bar: "bg-blue-500", gradient: "from-blue-500 to-indigo-600", iconBg: "bg-blue-100 text-blue-600" },
-        purple: { bg: "bg-violet-50/50 hover:bg-violet-50", border: "border-violet-100 hover:border-violet-200", text: "text-violet-950", subtext: "text-violet-600", bar: "bg-violet-500", gradient: "from-violet-500 to-purple-600", iconBg: "bg-violet-100 text-violet-600" },
-        yellow: { bg: "bg-amber-50/50 hover:bg-amber-50", border: "border-amber-100 hover:border-amber-200", text: "text-amber-950", subtext: "text-amber-600", bar: "bg-amber-500", gradient: "from-amber-400 to-orange-500", iconBg: "bg-amber-100 text-amber-700" },
-        dark: { bg: "bg-slate-50/50 hover:bg-slate-100", border: "border-slate-200 hover:border-slate-300", text: "text-slate-900", subtext: "text-slate-500", bar: "bg-slate-800", gradient: "from-slate-700 to-black", iconBg: "bg-white text-black border border-slate-200" },
-        sky: { bg: "bg-sky-50/50 hover:bg-sky-50", border: "border-sky-100 hover:border-sky-200", text: "text-sky-950", subtext: "text-sky-600", bar: "bg-sky-500", gradient: "from-sky-400 to-cyan-500", iconBg: "bg-sky-100 text-sky-600" }
+        red: { 
+            bg: "bg-rose-50/50 hover:bg-rose-50 dark:bg-rose-500/5 dark:hover:bg-rose-500/10", 
+            border: "border-rose-100 hover:border-rose-200 dark:border-rose-500/20 dark:hover:border-rose-500/30", 
+            text: "text-rose-950 dark:text-rose-100", 
+            subtext: "text-rose-600 dark:text-rose-400", 
+            bar: "bg-rose-500", 
+            gradient: "from-rose-500 to-pink-600", 
+            iconBg: "bg-rose-100 text-rose-600 dark:bg-rose-500/20 dark:text-rose-400" 
+        },
+        green: { 
+            bg: "bg-emerald-50/50 hover:bg-emerald-50 dark:bg-emerald-500/5 dark:hover:bg-emerald-500/10", 
+            border: "border-emerald-100 hover:border-emerald-200 dark:border-emerald-500/20 dark:hover:border-emerald-500/30", 
+            text: "text-emerald-950 dark:text-emerald-100", 
+            subtext: "text-emerald-600 dark:text-emerald-400", 
+            bar: "bg-emerald-500", 
+            gradient: "from-emerald-500 to-teal-600", 
+            iconBg: "bg-emerald-100 text-emerald-600 dark:bg-emerald-500/20 dark:text-emerald-400" 
+        },
+        blue: { 
+            bg: "bg-blue-50/50 hover:bg-blue-50 dark:bg-blue-500/5 dark:hover:bg-blue-500/10", 
+            border: "border-blue-100 hover:border-blue-200 dark:border-blue-500/20 dark:hover:border-blue-500/30", 
+            text: "text-blue-950 dark:text-blue-100", 
+            subtext: "text-blue-600 dark:text-blue-400", 
+            bar: "bg-blue-500", 
+            gradient: "from-blue-500 to-indigo-600", 
+            iconBg: "bg-blue-100 text-blue-600 dark:bg-blue-500/20 dark:text-blue-400" 
+        },
+        purple: { 
+            bg: "bg-violet-50/50 hover:bg-violet-50 dark:bg-violet-500/5 dark:hover:bg-violet-500/10", 
+            border: "border-violet-100 hover:border-violet-200 dark:border-violet-500/20 dark:hover:border-violet-500/30", 
+            text: "text-violet-950 dark:text-violet-100", 
+            subtext: "text-violet-600 dark:text-violet-400", 
+            bar: "bg-violet-500", 
+            gradient: "from-violet-500 to-purple-600", 
+            iconBg: "bg-violet-100 text-violet-600 dark:bg-violet-500/20 dark:text-violet-400" 
+        },
+        yellow: { 
+            bg: "bg-amber-50/50 hover:bg-amber-50 dark:bg-amber-500/5 dark:hover:bg-amber-500/10", 
+            border: "border-amber-100 hover:border-amber-200 dark:border-amber-500/20 dark:hover:border-amber-500/30", 
+            text: "text-amber-950 dark:text-amber-100", 
+            subtext: "text-amber-600 dark:text-amber-400", 
+            bar: "bg-amber-500", 
+            gradient: "from-amber-400 to-orange-500", 
+            iconBg: "bg-amber-100 text-amber-700 dark:bg-amber-500/20 dark:text-amber-400" 
+        },
+        dark: { 
+            bg: "bg-slate-50/50 hover:bg-slate-100 dark:bg-zinc-800/40 dark:hover:bg-zinc-800/60", 
+            border: "border-slate-200 hover:border-slate-300 dark:border-zinc-700/50 dark:hover:border-zinc-600/60", 
+            text: "text-slate-900 dark:text-zinc-100", 
+            subtext: "text-slate-500 dark:text-zinc-400", 
+            bar: "bg-slate-800 dark:bg-zinc-500", 
+            gradient: "from-slate-700 to-black dark:from-zinc-500 dark:to-zinc-700", 
+            iconBg: "bg-white text-black border border-slate-200 dark:bg-zinc-800 dark:text-white dark:border-zinc-700" 
+        },
+        sky: { 
+            bg: "bg-sky-50/50 hover:bg-sky-50 dark:bg-sky-500/5 dark:hover:bg-sky-500/10", 
+            border: "border-sky-100 hover:border-sky-200 dark:border-sky-500/20 dark:hover:border-sky-500/30", 
+            text: "text-sky-950 dark:text-sky-100", 
+            subtext: "text-sky-600 dark:text-sky-400", 
+            bar: "bg-sky-500", 
+            gradient: "from-sky-400 to-cyan-500", 
+            iconBg: "bg-sky-100 text-sky-600 dark:bg-sky-500/20 dark:text-sky-400" 
+        }
     };
 
     const enhancedSubscriptions = useMemo(() => {
         return activeSubs.map(sub => {
 
-
             const daysLeft = calculateDaysLeft(sub.startDate);
-
 
             const progressValue = Math.min(100, Math.max(0, (daysLeft / 30) * 100));
 
@@ -180,7 +232,6 @@ const DashboardView = () => {
                 <StatCard className="flex flex-col p-0 bg-linear-to-br from-zinc-900 to-red-400 border-none text-white shadow-lg shadow-red-500/20">
                     <div className="p-6 pb-0 relative z-20 flex justify-between items-start">
 
-
                         <div className="absolute top-0 right-0 w-30 h-28 bg-white/10 rounded-bl-[4rem] transition-all group-hover:scale-110 z-0"></div>
 
                         <div>
@@ -266,10 +317,10 @@ const DashboardView = () => {
 
             {/* iptal edilmiş abonelikler listesi  */}
             {canceledSubs.length > 0 && (
-                <div className="mt-8 lg:mt-12 bg-slate-50/50 dark:bg-zinc-800/50 border border-slate-200 dark:border-zinc-700 rounded-3xl p-4 lg:p-6">
+                <div className="mt-8 lg:mt-12 bg-slate-50/50 dark:bg-zinc-800/30 border border-slate-200 dark:border-zinc-700/50 rounded-3xl p-4 lg:p-6">
                     <div className="flex items-center gap-3 mb-6 opacity-70">
-                        <div className="p-2 bg-slate-200 dark:bg-zinc-700 rounded-lg">
-                            <ArchiveX size={18} className="text-slate-600 dark:text-zinc-300" />
+                        <div className="p-2 bg-slate-200 dark:bg-zinc-800 rounded-lg">
+                            <ArchiveX size={18} className="text-slate-600 dark:text-zinc-400" />
                         </div>
                         <h2 className="text-sm font-bold text-slate-600 dark:text-zinc-400 uppercase tracking-widest">
                             Geçmiş Abonelikler
@@ -278,8 +329,8 @@ const DashboardView = () => {
 
                     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 lg:gap-4">
                         {canceledSubs.map((sub) => (
-                            <div key={sub.id} className="group flex items-center gap-4 bg-white dark:bg-zinc-800 p-3 pr-5 rounded-2xl border border-slate-100 dark:border-zinc-700 shadow-sm opacity-60 hover:opacity-100 hover:shadow-md transition-all duration-300">
-                                <div className="w-10 h-10 rounded-lg bg-slate-50 dark:bg-zinc-700 border border-slate-100 dark:border-zinc-600 p-1.5 shrink-0 grayscale group-hover:grayscale-0 transition-all">
+                            <div key={sub.id} className="group flex items-center gap-4 bg-white dark:bg-zinc-800/80 p-3 pr-5 rounded-2xl border border-slate-100 dark:border-zinc-700/50 shadow-sm dark:shadow-none opacity-60 hover:opacity-100 hover:shadow-md transition-all duration-300">
+                                <div className="w-10 h-10 rounded-lg bg-slate-50 dark:bg-zinc-900/50 border border-slate-100 dark:border-zinc-700/50 p-1.5 shrink-0 grayscale group-hover:grayscale-0 transition-all">
                                     <img
                                         src={sub.image || SERVICE_LOGOS.DEFAULT}
                                         alt={sub.name}

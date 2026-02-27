@@ -20,9 +20,9 @@
 }
 
 @theme {
-  --color-background: #fafafa;  
+  --color-background: #f8f8f8;  
   --color-sidebar: #f4f4f5;     
-  --color-card-bg: rgba(255, 255, 255, 0.8);   
+  --color-card-bg: rgba(255, 255, 255, 0.85);   
   --color-text-main: #09090b;  
   --color-text-muted: #71717a;  
   
@@ -43,8 +43,8 @@ body {
   
  
   background-image: 
-    linear-gradient(to right, rgba(0,0,0,0.04) 1px, transparent 1px),
-    linear-gradient(to bottom, rgba(0,0,0,0.04) 1px, transparent 1px);
+    linear-gradient(to right, rgba(0,0,0,0.035) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(0,0,0,0.035) 1px, transparent 1px);
   background-size: 40px 40px;
 
 
@@ -53,18 +53,20 @@ body {
 }
 
 .dark {
-  --color-background: #09090b;
-  --color-sidebar: #18181b;
-  --color-card-bg: rgba(39, 39, 42, 0.8);
-  --color-text-main: #fafafa;
+  --color-background: #0a0a0f;
+  --color-sidebar: #111116;
+  --color-card-bg: rgba(24, 24, 32, 0.85);
+  --color-text-main: #f4f4f5;
   --color-text-muted: #a1a1aa;
 }
 
 
 .dark body {
+  background-color: #0a0a0f;
   background-image: 
-    linear-gradient(to right, rgba(255,255,255,0.04) 1px, transparent 1px),
-    linear-gradient(to bottom, rgba(255,255,255,0.04) 1px, transparent 1px);
+    linear-gradient(to right, rgba(255,255,255,0.028) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(255,255,255,0.028) 1px, transparent 1px);
+  background-size: 40px 40px;
 }
 
 
@@ -97,10 +99,10 @@ input, textarea {
 
 
 .dark ::-webkit-scrollbar-thumb {
-  background: #3f3f46;
+  background: #27272a;
 }
 .dark ::-webkit-scrollbar-thumb:hover {
-  background: #52525b;
+  background: #3f3f46;
 }
 
 .recharts-cartesian-axis-tick-value,
@@ -113,7 +115,7 @@ input, textarea {
 
 .dark .recharts-cartesian-axis-tick-value,
 .dark .recharts-text {
-  fill: #a1a1aa !important;
+  fill: #71717a !important;
 }
 
 
@@ -125,8 +127,8 @@ input, textarea {
 }
 
 .dark .glass {
-  background: rgba(39, 39, 42, 0.7);
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(20, 20, 28, 0.75);
+  border: 1px solid rgba(255, 255, 255, 0.06);
 }
 
 
@@ -142,8 +144,8 @@ input:-webkit-autofill:active {
 .dark input:-webkit-autofill:hover,
 .dark input:-webkit-autofill:focus,
 .dark input:-webkit-autofill:active {
-    -webkit-box-shadow: 0 0 0 30px #27272a inset !important;
-    -webkit-text-fill-color: #fafafa !important;
+    -webkit-box-shadow: 0 0 0 30px #18181b inset !important;
+    -webkit-text-fill-color: #f4f4f5 !important;
 }
 
 

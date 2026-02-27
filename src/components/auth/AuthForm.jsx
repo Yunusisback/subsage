@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useUser } from "../../context/UserContext";
 import { toast } from "react-hot-toast";
-import { ArrowRight, Loader2, Zap } from "lucide-react"; 
+import { ArrowRight, Loader2, Zap, Info } from "lucide-react"; 
 import { motion, AnimatePresence } from "framer-motion";
 
 const InputField = ({ label, type, value, onChange, required, id }) => (
@@ -13,12 +13,12 @@ const InputField = ({ label, type, value, onChange, required, id }) => (
       name={id}
       value={value}
       onChange={onChange}
-      className="block w-full px-4 py-3.5 text-sm text-zinc-900 dark:text-zinc-100 bg-white dark:bg-zinc-800 rounded-3xl border-2 border-zinc-200 dark:border-zinc-700 appearance-none focus:outline-none focus:border-cyan-500 dark:focus:border-cyan-500 group-hover:border-zinc-300 dark:group-hover:border-zinc-600 peer transition-all duration-200"
+      className="block w-full px-4 py-3.5 text-sm text-zinc-900 dark:text-zinc-100 bg-white dark:bg-zinc-950 rounded-3xl border-2 border-zinc-200 dark:border-zinc-700 appearance-none focus:outline-none focus:border-cyan-500 dark:focus:border-cyan-500 group-hover:border-zinc-300 dark:group-hover:border-zinc-600 peer transition-all duration-200"
       placeholder=" "
     />
     <label
       htmlFor={id}
-      className="absolute left-3 px-1 text-sm text-zinc-400 dark:text-zinc-500 bg-white dark:bg-zinc-800 duration-200 transform -translate-y-3 scale-75 top-0 origin-left z-10
+      className="absolute left-3 px-1 text-sm text-zinc-400 dark:text-zinc-500 bg-white dark:bg-zinc-950 duration-200 transform -translate-y-3 scale-75 top-0 origin-left z-10
                  peer-focus:-translate-y-3 peer-focus:scale-75 peer-focus:text-cyan-600 dark:peer-focus:text-cyan-400 peer-focus:top-0
                  peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-placeholder-shown:top-3.5"
     >
@@ -40,6 +40,46 @@ const AuthForm = () => {
     fullName: "",
     phone: ""
   });
+
+
+  const showInfoToast = (message) => {
+    toast.custom((t) => (
+      <motion.div
+        initial={{ opacity: 0, y: -20, scale: 0.8 }}
+        animate={{ 
+          opacity: t.visible ? 1 : 0, 
+          y: t.visible ? 0 : -20, 
+          scale: t.visible ? 1 : 0.8 
+        }}
+        transition={{ type: "spring", stiffness: 350, damping: 25 }}
+        className="max-w-sm w-full bg-white/80 dark:bg-zinc-900/80 backdrop-blur-xl shadow-2xl rounded-2xl pointer-events-auto flex border border-zinc-200/50 dark:border-zinc-700/50"
+      >
+        <div className="flex-1 w-0 p-4">
+          <div className="flex items-start">
+            <div className="shrink-0 pt-0.5">
+              <Info className="h-5 w-5 text-cyan-500" />
+            </div>
+            <div className="ml-3 flex-1">
+              <p className="text-sm font-bold text-zinc-900 dark:text-zinc-100">
+                Bilgi
+              </p>
+              <p className="mt-1 text-sm text-zinc-500 dark:text-zinc-400 font-medium">
+                {message}
+              </p>
+            </div>
+          </div>
+        </div>
+        <div className="flex border-l border-zinc-200/50 dark:border-zinc-700/50">
+          <button
+            onClick={() => toast.dismiss(t.id)}
+            className="w-full border border-transparent rounded-none rounded-r-2xl p-4 flex items-center justify-center text-sm font-bold text-cyan-600 dark:text-cyan-400 hover:text-cyan-700 dark:hover:text-cyan-300 transition-colors focus:outline-none cursor-pointer"
+          >
+            Kapat
+          </button>
+        </div>
+      </motion.div>
+    ), { duration: 3000 });
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -84,7 +124,7 @@ const AuthForm = () => {
             <h2 className="text-3xl font-bold tracking-tight text-cyan-600 dark:text-cyan-400">
               {isLogin ? "Hoş Geldin!" : "Hesap Oluştur"}
             </h2>
-            <p className="text-zinc-400 dark:text-zinc-500 mt-2 text-sm">
+            <p className="text-zinc-400 dark:text-zinc-400 mt-2 text-sm">
               {isLogin ? "Kaldığın yerden devam etmek için giriş yap." : "Aboneliklerini yönetmeye hemen başla."}
             </p>
           </div>
@@ -180,12 +220,12 @@ const AuthForm = () => {
                   name="floating_password"
                   value={formData.password}
                   onChange={(e) => setFormData({...formData, password: e.target.value})}
-                  className="block w-full px-4 py-3.5 text-sm text-zinc-900 dark:text-zinc-100 bg-white dark:bg-zinc-800 rounded-3xl border-2 border-zinc-200 dark:border-zinc-700 appearance-none focus:outline-none focus:border-cyan-500 dark:focus:border-cyan-500 group-hover:border-zinc-300 dark:group-hover:border-zinc-600 peer transition-all duration-200"
+                  className="block w-full px-4 py-3.5 text-sm text-zinc-900 dark:text-zinc-100 bg-white dark:bg-zinc-950 rounded-3xl border-2 border-zinc-200 dark:border-zinc-700 appearance-none focus:outline-none focus:border-cyan-500 dark:focus:border-cyan-500 group-hover:border-zinc-300 dark:group-hover:border-zinc-600 peer transition-all duration-200"
                   placeholder=" "
                 />
                 <label 
                   htmlFor="floating_password"
-                  className="absolute left-3 px-1 text-sm text-zinc-400 dark:text-zinc-500 bg-white dark:bg-zinc-800 duration-200 transform -translate-y-3 scale-75 top-0 origin-left z-10
+                  className="absolute left-3 px-1 text-sm text-zinc-400 dark:text-zinc-500 bg-white dark:bg-zinc-950 duration-200 transform -translate-y-3 scale-75 top-0 origin-left z-10
                              peer-focus:-translate-y-3 peer-focus:scale-75 peer-focus:text-cyan-600 dark:peer-focus:text-cyan-400 peer-focus:top-0
                              peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-placeholder-shown:top-3.5"
                 >
@@ -254,7 +294,7 @@ const AuthForm = () => {
           
           {/* ayrıcı çizgi */}
           <div className="relative my-5">
-            <div className="absolute inset-0 flex items-center"><div className="w-full border-t border-cyan-100 dark:border-zinc-700"></div></div>
+            <div className="absolute inset-0 flex items-center"><div className="w-full border-t border-cyan-100 dark:border-zinc-500"></div></div>
             <div className="relative flex justify-center text-[10px] uppercase tracking-widest font-bold text-cyan-600 dark:text-cyan-500"><span className="bg-white dark:bg-zinc-950 px-2">veya</span></div>
           </div>
 
@@ -275,7 +315,7 @@ const AuthForm = () => {
             }}
             whileHover={{ scale: 1.02 }}
             whileTap={{ scale: 0.98 }}
-            className="w-full relative group mb-3 h-12 rounded-3xl text-sm font-bold flex items-center justify-center cursor-pointer overflow-hidden border border-cyan-400/30 dark:border-cyan-500/30 bg-linear-to-r from-cyan-500/5 via-cyan-400/10 to-cyan-500/5 backdrop-blur-sm "
+            className="w-full relative group mb-3 h-12 rounded-3xl text-sm font-bold flex items-center justify-center cursor-pointer overflow-hidden border border-cyan-400/30 dark:border-cyan-500/60 bg-linear-to-r from-cyan-500/20 via-cyan-400/10 to-cyan-500/5 backdrop-blur-sm "
           >
         
             <div className="absolute inset-0 -translate-x-full group-hover:animate-[shimmer_1.5s_infinite] bg-linear-to-r from-transparent via-white/20 to-transparent z-0" />
@@ -313,8 +353,8 @@ const AuthForm = () => {
             >
               <button 
                 type="button"
-                onClick={() => toast.info("Google girişi yakında aktif olacak")}
-                className="w-full group bg-white dark:bg-zinc-800 border-2 border-zinc-200 dark:border-zinc-700 hover:border-cyan-200 dark:hover:border-cyan-700 hover:bg-cyan-50/30 dark:hover:bg-cyan-900/20 text-zinc-800 dark:text-zinc-200 h-12 rounded-3xl text-sm font-semibold transition-all flex items-center justify-center gap-3 shadow-sm hover:shadow-md cursor-pointer"
+                onClick={() => showInfoToast("Google girişi yakında aktif olacak")}
+                className="w-full group bg-white dark:bg-zinc-800 border-2 border-zinc-200 dark:border-zinc-700 hover:border-zinc-200 dark:hover:border-cyan-700 hover:bg-zinc-100 dark:hover:bg-cyan-900/20 text-zinc-800 dark:text-zinc-200 h-12 rounded-3xl text-sm font-semibold transition-all flex items-center justify-center gap-3 shadow-sm hover:shadow-md cursor-pointer"
               >
                 <svg className="w-5 h-5" viewBox="0 0 24 24">
                   <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
@@ -327,7 +367,7 @@ const AuthForm = () => {
 
               <button 
                 type="button"
-                onClick={() => toast.info("Apple girişi yakında aktif olacak")}
+                onClick={() => showInfoToast("Apple girişi yakında aktif olacak")}
                 className="w-full group bg-black border-2 border-zinc-800 hover:border-zinc-600 text-white h-12 rounded-3xl text-sm font-semibold transition-all flex items-center justify-center gap-3 shadow-sm hover:shadow-md cursor-pointer"
               >
                 <svg className="w-5 h-5" viewBox="0 0 24 24" fill="currentColor">

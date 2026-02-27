@@ -37,7 +37,7 @@ const TestimonialCarousel = () => {
   return (
     <div className="hidden lg:flex flex-col justify-between w-1/2 h-full bg-zinc-50 dark:bg-zinc-900 relative p-12 lg:p-20 overflow-hidden">
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute top-1/4 left-1/4 -translate-x-1/2 -translate-y-1/2 w-150 h-150 bg-cyan-100 dark:bg-cyan-900/30 rounded-full blur-[120px] opacity-60 animate-pulse"></div>
+        <div className="absolute top-1/4 left-1/4 -translate-x-1/2 -translate-y-1/2 w-150 h-150 bg-cyan-100 dark:bg-cyan-800/30 rounded-full blur-[120px] opacity-60 animate-pulse "></div>
         <div className="absolute bottom-0 right-0 w-100 h-100 bg-blue-100/40 dark:bg-blue-900/20 rounded-full blur-[100px] opacity-40"></div>
       </div>
 
@@ -122,7 +122,7 @@ const TestimonialCarousel = () => {
               key={`brand-1-${i}`} 
               src={brand} 
               alt="Sponsor Logo" 
-              className="h-8 w-auto object-contain grayscale mix-blend-multiply dark:mix-blend-screen dark:opacity-50" 
+              className="h-8 w-auto object-contain grayscale mix-blend-multiply dark:grayscale-0 dark:mix-blend-normal dark:opacity-100" 
             />
           ))}
         
@@ -131,7 +131,7 @@ const TestimonialCarousel = () => {
               key={`brand-2-${i}`} 
               src={brand} 
               alt="Sponsor Logo" 
-              className="h-8 w-auto object-contain grayscale mix-blend-multiply dark:mix-blend-screen dark:opacity-50" 
+              className="h-8 w-auto object-contain grayscale mix-blend-multiply dark:grayscale-0 dark:mix-blend-normal dark:opacity-100" 
             />
           ))}
         </motion.div>

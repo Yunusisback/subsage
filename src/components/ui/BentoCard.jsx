@@ -3,14 +3,15 @@ import { cn } from "../../utils/helpers";
 
 const BentoCard = ({ children, className, glowColor = "zinc", ...props }) => {
   const colors = {
-    red: { glow: "from-red-500/40 to-transparent" },
-    green: { glow: "from-green-500/40 to-transparent" },
-    blue: { glow: "from-blue-500/40 to-transparent" },
-    orange: { glow: "from-orange-500/40 to-transparent" },
-    purple: { glow: "from-purple-500/40 to-transparent" },
-    zinc: { glow: "from-zinc-500/30 to-transparent" },
-    fuchsia: { glow: "from-fuchsia-500/40 to-transparent" },
-    yellow: { glow: "from-yellow-500/40 to-transparent" },
+    red: { glow: "from-red-500/30 to-transparent" },
+    green: { glow: "from-green-500/30 to-transparent" },
+    blue: { glow: "from-blue-500/30 to-transparent" },
+    orange: { glow: "from-orange-500/30 to-transparent" },
+    purple: { glow: "from-purple-500/30 to-transparent" },
+    zinc: { glow: "from-zinc-400/20 to-transparent dark:from-zinc-500/10" },
+    fuchsia: { glow: "from-fuchsia-500/30 to-transparent" },
+    yellow: { glow: "from-yellow-500/30 to-transparent" },
+    cyan: { glow: "from-cyan-500/30 to-transparent" },
   };
 
   const activeColor = colors[glowColor] || colors.zinc;
@@ -25,9 +26,11 @@ const BentoCard = ({ children, className, glowColor = "zinc", ...props }) => {
         "rounded-4xl", 
         "flex flex-col",
         "cursor-default",
-        "bg-white/70 dark:bg-zinc-800/70 backdrop-blur-xl border border-white/60 dark:border-zinc-700/60", 
-        "shadow-[0_8px_30px_rgb(0,0,0,0.04)] dark:shadow-[0_8px_30px_rgb(0,0,0,0.2)]",
-        "hover:shadow-[0_8px_30px_rgb(0,0,0,0.08)] dark:hover:shadow-[0_8px_30px_rgb(0,0,0,0.3)]",
+        "bg-white/80 dark:bg-zinc-900/80 backdrop-blur-xl",
+        "border border-zinc-100/80 dark:border-zinc-800/60", 
+        "shadow-[0_4px_24px_rgba(0,0,0,0.04)] dark:shadow-[0_4px_32px_rgba(0,0,0,0.3)]",
+        "hover:shadow-[0_8px_32px_rgba(0,0,0,0.08)] dark:hover:shadow-[0_8px_40px_rgba(0,0,0,0.45)]",
+        "hover:border-zinc-200/80 dark:hover:border-zinc-700/60",
         "transition-all duration-300",
         className
       )}

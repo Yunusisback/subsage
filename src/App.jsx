@@ -60,40 +60,41 @@ const SlowSuccessIcon = () => {
   );
 };
 
-const modernToastOptions = {
+
+const getToastOptions = (darkMode) => ({
   duration: 5000, 
   position: "top-center",
   style: {
-    background: "rgba(255, 255, 255, 0.9)", 
+    background: darkMode ? "rgba(39, 39, 42, 0.9)" : "rgba(255, 255, 255, 0.9)", 
     backdropFilter: "blur(12px)",
-    color: "#18181b",
+    color: darkMode ? "#f4f4f5" : "#18181b",
     fontSize: "14px",
     fontWeight: "600",
     padding: "12px 24px",
     borderRadius: "99px",
-    border: "1px solid rgba(255, 255, 255, 0.8)",
-    boxShadow: "0 20px 40px -10px rgba(8, 145, 178, 0.15)",
+    border: darkMode ? "1px solid rgba(255, 255, 255, 0.1)" : "1px solid rgba(255, 255, 255, 0.8)",
+    boxShadow: darkMode ? "0 20px 40px -10px rgba(0, 0, 0, 0.5)" : "0 20px 40px -10px rgba(8, 145, 178, 0.15)",
   },
   success: {
     duration: 2000, 
     icon: <SlowSuccessIcon />, 
     style: { 
-      border: "1px solid rgba(8, 145, 178, 0.3)",
-      background: "rgba(236, 254, 255, 0.85)"
+      border: darkMode ? "1px solid rgba(8, 145, 178, 0.4)" : "1px solid rgba(8, 145, 178, 0.3)",
+      background: darkMode ? "rgba(22, 78, 99, 0.85)" : "rgba(236, 254, 255, 0.85)"
     }
   },
   error: {
     duration: 6000,
     iconTheme: { primary: "#ef4444", secondary: "white" },
     style: { 
-        border: "1px solid rgba(239, 68, 68, 0.2)",
-        background: "rgba(254, 242, 242, 0.85)"
+        border: darkMode ? "1px solid rgba(239, 68, 68, 0.4)" : "1px solid rgba(239, 68, 68, 0.2)",
+        background: darkMode ? "rgba(127, 29, 29, 0.85)" : "rgba(254, 242, 242, 0.85)"
     }
   },
-};
+});
 
 
-const LiquidTransition = () => {
+const LiquidTransition = ({ darkMode }) => {
   return (
     <motion.div
       key="liquid"
@@ -108,7 +109,8 @@ const LiquidTransition = () => {
         display: "flex",
         alignItems: "center",
         justifyContent: "center",
-        backgroundColor: "white",
+   
+        backgroundColor: darkMode ? "#09090b" : "white",
       }}
     >
       
@@ -232,7 +234,10 @@ const LiquidTransition = () => {
             height: "90px",
             top: "65px",
             left: "8px",
-            background: "radial-gradient(circle, rgba(148,163,184,0.85) 0%, rgba(186,230,253,0.55) 50%, transparent 100%)",
+       
+            background: darkMode 
+              ? "radial-gradient(circle, rgba(63,63,70,0.85) 0%, rgba(39,39,42,0.55) 50%, transparent 100%)"
+              : "radial-gradient(circle, rgba(148,163,184,0.85) 0%, rgba(186,230,253,0.55) 50%, transparent 100%)",
             borderRadius: "50%",
           }}
         />
@@ -257,7 +262,10 @@ const LiquidTransition = () => {
             height: "85px",
             top: "18px",
             left: "68px",
-            background: "radial-gradient(circle, rgba(255,255,255,1) 0%, rgba(224,242,254,0.8) 45%, transparent 100%)",
+           
+            background: darkMode
+              ? "radial-gradient(circle, rgba(82,82,91,1) 0%, rgba(39,39,42,0.8) 45%, transparent 100%)"
+              : "radial-gradient(circle, rgba(255,255,255,1) 0%, rgba(224,242,254,0.8) 45%, transparent 100%)",
             borderRadius: "50%",
           }}
         />
@@ -303,7 +311,7 @@ function App() {
         <>
          
           <AnimatePresence>
-            {isTransitioning && <LiquidTransition />}
+            {isTransitioning && <LiquidTransition darkMode={darkMode} />}
           </AnimatePresence>
           <AnimatePresence mode="wait">
             <motion.div 
@@ -313,7 +321,8 @@ function App() {
               exit={{ opacity: 0 }}
               className="h-full"
             >
-                <Toaster toastOptions={modernToastOptions} />
+             
+                <Toaster toastOptions={getToastOptions(darkMode)} />
                 <AuthPage />
             </motion.div>
           </AnimatePresence>
@@ -325,12 +334,13 @@ function App() {
     <>
     
       <AnimatePresence>
-        {isTransitioning && <LiquidTransition />}
+        {isTransitioning && <LiquidTransition darkMode={darkMode} />}
       </AnimatePresence>
 
       <div className="min-h-screen flex text-zinc-900 dark:text-zinc-100 font-sans bg-background overflow-hidden relative">
         
-        <Toaster toastOptions={modernToastOptions} />
+     
+        <Toaster toastOptions={getToastOptions(darkMode)} />
 
         <AnimatePresence>
           {isMobileMenuOpen && (
